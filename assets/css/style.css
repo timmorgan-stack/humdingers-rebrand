@@ -395,6 +395,34 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .couple-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15); }
 
+/* ---------------- Enquiry form (contact.html) ---------------- */
+.enquiry-form { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
+.enquiry-form .field-row { display: flex; gap: 12px; }
+.enquiry-form .field-row > label { flex: 1; }
+.enquiry-form label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-chocolate);
+  font-size: 0.95rem;
+}
+.enquiry-form input,
+.enquiry-form select,
+.enquiry-form textarea {
+  width: 100%;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 2px solid var(--color-chocolate);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  background: var(--color-paper);
+}
+.enquiry-form .checkbox-field { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+.enquiry-form .checkbox-field input { width: auto; margin-top: 0; }
+.enquiry-form .field-note { font-weight: 400; font-size: 0.8rem; opacity: 0.75; margin-top: 4px; }
+.enquiry-form fieldset { border: 2px solid var(--color-chocolate); border-radius: 12px; padding: 12px 14px; margin: 0; }
+.enquiry-form legend { font-family: var(--font-display); font-weight: 700; padding: 0 6px; }
+
 /* ---------------- Menu page (menus.html) ---------------- */
 .menu-jump {
   display: flex;

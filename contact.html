@@ -58,55 +58,97 @@
       </div>
     </div>
     <div class="bg-custard" style="border-radius: var(--radius-lg); padding:36px;">
-      <span class="eyebrow" style="color:var(--color-chocolate);">Quick enquiry</span>
-      <form onsubmit="return false;" style="display:flex; flex-direction:column; gap:14px; margin-top:16px;">
-        <div style="display:flex; gap:12px;">
-          <label style="flex:1; font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-            First name
-            <input type="text" name="first_name" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
+      <span class="eyebrow" style="color:var(--color-chocolate);">Enquire now</span>
+      <form onsubmit="return false;" class="enquiry-form">
+        <div class="field-row">
+          <label>First name
+            <input type="text" name="first-name">
           </label>
-          <label style="flex:1; font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-            Last name
-            <input type="text" name="last_name" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
+          <label>Last name
+            <input type="text" name="last-name">
           </label>
         </div>
-        <label style="font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-          Email
-          <input type="email" name="email" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
+        <label>Email
+          <input type="email" name="your-email">
         </label>
-        <label style="font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-          Phone number
-          <input type="tel" name="phone" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
+        <label class="checkbox-field">
+          <input type="checkbox" name="PersonalEnquiry[]"> Personal enquiry
         </label>
-        <label style="font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-          Event type
-          <select name="event_type" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
-            <option>Wedding</option>
-            <option>Corporate event</option>
-            <option>Office catering</option>
-            <option>Shoot / studio catering</option>
-            <option>Private party</option>
-            <option>PR or brand launch</option>
-            <option>Community Kitchen enquiry</option>
+        <label>Business / organisation name
+          <input type="text" name="business-name" placeholder="Business/Organisation Name">
+        </label>
+        <label>Event style
+          <select name="event-style">
+            <option>Please select the event style</option>
+            <option>Full-service Catering</option>
+            <option>Drop-off Catering</option>
+          </select>
+        </label>
+        <div class="field-row">
+          <label>Event date
+            <input type="date" name="date-118">
+          </label>
+          <label>Phone number
+            <input type="tel" name="Contact-number">
+          </label>
+        </div>
+        <div class="field-row">
+          <label>Start time
+            <input type="text" name="DropOff" placeholder="e.g. 6:00pm">
+          </label>
+          <label>End time
+            <input type="text" name="endDropOff" placeholder="e.g. 11:00pm">
+          </label>
+        </div>
+        <label>Number of guests
+          <input type="text" name="Guest-Number">
+        </label>
+        <label>Tell us about your booking or event enquiry
+          <textarea name="food-choice" rows="4" placeholder="What are you celebrating? Please let us know the type of event: wedding, social, corporate, etc. What style of food are you interested in? Family-style meal, buffet, mingling cocktail party, etc."></textarea>
+        </label>
+        <label>Other requirements
+          <select name="Other-Requirements[]" multiple size="5">
+            <option>Staff</option>
+            <option>Equipment</option>
+            <option>Ice</option>
+            <option>Chefs</option>
+            <option>Drinks</option>
+          </select>
+          <span class="field-note">Hold Ctrl (or Cmd on Mac) to select more than one</span>
+        </label>
+        <label>Delivery address
+          <input type="text" name="Delivery" placeholder="Enter a location">
+        </label>
+        <label>Postal code
+          <input type="text" name="Delivery_postcode">
+        </label>
+        <label>Please name your event
+          <input type="text" name="nature-of-event">
+        </label>
+        <label>How did you hear about us?
+          <select name="hear-about-us">
+            <option>Please select</option>
+            <option>Search Engine</option>
+            <option>Instagram</option>
+            <option>LinkedIn</option>
+            <option>Recommendation</option>
             <option>Other</option>
           </select>
         </label>
-        <div style="display:flex; gap:12px;">
-          <label style="flex:1; font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-            Event date
-            <input type="date" name="event_date" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
-          </label>
-          <label style="flex:1; font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-            Number of guests
-            <input type="number" name="guests" min="1" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);">
-          </label>
-        </div>
-        <label style="font-family:var(--font-display); font-weight:700; color:var(--color-chocolate);">
-          Tell us about your booking
-          <textarea name="message" rows="4" style="width:100%; margin-top:6px; padding:12px 14px; border-radius:12px; border:2px solid var(--color-chocolate); font-family:var(--font-body);"></textarea>
+        <label>Event type
+          <select name="event-type">
+            <option>Please select</option>
+            <option>Corporate Event</option>
+            <option>Office Catering</option>
+            <option>Shoot Catering</option>
+            <option>Private Party</option>
+            <option>Wedding</option>
+            <option>PR or Brand Launch</option>
+            <option>Other</option>
+          </select>
         </label>
-        <button type="submit" class="btn btn-solid" style="align-self:flex-start;">Send enquiry</button>
-        <p class="placeholder-tag">This form isn't wired up to send anywhere yet &mdash; needs a form handler before launch. Fields mirror the live site's booking form (name, event type, date, guests) for parity.</p>
+        <button type="submit" class="btn btn-solid" style="align-self:flex-start;">Submit</button>
+        <p class="placeholder-tag">Fields mirror Humdingers' live booking form at humdingers.org.uk/book-now/ for parity. This copy isn't wired up to send anywhere yet &mdash; needs a form handler (e.g. the same Contact Form 7 setup, or Formspree) before launch. On the live site, submitting sends an automated acknowledgement within an hour during working hours &mdash; not an order confirmation.</p>
       </form>
     </div>
   </div>
