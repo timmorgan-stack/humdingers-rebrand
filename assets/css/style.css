@@ -97,7 +97,7 @@ p { margin: 0 0 1em; }
   color: var(--color-paper);
   border-color: var(--color-ink);
 }
-.btn-solid:hover { background: var(--color-chocolate); border-color: var(--color-chocolate); }
+.btn-solid:hover { background: var(--color-kale); border-color: var(--color-kale); }
 .btn-sm { padding: 9px 20px; font-size: 0.85rem; }
 
 /* ---------------- Header / nav ---------------- */
