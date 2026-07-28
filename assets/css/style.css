@@ -75,7 +75,7 @@ p { margin: 0 0 1em; }
 }
 .eyebrow {
   font-family: var(--font-script);
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   font-weight: 600;
   display: inline-block;
   margin-bottom: 0.5em;
@@ -573,4 +573,8 @@ footer.site-footer {
   nav.main-nav.open { transform: translateX(0); }
   .nav-toggle { display: block; }
   .header-phone { display: none; }
+  .btn-now { display: none; }
+  .site-header .wrap { padding-top: 12px; padding-bottom: 12px; }
+  .site-header + section.band { padding-top: 71px; }
+  .site-header + section.band-sm { padding-top: 31px; }
 }
