@@ -587,6 +587,8 @@ footer.site-footer {
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .team-grid { grid-template-columns: repeat(3, 1fr); }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
+  .enquiry-form .field-row { flex-direction: column; gap: 14px; }
+  .enquiry-form input[type="date"] { min-width: 0; }
   .service-grid, .venue-grid, .couples-grid { grid-template-columns: 1fr 1fr; }
   nav.main-nav {
     position: fixed;
