@@ -252,7 +252,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   padding: 32px 36px;
   max-width: 640px;
 }
-.definition .term { font-family: var(--font-logo); font-size: clamp(1.5rem, 5.5vw, 2.4rem); margin: 0.2em 0; }
+.definition .term { font-family: var(--font-logo); font-size: clamp(0.8rem, 5.2vw, 2.4rem); margin: 0.2em 0; white-space: nowrap; }
 .definition .pos { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; }
 
 /* ---------------- Sub-brand cards ---------------- */
@@ -583,6 +583,7 @@ footer.site-footer {
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
   .hero, .split { grid-template-columns: 1fr; }
+  .definition { padding: 24px 20px; }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .team-grid { grid-template-columns: repeat(3, 1fr); }
