@@ -666,6 +666,15 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   text-align: center;
 }
 .stat-row .num { font-family: var(--font-display); font-size: 3rem; font-weight: 800; }
+/* Stacked variant used beside a photo — tighter so the set fits one screen
+   without the panel needing to scroll */
+.stat-row-stacked {
+  grid-template-columns: 1fr;
+  gap: 18px;
+  text-align: left;
+}
+.stat-row-stacked .num { font-size: 2.4rem; line-height: 1.05; }
+.stat-row-stacked p { font-size: 0.95rem; opacity: 0.85; }
 
 .list-plain { list-style: none; margin: 0; padding: 0; }
 .list-plain li {
@@ -955,6 +964,10 @@ footer.site-footer {
    a definite height divides that height between its rows, squashing cards and
    cropping images. The wrapper scrolls; the grid inside keeps natural rows. */
 .fit-screen-viewport { width: 100%; }
+/* Text column beside a photo: the scroll panel takes the space, the controls
+   are pushed to the foot so they line up with the bottom of the image. */
+.fit-screen-col { display: flex; flex-direction: column; width: 100%; }
+.fit-screen-col .fit-carousel-controls { margin-top: auto; justify-content: center; }
 
 /* Chevron to the next screen: a bold bare glyph, no button chrome. It takes
    the section's own text colour, so it's always a palette colour with proper

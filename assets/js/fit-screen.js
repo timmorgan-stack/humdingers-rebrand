@@ -42,11 +42,14 @@
     body.style.height = '';
     body.style.maxHeight = '';
     body.style.overflow = '';
+    body.style.marginBottom = '';
     var viewport = section.querySelector('.fit-screen-viewport');
     if (viewport) {
       viewport.style.height = '';
       viewport.classList.remove('fit-scroll');
     }
+    var col = section.querySelector('.fit-screen-col');
+    if (col) col.style.height = '';
     var container = (viewport || body).parentElement;
     if (container) {
       Array.prototype.forEach.call(container.children, function (el) {
@@ -98,6 +101,19 @@
   // height makes it divide that height between its rows, so cards get squashed
   // and images crop. A plain wrapper takes the fixed height and scrolls, while
   // the grid inside keeps its natural row heights. Created once, then reused.
+  // When the panel sits beside a photo, the scroll viewport and its controls
+  // need to share one grid cell so the controls can sit under the text rather
+  // than centred across the whole section.
+  function ensureColumn(viewport) {
+    var parent = viewport.parentElement;
+    if (parent && parent.classList.contains('fit-screen-col')) return parent;
+    var col = document.createElement('div');
+    col.className = 'fit-screen-col';
+    parent.insertBefore(col, viewport);
+    col.appendChild(viewport);
+    return col;
+  }
+
   function ensureViewport(body) {
     var parent = body.parentElement;
     if (parent && parent.classList.contains('fit-screen-viewport')) return parent;
@@ -119,8 +135,8 @@
     return kids[0].offsetHeight; // single row
   }
 
-  function addPagingControls(section, scroller, pageHeight) {
-    var host = section.querySelector('.fit-screen-content') || scroller.parentElement;
+  function addPagingControls(section, scroller, pageHeight, hostOverride) {
+    var host = hostOverride || section.querySelector('.fit-screen-content') || scroller.parentElement;
 
     var controls = document.createElement('div');
     controls.className = 'fit-carousel-controls';
@@ -167,6 +183,18 @@
     sync();
   }
 
+  // Scales a panel down to fit. The element keeps its natural height so nothing
+  // is clipped (an earlier version pinned a shorter height with overflow:hidden,
+  // which sliced the bottom off images and squared their rounded corners); the
+  // layout space the transform frees is reclaimed with a negative margin.
+  function applyScale(body, naturalHeight, scale) {
+    body.style.transformOrigin = 'top center';
+    body.style.transform = 'scale(' + scale + ')';
+    body.style.height = '';
+    body.style.overflow = '';
+    body.style.marginBottom = '-' + (naturalHeight * (1 - scale)) + 'px';
+  }
+
   function fitSection(section, offset) {
     var content = section.querySelector('.fit-screen-content');
     var head = section.querySelector('.fit-screen-head');
@@ -176,9 +204,14 @@
     // Some sections (e.g. the founder story) sit next to a photo in a .split
     // grid — the row is as tall as its tallest cell, so the image has to
     // shrink in step with the text or it'll hold the row open.
-    var layoutParent = body.parentElement.classList.contains('fit-screen-viewport')
-      ? body.parentElement.parentElement
-      : body.parentElement;
+    // Walk out past any wrappers this script added on an earlier pass, so the
+    // photo beside the panel is still found on re-runs (otherwise the second
+    // run loses it and the controls jump back out of the text column).
+    var layoutParent = body.parentElement;
+    while (layoutParent && (layoutParent.classList.contains('fit-screen-viewport') ||
+                            layoutParent.classList.contains('fit-screen-col'))) {
+      layoutParent = layoutParent.parentElement;
+    }
     var siblingImg = Array.prototype.filter.call(layoutParent.children, function (el) {
       return el.tagName === 'IMG';
     })[0] || null;
@@ -206,15 +239,22 @@
     var uniform = section.hasAttribute('data-fit-uniform');
     if (natural <= budget + 1 && !uniform) return; // already fits
 
+    // Panels marked data-fit-noscroll must always be a single responsive
+    // screen — they scale down as far as needed rather than ever becoming a
+    // scrolling panel with arrows.
+    var noScroll = section.hasAttribute('data-fit-noscroll');
     var scale = budget / natural;
+    if (noScroll) {
+      scale = Math.max(scale, 0.55);
+      applyScale(body, bodyNatural, scale);
+      if (siblingImg) siblingImg.style.height = (imgNatural * scale) + 'px';
+      return;
+    }
     if (!uniform && scale >= SCALE_FLOOR) {
       // transform doesn't shrink the element's own layout box, so pin an
       // explicit height to match the visually-scaled size, or the section
       // would still occupy its full unscaled height in the page flow.
-      body.style.transformOrigin = 'top center';
-      body.style.transform = 'scale(' + scale + ')';
-      body.style.height = (bodyNatural * scale) + 'px';
-      body.style.overflow = 'hidden';
+      applyScale(body, bodyNatural, scale);
       if (siblingImg) siblingImg.style.height = (imgNatural * scale) + 'px';
       return;
     }
@@ -246,12 +286,20 @@
     }
 
     var viewport = ensureViewport(body);
+    var controlsHost = null;
+    if (siblingImg) {
+      // Text column spans the photo exactly: text starts level with the top of
+      // the image, controls finish level with its bottom.
+      siblingImg.style.height = budget + 'px';
+      pageHeight = Math.max(160, budget - controlsAllowance);
+      var col = ensureColumn(viewport);
+      col.style.height = budget + 'px';
+      controlsHost = col;
+    }
     viewport.style.height = pageHeight + 'px';
     viewport.classList.add('fit-scroll');
-    // A photo beside the panel is matched to it so the two columns line up.
-    if (siblingImg) siblingImg.style.height = pageHeight + 'px';
     if (body.scrollHeight > pageHeight + 1) {
-      addPagingControls(section, viewport, pageHeight);
+      addPagingControls(section, viewport, pageHeight, controlsHost);
     }
   }
 
