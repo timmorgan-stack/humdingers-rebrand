@@ -20,7 +20,44 @@ document.addEventListener('DOMContentLoaded', function () {
     var top = Math.max(target.getBoundingClientRect().top + window.pageYOffset - offset, 0);
     window.scrollTo(0, top);
     if (history.replaceState) history.replaceState(null, '', '#' + id);
+    if (typeof highlightCurrent === 'function') highlightCurrent();
   }
+
+  // Underline the sub-nav item for whichever category is currently in view,
+  // whether you got there by clicking or by scrolling the page.
+  var navLinks = Array.prototype.slice.call(jumpBar.querySelectorAll('a[href^="#"]'));
+  var categories = navLinks.map(function (link) {
+    return { link: link, section: document.getElementById(link.getAttribute('href').slice(1)) };
+  }).filter(function (entry) { return entry.section; });
+
+  function highlightCurrent() {
+    if (!categories.length) return;
+    var line = header.getBoundingClientRect().height + jumpBar.getBoundingClientRect().height + 4;
+    var current = null;
+    categories.forEach(function (entry) {
+      var box = entry.section.getBoundingClientRect();
+      // The category straddling the line just under the sticky bars is the
+      // one being read; past the last one, keep the last highlighted.
+      if (box.top <= line && box.bottom > line) current = entry;
+    });
+    if (!current) {
+      var first = categories[0].section.getBoundingClientRect();
+      if (first.top > line) current = null; // above the first category
+      else current = categories[categories.length - 1];
+    }
+    categories.forEach(function (entry) {
+      entry.link.classList.toggle('current', entry === current);
+    });
+  }
+
+  // Called straight from the scroll handler rather than deferred into
+  // requestAnimationFrame — it's a handful of rect reads, and making the
+  // highlight depend on rAF firing is one more way for it to silently
+  // never happen.
+  window.addEventListener('scroll', highlightCurrent, { passive: true });
+  window.addEventListener('resize', highlightCurrent);
+  window.addEventListener('load', highlightCurrent);
+  highlightCurrent();
 
   // Any link to a menu-category section (in the sticky sub-nav, or a "Menus" link from
   // another page's header dropdown) lands at the right spot, clear of the sticky bars.

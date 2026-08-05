@@ -77,7 +77,7 @@ p { margin: 0 0 1em; }
 }
 .eyebrow {
   font-family: var(--font-script);
-  font-size: 1.9rem;
+  font-size: 2.3rem;
   font-weight: 600;
   display: inline-block;
   margin-bottom: 0.5em;
@@ -621,8 +621,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .menu-jump a { border-bottom: 2px solid transparent; }
 .menu-jump a:hover { border-bottom-color: currentColor; }
+/* Marks whichever category is currently in view — updated on scroll too */
+.menu-jump a.current { border-bottom-color: currentColor; }
 .menu-category { padding: 64px 0 56px; border-top: 3px solid var(--color-ink); scroll-margin-top: 160px; }
-.menu-category h2 { font-size: clamp(2.2rem,4vw,3.4rem); margin-top: 0.2em; }
+.menu-category h2 { font-size: clamp(1.7rem,2.6vw,2.4rem); margin-top: 0.2em; }
 .menu-category .note { font-family: var(--font-script); font-size: 1.35rem; opacity: 0.8; margin-bottom: 1em; }
 .menu-category-head {
   display: flex;
@@ -852,6 +854,12 @@ footer.site-footer {
 .newsletter-form input[type="email"]::placeholder { color: rgba(255,255,255,0.6); }
 .newsletter-form .btn-solid { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
 
+/* Same signup on a light band (the mid-page prompt) rather than the dark footer one */
+.newsletter-row-light h3 { color: var(--color-chocolate); }
+.newsletter-form-light input[type="email"] { border-color: var(--color-chocolate); color: var(--color-chocolate); }
+.newsletter-form-light input[type="email"]::placeholder { color: rgba(58,32,19,0.55); }
+.newsletter-form-light .btn-solid { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
+
 /* ---------------- Scroll reveal ---------------- */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal-visible { opacity: 1; transform: translateY(0); }
@@ -898,9 +906,11 @@ footer.site-footer {
      third column of their own. */
   .menu-category.fit-screen .fit-screen-content {
     display: grid;
-    grid-template-columns: minmax(220px, 0.8fr) 1.2fr;
+    /* Left column is exactly the photo's width, with a 20px gutter to the
+       dish list — everything else goes to the menu content. */
+    grid-template-columns: 260px minmax(0, 1fr);
     grid-template-rows: 1fr auto;
-    column-gap: 52px;
+    column-gap: 20px;
     align-items: start;
     height: 100%;
   }
@@ -938,6 +948,30 @@ footer.site-footer {
    a definite height divides that height between its rows, squashing cards and
    cropping images. The wrapper scrolls; the grid inside keeps natural rows. */
 .fit-screen-viewport { width: 100%; }
+
+/* Chevron to the next screen, pinned to the foot of the section */
+.fit-next {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: inherit;
+  opacity: 0.55;
+  transition: opacity 0.15s ease, background 0.15s ease, transform 0.15s ease;
+}
+.fit-next svg { width: 22px; height: 22px; display: block; }
+.fit-next:hover {
+  opacity: 1;
+  background: rgba(128,128,128,0.28);
+  transform: translateX(-50%) translateY(2px);
+}
+@media (max-width: 900px) { .fit-next { display: none; } }
 .fit-scroll {
   overflow-y: auto;
   scrollbar-width: none;
@@ -982,7 +1016,11 @@ footer.site-footer {
   justify-content: center;
   transition: background 0.15s ease, color 0.15s ease;
 }
-.fit-carousel-arrow:hover:not(:disabled) { background: currentColor; color: var(--color-paper); }
+/* A solid currentColor fill would make the glyph the same colour as its own
+   background and vanish — and these panels sit on eight different brand
+   colours, so there's no single safe contrast colour. A translucent grey
+   fill reads correctly on all of them and keeps the arrow visible. */
+.fit-carousel-arrow:hover:not(:disabled) { background: rgba(128,128,128,0.28); }
 .fit-carousel-arrow:disabled { opacity: 0.3; cursor: default; }
 .fit-carousel-arrow:disabled:hover { background: transparent; }
 

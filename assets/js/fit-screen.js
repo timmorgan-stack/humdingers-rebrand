@@ -55,7 +55,24 @@
     }
     var controls = section.querySelector('.fit-carousel-controls');
     if (controls) controls.remove();
+    var chevron = section.querySelector('.fit-next');
+    if (chevron) chevron.remove();
     return body;
+  }
+
+  // A chevron at the foot of each screen linking to the next one. It's a plain
+  // in-page anchor, so it goes through exactly the same handling as the sub-nav
+  // links (including the menus page's jump/reveal behaviour).
+  function addNextChevron(section) {
+    var sections = Array.prototype.slice.call(document.querySelectorAll('.fit-screen'));
+    var next = sections[sections.indexOf(section) + 1];
+    if (!next || !next.id) return;
+    var link = document.createElement('a');
+    link.className = 'fit-next';
+    link.href = '#' + next.id;
+    link.setAttribute('aria-label', 'Go to next section');
+    link.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    section.appendChild(link);
   }
 
   // The scrolling box must not be the grid itself: giving a grid a definite
@@ -162,10 +179,16 @@
     var bodyNatural = body.scrollHeight;
     var imgNatural = siblingImg ? siblingImg.getBoundingClientRect().height : 0;
     var natural = Math.max(bodyNatural, imgNatural);
-    if (natural <= budget + 1) return; // already fits
+
+    // Sections marked data-fit-uniform always get the same fixed-height panel,
+    // whether or not their content overflows it. The menu categories need this:
+    // sizing each panel to its own content made every category a different
+    // height, so the layout jumped as you moved between them.
+    var uniform = section.hasAttribute('data-fit-uniform');
+    if (natural <= budget + 1 && !uniform) return; // already fits
 
     var scale = budget / natural;
-    if (scale >= SCALE_FLOOR) {
+    if (!uniform && scale >= SCALE_FLOOR) {
       // transform doesn't shrink the element's own layout box, so pin an
       // explicit height to match the visually-scaled size, or the section
       // would still occupy its full unscaled height in the page flow.
@@ -182,31 +205,35 @@
     // and scroll with the page as normal.
     if (section.hasAttribute('data-fit-grow')) return;
 
-    // A panel sitting beside a photo can't become a scroller without breaking
-    // the two-column layout, so it just grows instead.
-    if (siblingImg) return;
-
     // Too much to shrink legibly: give a wrapper the fixed height and let it
     // scroll, with controls to page through. Content is left exactly as-is.
     var controlsAllowance = 72;
     var roomForRows = Math.max(160, budget - controlsAllowance);
-
-    // Round the visible height down to a whole number of rows so a page never
-    // cuts a card in half — the earlier version showed a sliced second row.
-    var stride = rowStride(body);
     var pageHeight = roomForRows;
-    if (stride > 0 && stride <= roomForRows) {
-      pageHeight = Math.floor(roomForRows / stride) * stride;
-      // Trailing row gap sits below the last visible row; trim it so the row
-      // meets the panel edge cleanly.
-      var gap = stride - (body.children[0] ? body.children[0].offsetHeight : stride);
-      if (gap > 0 && pageHeight - gap >= stride) pageHeight -= gap;
+
+    // Card grids round down to a whole number of rows so a page never cuts a
+    // card in half. Flowing text (the menu dish lists) doesn't: rounding to
+    // its first block's height made every category a different height, and
+    // text reads fine part-scrolled — so it just takes the full space.
+    if (getComputedStyle(body).display === 'grid') {
+      var stride = rowStride(body);
+      if (stride > 0 && stride <= roomForRows) {
+        pageHeight = Math.floor(roomForRows / stride) * stride;
+        // Trailing row gap sits below the last visible row; trim it so the row
+        // meets the panel edge cleanly.
+        var gap = stride - (body.children[0] ? body.children[0].offsetHeight : stride);
+        if (gap > 0 && pageHeight - gap >= stride) pageHeight -= gap;
+      }
     }
 
     var viewport = ensureViewport(body);
     viewport.style.height = pageHeight + 'px';
     viewport.classList.add('fit-scroll');
-    addPagingControls(section, viewport, pageHeight);
+    // A photo beside the panel is matched to it so the two columns line up.
+    if (siblingImg) siblingImg.style.height = pageHeight + 'px';
+    if (body.scrollHeight > pageHeight + 1) {
+      addPagingControls(section, viewport, pageHeight);
+    }
   }
 
   function clearSection(section) {
@@ -234,6 +261,7 @@
     }
     document.documentElement.style.scrollSnapType = sections.length ? 'y proximity' : '';
     sections.forEach(function (section) { fitSection(section, offset); });
+    sections.forEach(addNextChevron);
   }
 
   var resizeTimer;
