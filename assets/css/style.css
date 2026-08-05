@@ -847,8 +847,8 @@ footer.site-footer {
 
 /* Smaller, quicker reveal for menu-category headings — replays every time a heading
    enters view, whether by normal scrolling or an instant jump-nav click */
-.menu-head-reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
-.menu-head-reveal.menu-head-visible { opacity: 1; transform: translateY(0); }
+.menu-head-reveal { opacity: 0; transition: opacity 0.5s ease; }
+.menu-head-reveal.menu-head-visible { opacity: 1; }
 
 /* ---------------- Fit-to-viewport sub-nav panels ---------------- */
 /* Every section a header-dropdown sub-nav link jumps to becomes its own "screen":
@@ -911,6 +911,10 @@ footer.site-footer {
   width: 100%;
   overflow: hidden;
   scroll-behavior: auto;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fit-carousel-track { transition: none; }
 }
 .fit-carousel-slide {
   flex: 0 0 100%;

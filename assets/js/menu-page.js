@@ -10,36 +10,15 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('resize', setStickyOffsets);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStickyOffsets);
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // A fast, fixed-duration jump that eases out right at the end — quicker
-  // than the browser's native smooth-scroll (which crawls on a page this
-  // long) but not a jarring instant teleport either.
-  function animatedScrollTo(top, duration) {
-    var startY = window.pageYOffset;
-    var delta = top - startY;
-    if (!delta) return;
-    var startTime = null;
-    function step(timestamp) {
-      if (startTime === null) startTime = timestamp;
-      var t = Math.min((timestamp - startTime) / duration, 1);
-      var eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
-      window.scrollTo(0, startY + delta * eased);
-      if (t < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-
+  // Position changes instantly — no scroll animation at all — so the only
+  // motion on this page is the content fading in. Anything else reads as
+  // "layout shifting" against the fixed head/controls positions.
   function jumpTo(id) {
     var target = document.getElementById(id);
     if (!target) return;
     var offset = header.getBoundingClientRect().height + jumpBar.getBoundingClientRect().height + 24;
     var top = Math.max(target.getBoundingClientRect().top + window.pageYOffset - offset, 0);
-    if (reduceMotion) {
-      window.scrollTo(0, top);
-    } else {
-      animatedScrollTo(top, 450);
-    }
+    window.scrollTo(0, top);
     if (history.replaceState) history.replaceState(null, '', '#' + id);
   }
 

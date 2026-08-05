@@ -258,7 +258,16 @@
     buildCarousel(body, pages, gridClass, budget);
   }
 
+  // Multiple things can trigger a re-run (window load, fonts finishing,
+  // resize) — rebuilding a carousel the user is mid-interaction with
+  // (destroying and recreating its DOM) is jarring and can flash empty,
+  // so skip it entirely unless the viewport actually changed size.
+  var lastRunSize = null;
   function run() {
+    var size = window.innerWidth + 'x' + window.innerHeight;
+    if (size === lastRunSize) return;
+    lastRunSize = size;
+
     var offset = setViewportOffset();
     var sections = document.querySelectorAll('.fit-screen');
     if (!isDesktop()) {
