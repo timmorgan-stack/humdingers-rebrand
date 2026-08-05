@@ -970,7 +970,7 @@ footer.site-footer {
     background-size: 70% 1px, 70% 1px;
     background-position: center top, center bottom;
     /* Breathing room so the dish list doesn't butt up against the keylines */
-    padding-block: 5px;
+    padding-block: 20px;
   }
 }
 .fit-screen-head { margin-bottom: 28px; }
