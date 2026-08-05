@@ -894,37 +894,29 @@ footer.site-footer {
     flex-direction: column;
     justify-content: center;
   }
-  .menu-category.fit-screen .fit-carousel {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  .menu-category.fit-screen .fit-carousel-track { flex: 1; min-height: 0; }
   .menu-category.fit-screen .fit-carousel-controls { flex-shrink: 0; }
 }
 .fit-screen-head { margin-bottom: 28px; }
 
-.fit-carousel { position: relative; width: 100%; }
-.fit-carousel-track {
-  display: flex;
-  width: 100%;
-  overflow: hidden;
-  scroll-behavior: auto;
-  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+/* Overflowing panels become a fixed-height scroll area — the content inside
+   is never restructured, only scrolled, so nothing can be clipped or lost.
+   Scrollbar is hidden because the arrows/dots are the affordance. */
+.fit-scroll {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overscroll-behavior: contain;
 }
-@media (prefers-reduced-motion: reduce) {
-  .fit-carousel-track { transition: none; }
+.fit-scroll::-webkit-scrollbar { width: 0; height: 0; }
+/* A centring flex container clips its own overflow at the top once content is
+   taller than the box, so scrolling panels start at the top and take their
+   height from JS rather than flex-grow. The panel's own display type (grid,
+   flex, block) is deliberately left alone — overriding it would destroy the
+   card layouts these panels exist to show. */
+.menu-category.fit-screen .fit-screen-body.fit-scroll {
+  flex: none;
+  justify-content: flex-start;
 }
-.fit-carousel-slide {
-  flex: 0 0 100%;
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.fit-carousel-slide > * { width: 100%; }
 .fit-carousel-controls {
   display: flex;
   align-items: center;
