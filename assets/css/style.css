@@ -1009,6 +1009,8 @@ footer.site-footer {
 @media (max-width: 900px) { .fit-next { display: none; } }
 /* The opening hero carries the same chevron into the first panel */
 .has-hero-chevron { position: relative; padding-bottom: 92px; }
+/* The last panel's chevron targets the footer, so clear the sticky header */
+.site-footer { scroll-margin-top: var(--viewport-fit-offset, 81px); }
 
 /* An explicit palette colour per background — never black, and never the
    colour it's sitting on. (Inheriting the section's text colour would have

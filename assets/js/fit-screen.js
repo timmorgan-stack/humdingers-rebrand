@@ -80,8 +80,15 @@
   function addNextChevron(section) {
     var sections = Array.prototype.slice.call(document.querySelectorAll('.fit-screen'));
     var next = sections[sections.indexOf(section) + 1];
-    if (!next || !next.id) return;
-    section.appendChild(makeChevron(next.id));
+    if (next && next.id) {
+      section.appendChild(makeChevron(next.id));
+      return;
+    }
+    // Last panel on the page points at the footer, so the chain never dead-ends.
+    var footer = document.querySelector('footer.site-footer');
+    if (!footer) return;
+    if (!footer.id) footer.id = 'site-footer';
+    section.appendChild(makeChevron(footer.id));
   }
 
   // The same chevron on the page's opening hero, pointing into the first
