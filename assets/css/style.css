@@ -142,6 +142,46 @@ nav.main-nav a {
   font-size: 0.95rem;
 }
 nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px; }
+
+/* ---------------- Nav dropdown ---------------- */
+.nav-item { position: relative; }
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: var(--color-paper);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  border-radius: var(--radius-md);
+  padding: 10px;
+  margin-top: 14px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 60;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+.nav-dropdown a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 9px 10px;
+  border-radius: 8px;
+  white-space: nowrap;
+}
+.nav-dropdown a:hover { background: var(--color-custard); }
+.nav-item:hover .nav-dropdown,
+.nav-item:focus-within .nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
 .nav-toggle {
   display: none;
   background: none;
@@ -690,9 +730,52 @@ footer.site-footer {
 .cookie-actions #cookie-accept { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
 .cookie-actions #cookie-decline { background: transparent; color: var(--color-paper); border-color: var(--color-paper); }
 
+/* ---------------- Closing CTA + newsletter ---------------- */
+.closing-cta {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+.closing-cta h2 { color: var(--color-custard); }
+.closing-cta .btn-solid {
+  background: var(--color-custard);
+  color: var(--color-chocolate);
+  border-color: var(--color-custard);
+  font-size: 1.1rem;
+  padding: 18px 34px;
+}
+.closing-cta .btn-solid:hover { background: var(--color-kale); color: var(--color-paper); border-color: var(--color-kale); }
+.newsletter-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.newsletter-row h3 { color: var(--color-paper); }
+.newsletter-form { display: flex; gap: 10px; flex-wrap: wrap; }
+.newsletter-form input[type="email"] {
+  padding: 14px 18px;
+  border-radius: 999px;
+  border: 2px solid var(--color-paper);
+  background: transparent;
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  min-width: 260px;
+}
+.newsletter-form input[type="email"]::placeholder { color: rgba(255,255,255,0.6); }
+.newsletter-form .btn-solid { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
+
+/* ---------------- Scroll reveal ---------------- */
+.reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal-visible { opacity: 1; transform: translateY(0); }
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
-  .hero, .split { grid-template-columns: 1fr; }
+  .hero, .split, .closing-cta { grid-template-columns: 1fr; }
+  .newsletter-form input[type="email"] { min-width: 0; flex: 1; }
   .definition { padding: 24px 20px; }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid, .press-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
@@ -706,12 +789,29 @@ footer.site-footer {
     inset: 72px 0 0 0;
     background: var(--color-paper);
     flex-direction: column;
+    align-items: stretch;
     padding: 32px 24px;
-    gap: 24px;
+    gap: 20px;
+    overflow-y: auto;
     transform: translateX(100%);
     transition: transform 0.25s ease;
   }
   nav.main-nav.open { transform: translateX(0); }
+  .nav-item { position: static; }
+  .nav-dropdown {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+    border: none;
+    box-shadow: none;
+    margin-top: 4px;
+    padding: 2px 0 4px 14px;
+    min-width: 0;
+    background: transparent;
+  }
+  .nav-dropdown a { font-size: 0.85rem; font-weight: 500; opacity: 0.7; padding: 7px 0; white-space: normal; }
   .nav-toggle { display: block; }
   .header-phone { display: none; }
   .btn-now { display: none; }

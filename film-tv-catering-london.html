@@ -16,9 +16,35 @@
   <div class="wrap">
     <a href="index.html" class="logo"><span class="logo-word">Humdingers</span></a>
     <nav class="main-nav">
-      <a href="catering-events.html">Catering &amp; Events</a>
-      <a href="community-kitchen.html">Community Kitchen</a>
-      <a href="about.html">About Us</a>
+      <div class="nav-item">
+        <a href="catering-events.html">Catering &amp; Events</a>
+        <div class="nav-dropdown">
+          <a href="catering-events.html#what-we-cater">What We Cater</a>
+          <a href="catering-events.html#more-ways">More Ways We Help</a>
+          <a href="catering-events.html#weddings">Weddings</a>
+          <a href="catering-events.html#services">Browse by Service</a>
+          <a href="catering-events.html#venues">Venues</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="community-kitchen.html">Community Kitchen</a>
+        <div class="nav-dropdown">
+          <a href="community-kitchen.html#hours">Hours &amp; Hot Meals</a>
+          <a href="community-kitchen.html#stats">Our Impact</a>
+          <a href="community-kitchen.html#story">How It Started</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="about.html">About Us</a>
+        <div class="nav-dropdown">
+          <a href="about.html#vision-mission">Vision &amp; Mission</a>
+          <a href="about.html#story">Our Story</a>
+          <a href="about.html#what-we-do">What We Do</a>
+          <a href="about.html#sustainability">Sustainability</a>
+          <a href="about.html#press">Press</a>
+          <a href="about.html#team">Meet the Team</a>
+        </div>
+      </div>
     </nav>
     <div style="display:flex; align-items:center; gap:20px;">
       <a class="header-phone" href="tel:02077296644">0207 729 6644</a>
@@ -81,6 +107,35 @@
   <div class="wrap" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px;">
     <h2 style="margin:0; font-size:clamp(1.6rem,3vw,2.2rem);">Let's talk about your event.</h2>
     <a class="btn btn-solid" href="contact.html">Enquire now</a>
+  </div>
+</section>
+
+
+<section class="band bg-chocolate">
+  <div class="wrap closing-cta">
+    <div>
+      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem); margin-bottom:0.3em;">Ready when you are.</h2>
+      <p style="opacity:0.85; margin-bottom:0;">Get a full quote in under an hour during working hours &mdash; or just say hello.</p>
+    </div>
+    <div>
+      <a class="btn btn-solid" href="contact.html">Enquire now &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="band-sm bg-ink">
+  <div class="wrap">
+    <div class="newsletter-row">
+      <div>
+        <span class="eyebrow" style="color:var(--color-custard);">Stay in the loop</span>
+        <h3 style="margin:0; font-size:1.4rem;">Seasonal menus, event ideas and Community Kitchen updates.</h3>
+      </div>
+      <form onsubmit="return false;" class="newsletter-form">
+        <input type="email" placeholder="Your email address" required>
+        <button type="submit" class="btn btn-solid">Subscribe</button>
+      </form>
+    </div>
+    <p class="placeholder-tag" style="margin-top:12px;">This signup isn't wired up to an email platform yet &mdash; needs Mailchimp/Klaviyo (or similar) connected before launch.</p>
   </div>
 </section>
 
@@ -149,5 +204,6 @@
 </div>
 <script src="assets/js/cookie-consent.js"></script>
 <script src="assets/js/nav.js"></script>
+<script src="assets/js/scroll-reveal.js"></script>
 </body>
 </html>
