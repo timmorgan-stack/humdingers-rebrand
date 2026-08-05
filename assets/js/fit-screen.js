@@ -42,9 +42,14 @@
     body.style.height = '';
     body.style.maxHeight = '';
     body.style.overflow = '';
-    body.classList.remove('fit-scroll');
-    if (body.parentElement) {
-      Array.prototype.forEach.call(body.parentElement.children, function (el) {
+    var viewport = section.querySelector('.fit-screen-viewport');
+    if (viewport) {
+      viewport.style.height = '';
+      viewport.classList.remove('fit-scroll');
+    }
+    var container = (viewport || body).parentElement;
+    if (container) {
+      Array.prototype.forEach.call(container.children, function (el) {
         if (el.tagName === 'IMG') el.style.height = '';
       });
     }
@@ -53,8 +58,33 @@
     return body;
   }
 
-  function addPagingControls(section, body, pageHeight) {
-    var host = section.querySelector('.fit-screen-content') || body.parentElement;
+  // The scrolling box must not be the grid itself: giving a grid a definite
+  // height makes it divide that height between its rows, so cards get squashed
+  // and images crop. A plain wrapper takes the fixed height and scrolls, while
+  // the grid inside keeps its natural row heights. Created once, then reused.
+  function ensureViewport(body) {
+    var parent = body.parentElement;
+    if (parent && parent.classList.contains('fit-screen-viewport')) return parent;
+    var viewport = document.createElement('div');
+    viewport.className = 'fit-screen-viewport';
+    parent.insertBefore(viewport, body);
+    viewport.appendChild(body);
+    return viewport;
+  }
+
+  // Page by whole rows so a page never ends mid-card.
+  function rowStride(body) {
+    var kids = body.children;
+    if (!kids.length) return 0;
+    var firstTop = kids[0].offsetTop;
+    for (var i = 1; i < kids.length; i++) {
+      if (kids[i].offsetTop > firstTop + 2) return kids[i].offsetTop - firstTop;
+    }
+    return kids[0].offsetHeight; // single row
+  }
+
+  function addPagingControls(section, scroller, pageHeight) {
+    var host = section.querySelector('.fit-screen-content') || scroller.parentElement;
 
     var controls = document.createElement('div');
     controls.className = 'fit-carousel-controls';
@@ -76,16 +106,16 @@
     host.appendChild(controls);
 
     function sync() {
-      var maxScroll = body.scrollHeight - body.clientHeight;
-      up.disabled = body.scrollTop <= 1;
-      down.disabled = body.scrollTop >= maxScroll - 1;
+      var maxScroll = scroller.scrollHeight - scroller.clientHeight;
+      up.disabled = scroller.scrollTop <= 1;
+      down.disabled = scroller.scrollTop >= maxScroll - 1;
     }
     // Move exactly one panel-height per click; scroll-snap then settles it
     // onto the nearest row boundary so a page never stops mid-row.
     function step(direction) {
-      var maxScroll = body.scrollHeight - body.clientHeight;
-      var target = Math.min(Math.max(0, body.scrollTop + direction * pageHeight), maxScroll);
-      body.scrollTo({
+      var maxScroll = scroller.scrollHeight - scroller.clientHeight;
+      var target = Math.min(Math.max(0, scroller.scrollTop + direction * pageHeight), maxScroll);
+      scroller.scrollTo({
         top: target,
         behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
       });
@@ -97,7 +127,7 @@
 
     up.addEventListener('click', function () { step(-1); });
     down.addEventListener('click', function () { step(1); });
-    body.addEventListener('scroll', sync, { passive: true });
+    scroller.addEventListener('scroll', sync, { passive: true });
     sync();
   }
 
@@ -110,15 +140,22 @@
     // Some sections (e.g. the founder story) sit next to a photo in a .split
     // grid — the row is as tall as its tallest cell, so the image has to
     // shrink in step with the text or it'll hold the row open.
-    var siblingImg = Array.prototype.filter.call(body.parentElement.children, function (el) {
-      return el !== body && el.tagName === 'IMG';
+    var layoutParent = body.parentElement.classList.contains('fit-screen-viewport')
+      ? body.parentElement.parentElement
+      : body.parentElement;
+    var siblingImg = Array.prototype.filter.call(layoutParent.children, function (el) {
+      return el.tagName === 'IMG';
     })[0] || null;
 
     var styles = getComputedStyle(section);
     var padding = parseFloat(styles.paddingTop) + parseFloat(styles.paddingBottom);
     var available = window.innerHeight - offset - padding;
-    var headHeight = head ? head.getBoundingClientRect().height : 0;
-    var headGap = head ? parseFloat(getComputedStyle(head).marginBottom) : 0;
+    // Only reserve room for the head when it actually sits above the content.
+    // In the menus' two-column layout it sits alongside, so the panel gets the
+    // full height.
+    var headAbove = head && body.getBoundingClientRect().top >= head.getBoundingClientRect().bottom - 2;
+    var headHeight = headAbove ? head.getBoundingClientRect().height : 0;
+    var headGap = headAbove ? parseFloat(getComputedStyle(head).marginBottom) : 0;
     var budget = available - headHeight - headGap;
     if (budget < 160) return; // too little room to do anything sensible
 
@@ -145,14 +182,31 @@
     // and scroll with the page as normal.
     if (section.hasAttribute('data-fit-grow')) return;
 
-    // Too much to shrink legibly: fix the panel's height and let it scroll,
-    // with controls to page through. Content itself is left exactly as-is.
+    // A panel sitting beside a photo can't become a scroller without breaking
+    // the two-column layout, so it just grows instead.
+    if (siblingImg) return;
+
+    // Too much to shrink legibly: give a wrapper the fixed height and let it
+    // scroll, with controls to page through. Content is left exactly as-is.
     var controlsAllowance = 72;
-    var pageHeight = Math.max(160, budget - controlsAllowance);
-    body.style.height = pageHeight + 'px';
-    body.classList.add('fit-scroll');
-    if (siblingImg) siblingImg.style.height = pageHeight + 'px';
-    addPagingControls(section, body, pageHeight);
+    var roomForRows = Math.max(160, budget - controlsAllowance);
+
+    // Round the visible height down to a whole number of rows so a page never
+    // cuts a card in half — the earlier version showed a sliced second row.
+    var stride = rowStride(body);
+    var pageHeight = roomForRows;
+    if (stride > 0 && stride <= roomForRows) {
+      pageHeight = Math.floor(roomForRows / stride) * stride;
+      // Trailing row gap sits below the last visible row; trim it so the row
+      // meets the panel edge cleanly.
+      var gap = stride - (body.children[0] ? body.children[0].offsetHeight : stride);
+      if (gap > 0 && pageHeight - gap >= stride) pageHeight -= gap;
+    }
+
+    var viewport = ensureViewport(body);
+    viewport.style.height = pageHeight + 'px';
+    viewport.classList.add('fit-scroll');
+    addPagingControls(section, viewport, pageHeight);
   }
 
   function clearSection(section) {
