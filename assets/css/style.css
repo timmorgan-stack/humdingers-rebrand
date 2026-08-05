@@ -947,12 +947,23 @@ footer.site-footer {
     aspect-ratio: 1 / 1;
   }
   .menu-category.fit-screen .fit-screen-viewport,
-  .menu-category.fit-screen .fit-screen-body { grid-column: 2; grid-row: 1; }
+  .menu-category.fit-screen .fit-screen-body {
+    grid-column: 2;
+    grid-row: 1;
+    margin-left: 30px;
+    /* Overrides the base width:100%, which combined with the margin pushed
+       the panel 30px past the right edge of its column */
+    width: auto;
+  }
   .menu-category.fit-screen .fit-carousel-controls {
     grid-column: 2;
     grid-row: 2;
     justify-content: center;
     margin-top: 16px;
+    /* Padding rather than margin: the controls stay the full width of the
+       column, so centring inside their content box lands them exactly under
+       the dish list, which is itself inset by the same 30px. */
+    padding-left: 30px;
   }
   /* Hairline top and bottom of the dish list, ~70% width, barely off the
      background colour — just enough to show the list is a scrolling window.
