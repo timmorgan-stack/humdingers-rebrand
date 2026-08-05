@@ -38,33 +38,63 @@
     return rows;
   }
 
-  function paginateRows(rows, budget, gap) {
-    var pages = [];
-    var current = [];
-    var currentHeight = 0;
-    rows.forEach(function (row) {
-      var rowHeight = Math.max.apply(null, row.items.map(function (i) { return i.offsetHeight; }));
-      var addedHeight = current.length ? rowHeight + gap : rowHeight;
-      if (current.length && currentHeight + addedHeight > budget) {
-        pages.push(current);
-        current = [];
-        currentHeight = 0;
-        addedHeight = rowHeight;
-      }
-      current.push(row);
-      currentHeight += addedHeight;
-    });
-    if (current.length) pages.push(current);
-    return pages;
+  function rowHeight(row) {
+    return Math.max.apply(null, row.items.map(function (i) { return i.offsetHeight; }));
   }
 
-  function buildCarousel(body, pages, gridClass) {
+  // Splits rows into pages aimed at an even share of the total content each
+  // (not just "pack until it overflows, dump the remainder on the last
+  // page") so no slide ends up sparse next to full ones. If a page still
+  // can't fit its rows into budget even split evenly (one huge row), it
+  // tries more pages until every page fits — falling back to one row per
+  // page in the worst case.
+  function paginateRows(rows, budget, gap) {
+    var heights = rows.map(rowHeight);
+    var total = heights.reduce(function (sum, h, i) { return sum + h + (i > 0 ? gap : 0); }, 0);
+    var maxPages = rows.length;
+
+    for (var numPages = Math.max(1, Math.ceil(total / budget)); numPages <= maxPages; numPages++) {
+      var target = total / numPages;
+      var pages = [];
+      var current = [];
+      var currentHeight = 0;
+
+      for (var i = 0; i < rows.length; i++) {
+        var added = current.length ? heights[i] + gap : heights[i];
+        var remainingRows = rows.length - i;
+        var remainingPages = numPages - pages.length;
+        var mustStartNewPage = current.length && (
+          currentHeight + added > budget ||
+          (currentHeight + added > target && remainingRows > remainingPages)
+        );
+        if (mustStartNewPage) {
+          pages.push(current);
+          current = [];
+          currentHeight = 0;
+          added = heights[i];
+        }
+        current.push(rows[i]);
+        currentHeight += added;
+      }
+      if (current.length) pages.push(current);
+
+      var fits = pages.every(function (page) {
+        var h = page.reduce(function (sum, row, idx) { return sum + rowHeight(row) + (idx > 0 ? gap : 0); }, 0);
+        return h <= budget + 1 || page.length === 1;
+      });
+      if (fits || numPages === maxPages) return pages;
+    }
+    return [rows]; // unreachable, satisfies linters
+  }
+
+  function buildCarousel(body, pages, gridClass, budget) {
     var wrap = document.createElement('div');
     wrap.className = 'fit-carousel';
 
     var track = document.createElement('div');
     track.className = 'fit-carousel-track';
 
+    var grids = [];
     pages.forEach(function (page) {
       var slide = document.createElement('div');
       slide.className = 'fit-carousel-slide';
@@ -75,9 +105,29 @@
       });
       slide.appendChild(grid);
       track.appendChild(slide);
+      grids.push(grid);
     });
 
     wrap.appendChild(track);
+    body.appendChild(wrap); // attached so the grids below can be measured
+
+    // Balanced pagination keeps every panel a reasonably even share of the
+    // total already — this only needs to catch the rare page that still
+    // overflows the budget (one row too big to split further) and shrink
+    // it to fit. Never scales up: width is hard-capped by the section, so
+    // there's no slack to grow into without clipping the sides.
+    grids.forEach(function (grid) {
+      var naturalH = grid.scrollHeight;
+      if (!naturalH || naturalH <= budget) return;
+      var naturalW = grid.getBoundingClientRect().width;
+      var scale = Math.max(0.55, budget / naturalH);
+      grid.style.transform = 'scale(' + scale + ')';
+      grid.style.transformOrigin = 'top center';
+      grid.style.width = naturalW + 'px';
+      grid.style.height = (naturalH * scale) + 'px';
+      grid.style.alignSelf = 'center';
+      grid.style.overflow = 'hidden';
+    });
 
     if (pages.length > 1) {
       var controls = document.createElement('div');
@@ -127,9 +177,6 @@
       });
       render();
     }
-
-    body.innerHTML = '';
-    body.appendChild(wrap);
   }
 
   function fitSection(section, offset) {
@@ -156,6 +203,10 @@
     if (body.dataset.fitOriginal) {
       body.innerHTML = body.dataset.fitOriginal;
       delete body.dataset.fitOriginal;
+    }
+    if (body.dataset.fitOriginalClass) {
+      body.className = body.dataset.fitOriginalClass;
+      delete body.dataset.fitOriginalClass;
     }
 
     var styles = getComputedStyle(section);
@@ -198,7 +249,13 @@
     var rowGap = rows.length > 1 ? (rows[1].top - rows[0].top - rows[0].items[0].offsetHeight) : 0;
     var pages = paginateRows(rows, budget, Math.max(rowGap, 0));
     if (pages.length < 2) { delete body.dataset.fitOriginal; return; }
-    buildCarousel(body, pages, gridClass);
+    // Body itself must stop being a grid/flex container once it hosts the
+    // carousel wrapper — otherwise it sizes that single child as a grid track
+    // (min-width:auto keeps it at content's natural, uncapped width) and the
+    // whole carousel blows out past the section's actual width.
+    body.dataset.fitOriginalClass = body.className;
+    body.className = 'fit-screen-body';
+    buildCarousel(body, pages, gridClass, budget);
   }
 
   function run() {
@@ -219,6 +276,10 @@
         if (body.dataset.fitOriginal) {
           body.innerHTML = body.dataset.fitOriginal;
           delete body.dataset.fitOriginal;
+        }
+        if (body.dataset.fitOriginalClass) {
+          body.className = body.dataset.fitOriginalClass;
+          delete body.dataset.fitOriginalClass;
         }
       });
       document.documentElement.style.scrollSnapType = '';

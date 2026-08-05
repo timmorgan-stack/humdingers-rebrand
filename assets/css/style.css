@@ -53,7 +53,8 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; display: block; transition: opacity 0.4s ease; }
+img.img-loading { opacity: 0; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 {
   font-family: var(--font-display);
@@ -75,7 +76,7 @@ p { margin: 0 0 1em; }
 }
 .eyebrow {
   font-family: var(--font-script);
-  font-size: 1.5rem;
+  font-size: 1.65rem;
   font-weight: 600;
   display: inline-block;
   margin-bottom: 0.5em;
@@ -469,16 +470,39 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .service-link-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0 32px;
+  gap: 14px 20px;
 }
 .service-link-grid a {
-  display: block;
-  padding: 16px 0;
-  border-top: 2px solid rgba(255,255,255,0.25);
-  font-family: var(--font-display);
-  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px;
+  border-radius: var(--radius-md);
+  transition: background 0.15s ease;
 }
-.service-link-grid a:hover { text-decoration: underline; }
+.service-link-grid a:hover { background: rgba(255,255,255,0.1); }
+.service-link-grid span {
+  font-family: var(--font-logo);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+.service-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.service-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* stylised duotone, echoing the flat, bold-colour brand illustrations
+     rather than a straight photo */
+  filter: grayscale(1) contrast(1.3) brightness(1.15);
+  mix-blend-mode: multiply;
+}
 
 /* ---------------- Press cards ("As featured in") ---------------- */
 .press-grid {
@@ -844,22 +868,58 @@ footer.site-footer {
   }
   .fit-screen .fit-screen-content { width: 100%; }
   .fit-screen .fit-screen-body { transform-origin: top center; }
+
+  /* Menu categories specifically: every one of the 14 needs an *identical*
+     layout so nothing shifts as you click through the sub-nav — the head
+     always starts at the same spot, and carousel controls always land at
+     the same Y. That means a fixed section height (not just a minimum) with
+     the carousel viewport as the flexible middle and controls pinned after
+     it, rather than the whole block just centering as a variable-height unit. */
+  .menu-category.fit-screen {
+    height: calc(100dvh - var(--viewport-fit-offset, 81px));
+    min-height: 0;
+    align-items: stretch;
+  }
+  .menu-category.fit-screen .fit-screen-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .menu-category.fit-screen .fit-screen-head { flex-shrink: 0; }
+  .menu-category.fit-screen .fit-screen-body {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .menu-category.fit-screen .fit-carousel {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu-category.fit-screen .fit-carousel-track { flex: 1; min-height: 0; }
+  .menu-category.fit-screen .fit-carousel-controls { flex-shrink: 0; }
 }
 .fit-screen-head { margin-bottom: 28px; }
 
-.fit-carousel { position: relative; }
+.fit-carousel { position: relative; width: 100%; }
 .fit-carousel-track {
   display: flex;
+  width: 100%;
   overflow: hidden;
   scroll-behavior: auto;
 }
 .fit-carousel-slide {
   flex: 0 0 100%;
+  width: 100%;
   min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+.fit-carousel-slide > * { width: 100%; }
 .fit-carousel-controls {
   display: flex;
   align-items: center;
@@ -895,6 +955,14 @@ footer.site-footer {
   cursor: pointer;
 }
 .fit-carousel-dots button.active { background: currentColor; }
+
+/* Slightly larger body copy on spacious screens — headings/buttons/spacing
+   are untouched (they're sized individually via clamp()/rem elsewhere), and
+   the .wrap max-width still caps content at 1180px, so this doesn't push
+   anything into a different layout, just makes reading text a touch bigger. */
+@media (min-width: 1600px) {
+  body { font-size: 1.0625rem; }
+}
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
