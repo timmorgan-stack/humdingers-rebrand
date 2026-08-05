@@ -885,6 +885,13 @@ footer.site-footer {
     align-items: center;
     scroll-snap-align: start;
     overflow: hidden;
+    /* Anchors the absolutely-positioned next-section chevron to this section
+       rather than to the page. */
+    position: relative;
+    /* Reserves the strip the next-section chevron sits in. Content is laid out
+       inside the padding box, so it can never reach the chevron, and the JS
+       reads this padding when sizing panels — the two stay in step. */
+    padding-bottom: 92px;
   }
   .fit-screen .fit-screen-content { width: 100%; }
   .fit-screen .fit-screen-body { transform-origin: top center; }
@@ -949,29 +956,42 @@ footer.site-footer {
    cropping images. The wrapper scrolls; the grid inside keeps natural rows. */
 .fit-screen-viewport { width: 100%; }
 
-/* Chevron to the next screen, pinned to the foot of the section */
+/* Chevron to the next screen: a bold bare glyph, no button chrome. It takes
+   the section's own text colour, so it's always a palette colour with proper
+   contrast whichever of the eight brand backgrounds it sits on. Every section
+   reserves a strip at its foot for this (see .fit-screen padding-bottom), so
+   it lands in the same spot every time and never collides with content. */
 .fit-next {
   position: absolute;
   left: 50%;
-  bottom: 16px;
+  bottom: 26px;
   transform: translateX(-50%);
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 34px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  color: inherit;
-  opacity: 0.55;
-  transition: opacity 0.15s ease, background 0.15s ease, transform 0.15s ease;
+  color: var(--color-tomato);
+  opacity: 0.9;
+  transition: opacity 0.15s ease, transform 0.2s ease;
 }
-.fit-next svg { width: 22px; height: 22px; display: block; }
-.fit-next:hover {
-  opacity: 1;
-  background: rgba(128,128,128,0.28);
-  transform: translateX(-50%) translateY(2px);
-}
+.fit-next svg { width: 100%; height: 100%; display: block; }
+.fit-next:hover { opacity: 1; transform: translateX(-50%) translateY(3px); }
 @media (max-width: 900px) { .fit-next { display: none; } }
+
+/* An explicit palette colour per background — never black, and never the
+   colour it's sitting on. (Inheriting the section's text colour would have
+   made it black on the white sections.) */
+.bg-paper .fit-next,
+.bg-custard .fit-next        { color: var(--color-tomato); }
+.bg-fish .fit-next           { color: var(--color-blueberry); }
+.bg-strawberry .fit-next     { color: var(--color-chocolate); }
+.bg-kale .fit-next,
+.bg-olive .fit-next,
+.bg-tomato .fit-next,
+.bg-chocolate .fit-next,
+.bg-blueberry-white .fit-next,
+.bg-ink .fit-next            { color: var(--color-custard); }
 .fit-scroll {
   overflow-y: auto;
   scrollbar-width: none;

@@ -71,7 +71,7 @@
     link.className = 'fit-next';
     link.href = '#' + next.id;
     link.setAttribute('aria-label', 'Go to next section');
-    link.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 9l7 7 7-7" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    link.innerHTML = '<svg viewBox="0 0 32 20" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><path d="M3 4l13 12L29 4" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
     section.appendChild(link);
   }
 
