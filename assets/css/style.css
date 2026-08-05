@@ -481,8 +481,8 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   transition: background 0.15s ease;
 }
 .service-link-grid a:hover { background: rgba(255,255,255,0.1); }
-.service-link-grid span {
-  font-family: var(--font-logo);
+.service-link-grid a > span:last-child {
+  font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.02rem;
   line-height: 1.2;
