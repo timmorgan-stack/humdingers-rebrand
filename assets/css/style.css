@@ -951,8 +951,24 @@ footer.site-footer {
   .menu-category.fit-screen .fit-carousel-controls {
     grid-column: 2;
     grid-row: 2;
-    justify-content: flex-start;
+    justify-content: center;
     margin-top: 16px;
+  }
+  /* Hairline top and bottom of the dish list, ~70% width, barely off the
+     background colour — just enough to show the list is a scrolling window.
+     Painted as background layers rather than borders so they stay pinned to
+     the panel edges while the content scrolls underneath, and sized off
+     currentColor so they work on all eight brand backgrounds. */
+  .menu-category.fit-screen .fit-screen-viewport {
+    background-image:
+      linear-gradient(rgba(128,128,128,0.3), rgba(128,128,128,0.3)),
+      linear-gradient(rgba(128,128,128,0.3), rgba(128,128,128,0.3));
+    background-image:
+      linear-gradient(color-mix(in srgb, currentColor 30%, transparent), color-mix(in srgb, currentColor 30%, transparent)),
+      linear-gradient(color-mix(in srgb, currentColor 30%, transparent), color-mix(in srgb, currentColor 30%, transparent));
+    background-repeat: no-repeat, no-repeat;
+    background-size: 70% 1px, 70% 1px;
+    background-position: center top, center bottom;
   }
 }
 .fit-screen-head { margin-bottom: 28px; }
