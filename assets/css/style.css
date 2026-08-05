@@ -376,6 +376,36 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   font-size: 0.95rem;
 }
 .venue-card.no-link { opacity: 0.7; }
+.venue-card .sub { display: block; font-weight: 400; font-size: 0.78rem; opacity: 0.85; margin-top: 2px; }
+.venue-card-plain {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  border-radius: var(--radius-md);
+  aspect-ratio: 4/3;
+  padding: 14px;
+  color: var(--color-paper);
+}
+.venue-card-plain span { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; }
+.venue-card-plain .sub { display: block; font-weight: 400; font-size: 0.78rem; opacity: 0.85; margin-top: 2px; }
+
+/* ---------------- Two-path chooser (homepage) ---------------- */
+.path-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+}
+.path-card {
+  display: block;
+  border-radius: var(--radius-lg);
+  padding: 40px 36px;
+  transition: transform 0.15s ease;
+}
+.path-card:hover { transform: translateY(-3px); }
+.path-card h3 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 0.3em; }
+.path-card p { font-size: 1.05rem; margin-bottom: 1.2em; }
+.path-card .path-cta { font-family: var(--font-display); font-weight: 700; text-decoration: underline; }
 
 /* ---------------- Wedding case studies ---------------- */
 .couples-grid {
@@ -580,11 +610,37 @@ footer.site-footer {
 }
 .social-row { display: flex; gap: 16px; }
 
+/* ---------------- Cookie consent banner ---------------- */
+.cookie-banner {
+  display: none;
+  position: fixed;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  z-index: 100;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+.cookie-banner p { margin: 0; font-size: 0.9rem; max-width: 60ch; }
+.cookie-banner a { text-decoration: underline; color: var(--color-custard); }
+.cookie-actions { display: flex; gap: 12px; flex-shrink: 0; }
+.cookie-actions #cookie-accept { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
+.cookie-actions #cookie-decline { background: transparent; color: var(--color-paper); border-color: var(--color-paper); }
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
   .hero, .split { grid-template-columns: 1fr; }
   .definition { padding: 24px 20px; }
-  .card-grid, .menu-columns, .testimonial-grid, .stat-row { grid-template-columns: 1fr; }
+  .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .team-grid { grid-template-columns: repeat(3, 1fr); }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
