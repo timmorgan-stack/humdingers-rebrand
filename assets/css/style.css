@@ -189,19 +189,16 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 
 /* Each dropdown echoes its section's hero colour (desktop only — mobile keeps
    the plain transparent accordion style). Nav order: Catering & Events,
-   Menus, Community Kitchen, About Us. */
+   Community Kitchen, About Us. */
 @media (min-width: 901px) {
   .main-nav > .nav-item:nth-child(1) .nav-dropdown-inner { background: var(--color-fish); color: var(--color-blueberry); border-color: var(--color-fish); }
   .main-nav > .nav-item:nth-child(1) .nav-dropdown a:hover { background: var(--color-blueberry); color: var(--color-fish); }
 
-  .main-nav > .nav-item:nth-child(2) .nav-dropdown-inner { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
-  .main-nav > .nav-item:nth-child(2) .nav-dropdown a:hover { background: var(--color-chocolate); color: var(--color-custard); }
+  .main-nav > .nav-item:nth-child(2) .nav-dropdown-inner { background: var(--color-kale); color: var(--color-paper); border-color: var(--color-kale); }
+  .main-nav > .nav-item:nth-child(2) .nav-dropdown a:hover { background: var(--color-paper); color: var(--color-kale); }
 
-  .main-nav > .nav-item:nth-child(3) .nav-dropdown-inner { background: var(--color-kale); color: var(--color-paper); border-color: var(--color-kale); }
-  .main-nav > .nav-item:nth-child(3) .nav-dropdown a:hover { background: var(--color-paper); color: var(--color-kale); }
-
-  .main-nav > .nav-item:nth-child(4) .nav-dropdown-inner { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
-  .main-nav > .nav-item:nth-child(4) .nav-dropdown a:hover { background: var(--color-custard); color: var(--color-chocolate); }
+  .main-nav > .nav-item:nth-child(3) .nav-dropdown-inner { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
+  .main-nav > .nav-item:nth-child(3) .nav-dropdown a:hover { background: var(--color-custard); color: var(--color-chocolate); }
 }
 .nav-toggle {
   display: none;
