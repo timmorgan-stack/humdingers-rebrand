@@ -260,12 +260,18 @@
 
   // Multiple things can trigger a re-run (window load, fonts finishing,
   // resize) — rebuilding a carousel the user is mid-interaction with
-  // (destroying and recreating its DOM) is jarring and can flash empty,
-  // so skip it entirely unless the viewport actually changed size.
+  // (destroying and recreating its DOM) is jarring and can flash empty, so
+  // once the page has properly settled, a re-run at the same viewport size
+  // is skipped entirely. Before that point (e.g. fonts.ready can fire before
+  // every image has finished loading and settled the grid) runs are never
+  // skipped — a premature, slightly-wrong measurement must never get "locked
+  // in" just because the authoritative window-load pass happens to see the
+  // same size.
   var lastRunSize = null;
+  var settled = false;
   function run() {
     var size = window.innerWidth + 'x' + window.innerHeight;
-    if (size === lastRunSize) return;
+    if (settled && size === lastRunSize) return;
     lastRunSize = size;
 
     var offset = setViewportOffset();
@@ -304,7 +310,22 @@
     resizeTimer = setTimeout(run, 150);
   }
 
-  window.addEventListener('load', run);
+  // "Settled" needs both: window.load (images finished — custom web fonts
+  // don't block it) and fonts.ready (swapping in a custom font can itself
+  // reflow card heights after load fires). Only once both are in do we run
+  // once more, unconditionally, as the final authoritative pass and start
+  // skipping same-size re-runs after that.
+  var loadFired = false;
+  var fontsDone = !(document.fonts && document.fonts.ready);
+  function maybeSettle() {
+    if (!loadFired || !fontsDone) return;
+    lastRunSize = null; // force this pass to run regardless of size match
+    run();
+    settled = true;
+  }
+  window.addEventListener('load', function () { loadFired = true; run(); maybeSettle(); });
   window.addEventListener('resize', onResize);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function () { fontsDone = true; run(); maybeSettle(); });
+  }
 })();
