@@ -55,64 +55,48 @@
 
   function addPagingControls(section, body, pageHeight) {
     var host = section.querySelector('.fit-screen-content') || body.parentElement;
-    var pageCount = Math.max(2, Math.ceil(body.scrollHeight / pageHeight));
 
     var controls = document.createElement('div');
     controls.className = 'fit-carousel-controls';
 
-    var prev = document.createElement('button');
-    prev.type = 'button';
-    prev.className = 'fit-carousel-arrow';
-    prev.setAttribute('aria-label', 'Previous');
-    prev.innerHTML = '&larr;';
+    var up = document.createElement('button');
+    up.type = 'button';
+    up.className = 'fit-carousel-arrow';
+    up.setAttribute('aria-label', 'Scroll up');
+    up.innerHTML = '&uarr;';
 
-    var dots = document.createElement('div');
-    dots.className = 'fit-carousel-dots';
-    var dotEls = [];
-    for (var i = 0; i < pageCount; i++) {
-      var d = document.createElement('button');
-      d.type = 'button';
-      d.setAttribute('aria-label', 'Go to page ' + (i + 1));
-      dots.appendChild(d);
-      dotEls.push(d);
-    }
+    var down = document.createElement('button');
+    down.type = 'button';
+    down.className = 'fit-carousel-arrow';
+    down.setAttribute('aria-label', 'Scroll down');
+    down.innerHTML = '&darr;';
 
-    var next = document.createElement('button');
-    next.type = 'button';
-    next.className = 'fit-carousel-arrow';
-    next.setAttribute('aria-label', 'Next');
-    next.innerHTML = '&rarr;';
-
-    controls.appendChild(prev);
-    controls.appendChild(dots);
-    controls.appendChild(next);
+    controls.appendChild(up);
+    controls.appendChild(down);
     host.appendChild(controls);
 
-    function currentPage() {
-      return Math.round(body.scrollTop / pageHeight);
-    }
     function sync() {
       var maxScroll = body.scrollHeight - body.clientHeight;
-      var page = currentPage();
-      dotEls.forEach(function (d, i) { d.classList.toggle('active', i === page); });
-      prev.disabled = body.scrollTop <= 1;
-      next.disabled = body.scrollTop >= maxScroll - 1;
+      up.disabled = body.scrollTop <= 1;
+      down.disabled = body.scrollTop >= maxScroll - 1;
     }
-    function goto(page) {
-      var target = Math.min(Math.max(0, page) * pageHeight, body.scrollHeight - body.clientHeight);
+    // Move exactly one panel-height per click; scroll-snap then settles it
+    // onto the nearest row boundary so a page never stops mid-row.
+    function step(direction) {
+      var maxScroll = body.scrollHeight - body.clientHeight;
+      var target = Math.min(Math.max(0, body.scrollTop + direction * pageHeight), maxScroll);
       body.scrollTo({
         top: target,
         behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
       });
-      // Don't rely solely on scroll events to refresh the arrows/dots —
-      // sync straight away and again once a smooth scroll has landed.
+      // Don't rely solely on scroll events to refresh the arrows — sync
+      // straight away and again once a smooth scroll has landed.
       sync();
-      setTimeout(sync, 450);
+      setTimeout(sync, 500);
     }
 
-    prev.addEventListener('click', function () { goto(currentPage() - 1); });
-    next.addEventListener('click', function () { goto(currentPage() + 1); });
-    dotEls.forEach(function (d, i) { d.addEventListener('click', function () { goto(i); }); });
+    up.addEventListener('click', function () { step(-1); });
+    down.addEventListener('click', function () { step(1); });
     body.addEventListener('scroll', sync, { passive: true });
     sync();
   }

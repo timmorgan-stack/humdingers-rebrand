@@ -906,6 +906,15 @@ footer.site-footer {
   scrollbar-width: none;
   -ms-overflow-style: none;
   overscroll-behavior: contain;
+  /* Snap each row/group to the top of the panel so paging lands cleanly
+     instead of stopping mid-row. "proximity" rather than "mandatory" so an
+     item taller than the panel can still be scrolled through freely. */
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
+}
+.fit-scroll > * { scroll-snap-align: start; }
+@media (prefers-reduced-motion: reduce) {
+  .fit-scroll { scroll-behavior: auto; scroll-snap-type: none; }
 }
 .fit-scroll::-webkit-scrollbar { width: 0; height: 0; }
 /* A centring flex container clips its own overflow at the top once content is
@@ -941,17 +950,6 @@ footer.site-footer {
 .fit-carousel-arrow:hover:not(:disabled) { background: currentColor; color: var(--color-paper); }
 .fit-carousel-arrow:disabled { opacity: 0.3; cursor: default; }
 .fit-carousel-arrow:disabled:hover { background: transparent; }
-.fit-carousel-dots { display: flex; gap: 8px; }
-.fit-carousel-dots button {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  background: transparent;
-  padding: 0;
-  cursor: pointer;
-}
-.fit-carousel-dots button.active { background: currentColor; }
 
 /* Slightly larger body copy on spacious screens — headings/buttons/spacing
    are untouched (they're sized individually via clamp()/rem elsewhere), and
