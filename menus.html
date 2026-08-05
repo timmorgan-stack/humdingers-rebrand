@@ -9,6 +9,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<style>
+  /* This page is very long, so in-page jump links land instantly (no smooth-scroll glide) —
+     the arriving section then does its own subtle fade/rise via .menu-arrive-reveal below. */
+  html { scroll-behavior: auto; }
+</style>
 </head>
 <body>
 
@@ -66,7 +71,7 @@
     <h1 style="color:var(--color-chocolate); margin-bottom:0.3em;">Menus</h1>
     <p style="color:var(--color-chocolate); max-width:60ch; font-size:1.2rem;">Fourteen menus covering everything from breakfast pastries to festive sharing platters. All items can be adjusted for dietary requirements — (VG) Vegan, (V) Vegetarian, (GF) Gluten Free.</p>
     <p class="placeholder-tag" style="color:var(--color-chocolate); opacity:0.85; margin-top:4px;">Our menus change seasonally — the dishes below are a sample of what's currently available. Prices on enquiry.</p>
-    <nav class="menu-jump" style="margin-top:24px; color:var(--color-chocolate);">
+    <nav id="menu-nav" class="menu-jump" style="margin-top:24px; color:var(--color-chocolate);">
       <a href="#breakfast">Breakfast</a>
       <a href="#sandwiches">Sandwiches</a>
       <a href="#salad-lunch">Salad Lunch</a>
@@ -129,7 +134,7 @@
     <div class="dish"><div class="name">Chocolate chip cookie (VG)</div></div>
     <div class="dish"><div class="name">White &amp; milk chocolate walnut cookie (V)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -180,7 +185,7 @@
     <div class="dish"><div class="name">Giant chocolate chip cookie (VG)</div></div>
     <div class="dish"><div class="name">Fruit salad (VG)(GF)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -212,7 +217,7 @@
     <div class="dish"><div class="name">Salted caramel chocolate brownie (GF) &middot; Raspberry &amp; dark chocolate mousse pot (VG)(GF)</div></div>
     <div class="dish"><div class="name">Giant chocolate chip cookie (VG) &middot; Fruit salad (VG)(GF)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -247,7 +252,7 @@
     <div class="dish"><div class="name">Applewood smoked cheddar &amp; pickle (V)</div></div>
     <div class="dish"><div class="name">Egg mayo, cress, dill (V)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -293,7 +298,7 @@
     <div class="dish"><div class="name">Berry drizzle cheesecake bites</div></div>
     <div class="dish"><div class="name">Red velvet cake (VG)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -330,7 +335,7 @@
     <h4>Snacks</h4>
     <div class="dish"><div class="name">Crisps &middot; Marinated olives &middot; Roast mixed nuts</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -367,7 +372,7 @@
     <div class="dish"><div class="name">Raspberry mousse dark chocolate pots (VG)(GF)</div></div>
     <div class="dish"><div class="name">Cinnamon apple crumble, cr&egrave;me fraiche</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -400,7 +405,7 @@
     <h4>Sweet</h4>
     <div class="dish"><div class="name">Black Forest cupcake &middot; Plum &amp; almond frangipane tart &middot; Basque cheesecake &middot; Salted caramel chocolate brownie (GF) &middot; Raspberry &amp; dark chocolate mousse pot (VG)(GF) &middot; Giant chocolate chip cookie (VG) &middot; Fruit salad (VG)(GF)</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -439,7 +444,7 @@
     <div class="dish"><div class="name">Seasonal fruit salad (VG)(GF)</div></div>
   </div>
   <p style="font-size:0.85rem; opacity:0.7; max-width:70ch;">All our menus can be adjusted to suit any dietary requirements and allergies — as a busy commercial kitchen we can't guarantee dishes are completely nut free. All prices exclude VAT.</p>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -475,7 +480,7 @@
     <h4>Non-alcoholic beer</h4>
     <div class="dish"><div class="name">BrewDog Punk AF IPA</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -506,7 +511,7 @@
     <div class="dish"><div class="name">Classic Negroni</div><div class="desc">Gin, Campari, vermouth rosso, orange</div></div>
   </div>
   <p style="font-size:0.85rem; opacity:0.7;">All spirits subject to availability — bespoke cocktail requests available.</p>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -552,7 +557,7 @@
     <div class="dish"><div class="name">Borsao Seleccion Rosado</div></div>
     <div class="dish"><div class="name">Domaine Roblin Sancerre Blanc 'Terres Blanches'</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -598,7 +603,7 @@
     <div class="dish"><div class="name">Raspberry &amp; dark chocolate mousse cup (VG)(GF)</div></div>
     <div class="dish"><div class="name">Mini choux bun, coffee cr&egrave;me patissi&egrave;re, caramel</div></div>
   </div>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>
@@ -637,7 +642,7 @@
     <div class="dish"><div class="name">Chocolate fudge cake, cherry compote</div></div>
   </div>
   <p style="font-size:0.9rem;">Add a festive cocktail per person! We can also provide hot and cold beverages, crockery, silverware, tablescaping and staff — prices available on request.</p>
-  <a class="back-to-top btn" href="#menu-top">&uarr; Back to menu list</a>
+  <a class="back-to-top btn" href="#menu-nav">&uarr; Back to menu list</a>
   </div>
 
 </section>

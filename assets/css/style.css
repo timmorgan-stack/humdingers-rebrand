@@ -802,6 +802,9 @@ footer.site-footer {
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal-visible { opacity: 1; transform: translateY(0); }
 
+/* Smaller, quicker reveal for menu-category headings arriving via instant jump-nav */
+.menu-head-reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
   .hero, .split, .closing-cta { grid-template-columns: 1fr; }
