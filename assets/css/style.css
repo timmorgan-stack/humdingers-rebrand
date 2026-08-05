@@ -186,6 +186,23 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   visibility: visible;
   pointer-events: auto;
 }
+
+/* Each dropdown echoes its section's hero colour (desktop only — mobile keeps
+   the plain transparent accordion style). Nav order: Catering & Events,
+   Menus, Community Kitchen, About Us. */
+@media (min-width: 901px) {
+  .main-nav > .nav-item:nth-child(1) .nav-dropdown-inner { background: var(--color-fish); color: var(--color-blueberry); border-color: var(--color-fish); }
+  .main-nav > .nav-item:nth-child(1) .nav-dropdown a:hover { background: var(--color-blueberry); color: var(--color-fish); }
+
+  .main-nav > .nav-item:nth-child(2) .nav-dropdown-inner { background: var(--color-custard); color: var(--color-chocolate); border-color: var(--color-custard); }
+  .main-nav > .nav-item:nth-child(2) .nav-dropdown a:hover { background: var(--color-chocolate); color: var(--color-custard); }
+
+  .main-nav > .nav-item:nth-child(3) .nav-dropdown-inner { background: var(--color-kale); color: var(--color-paper); border-color: var(--color-kale); }
+  .main-nav > .nav-item:nth-child(3) .nav-dropdown a:hover { background: var(--color-paper); color: var(--color-kale); }
+
+  .main-nav > .nav-item:nth-child(4) .nav-dropdown-inner { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
+  .main-nav > .nav-item:nth-child(4) .nav-dropdown a:hover { background: var(--color-custard); color: var(--color-chocolate); }
+}
 .nav-toggle {
   display: none;
   background: none;
@@ -810,6 +827,77 @@ footer.site-footer {
    enters view, whether by normal scrolling or an instant jump-nav click */
 .menu-head-reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
 .menu-head-reveal.menu-head-visible { opacity: 1; transform: translateY(0); }
+
+/* ---------------- Fit-to-viewport sub-nav panels ---------------- */
+/* Every section a header-dropdown sub-nav link jumps to becomes its own "screen":
+   at least one viewport tall, its content either scaled down (fit-screen.js measures
+   and applies a shrink transform) or, when there's too much to scale legibly, split
+   into a small carousel — see fit-screen.js. Desktop/tablet only: on narrow viewports
+   there isn't a spare screen's worth of height to spare, so these sections revert to
+   normal flowing scroll. */
+@media (min-width: 901px) {
+  .fit-screen {
+    min-height: calc(100dvh - var(--viewport-fit-offset, 81px));
+    scroll-margin-top: var(--viewport-fit-offset, 81px);
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    scroll-snap-align: start;
+    overflow: hidden;
+  }
+  .fit-screen .fit-screen-content { width: 100%; }
+  .fit-screen .fit-screen-body { transform-origin: top center; }
+}
+.fit-screen-head { margin-bottom: 28px; }
+
+.fit-carousel { position: relative; }
+.fit-carousel-track {
+  display: flex;
+  overflow: hidden;
+  scroll-behavior: auto;
+}
+.fit-carousel-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.fit-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 20px;
+}
+.fit-carousel-arrow {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: transparent;
+  color: inherit;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.fit-carousel-arrow:hover:not(:disabled) { background: currentColor; color: var(--color-paper); }
+.fit-carousel-arrow:disabled { opacity: 0.3; cursor: default; }
+.fit-carousel-arrow:disabled:hover { background: transparent; }
+.fit-carousel-dots { display: flex; gap: 8px; }
+.fit-carousel-dots button {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+.fit-carousel-dots button.active { background: currentColor; }
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
