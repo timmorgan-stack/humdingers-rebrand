@@ -552,6 +552,15 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .enquiry-form legend { font-family: var(--font-display); font-weight: 700; padding: 0 6px; }
 
 /* ---------------- Menu page (menus.html) ---------------- */
+.menu-jump-bar {
+  position: sticky;
+  top: var(--header-h, 81px);
+  z-index: 49;
+  background: var(--color-custard);
+  color: var(--color-chocolate);
+  border-bottom: 3px solid var(--color-ink);
+}
+.menu-jump-bar .wrap { padding: 14px 24px; }
 .menu-jump {
   display: flex;
   flex-wrap: wrap;
@@ -562,7 +571,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .menu-jump a { border-bottom: 2px solid transparent; }
 .menu-jump a:hover { border-bottom-color: currentColor; }
-.menu-category { padding: 96px 0 56px; border-top: 3px solid var(--color-ink); }
+.menu-category { padding: 64px 0 56px; border-top: 3px solid var(--color-ink); scroll-margin-top: 160px; }
 .menu-category h2 { font-size: clamp(2.2rem,4vw,3.4rem); margin-top: 0.2em; }
 .menu-category .note { font-family: var(--font-script); font-size: 1.35rem; opacity: 0.8; margin-bottom: 1em; }
 .menu-category-head {
@@ -578,11 +587,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   object-fit: cover;
   flex-shrink: 0;
   border: 3px solid currentColor;
-}
-.back-to-top {
-  margin-top: 1em;
-  font-size: 0.9rem;
-  padding: 10px 22px;
 }
 .menu-group { margin-bottom: 2.4em; }
 .menu-group h4 {
@@ -802,8 +806,10 @@ footer.site-footer {
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal-visible { opacity: 1; transform: translateY(0); }
 
-/* Smaller, quicker reveal for menu-category headings arriving via instant jump-nav */
+/* Smaller, quicker reveal for menu-category headings — replays every time a heading
+   enters view, whether by normal scrolling or an instant jump-nav click */
 .menu-head-reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.5s ease, transform 0.5s ease; }
+.menu-head-reveal.menu-head-visible { opacity: 1; transform: translateY(0); }
 
 /* ---------------- Responsive ---------------- */
 @media (max-width: 900px) {
@@ -854,5 +860,9 @@ footer.site-footer {
   .site-header .wrap { padding-top: 12px; padding-bottom: 12px; }
   .site-header + section.band { padding-top: 41px; }
   .site-header + section.band-sm { padding-top: 16px; }
+  .site-header + .menu-jump-bar + section.band-sm { padding-top: 16px; }
   .hero { min-height: auto; }
+  .menu-jump-bar .wrap { padding: 12px 20px; }
+  .menu-jump { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 22px; }
+  .menu-jump a { white-space: nowrap; }
 }
