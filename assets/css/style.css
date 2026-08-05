@@ -978,6 +978,8 @@ footer.site-footer {
 .fit-next svg { width: 100%; height: 100%; display: block; }
 .fit-next:hover { opacity: 1; transform: translateX(-50%) translateY(3px); }
 @media (max-width: 900px) { .fit-next { display: none; } }
+/* The opening hero carries the same chevron into the first panel */
+.has-hero-chevron { position: relative; padding-bottom: 92px; }
 
 /* An explicit palette colour per background — never black, and never the
    colour it's sitting on. (Inheriting the section's text colour would have

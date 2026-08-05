@@ -60,6 +60,17 @@
     return body;
   }
 
+  var CHEVRON_SVG = '<svg viewBox="0 0 32 20" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><path d="M3 4l13 12L29 4" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  function makeChevron(targetId) {
+    var link = document.createElement('a');
+    link.className = 'fit-next';
+    link.href = '#' + targetId;
+    link.setAttribute('aria-label', 'Go to next section');
+    link.innerHTML = CHEVRON_SVG;
+    return link;
+  }
+
   // A chevron at the foot of each screen linking to the next one. It's a plain
   // in-page anchor, so it goes through exactly the same handling as the sub-nav
   // links (including the menus page's jump/reveal behaviour).
@@ -67,12 +78,20 @@
     var sections = Array.prototype.slice.call(document.querySelectorAll('.fit-screen'));
     var next = sections[sections.indexOf(section) + 1];
     if (!next || !next.id) return;
-    var link = document.createElement('a');
-    link.className = 'fit-next';
-    link.href = '#' + next.id;
-    link.setAttribute('aria-label', 'Go to next section');
-    link.innerHTML = '<svg viewBox="0 0 32 20" aria-hidden="true" focusable="false" preserveAspectRatio="xMidYMid meet"><path d="M3 4l13 12L29 4" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-    section.appendChild(link);
+    section.appendChild(makeChevron(next.id));
+  }
+
+  // The same chevron on the page's opening hero, pointing into the first
+  // full-screen panel, so the pattern starts at the top of every page.
+  function addHeroChevron() {
+    var first = document.querySelector('.fit-screen');
+    if (!first || !first.id) return;
+    var hero = document.querySelector('.site-header ~ section.band, .site-header ~ .menu-jump-bar ~ section.band-sm');
+    if (!hero || hero.classList.contains('fit-screen')) return;
+    var existing = hero.querySelector(':scope > .fit-next');
+    if (existing) existing.remove();
+    hero.classList.add('has-hero-chevron');
+    hero.appendChild(makeChevron(first.id));
   }
 
   // The scrolling box must not be the grid itself: giving a grid a definite
@@ -262,6 +281,7 @@
     document.documentElement.style.scrollSnapType = sections.length ? 'y proximity' : '';
     sections.forEach(function (section) { fitSection(section, offset); });
     sections.forEach(addNextChevron);
+    addHeroChevron();
   }
 
   var resizeTimer;
