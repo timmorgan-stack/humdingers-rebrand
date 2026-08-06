@@ -1447,22 +1447,32 @@ body:nth-of-type(8) .newsletter-coloured { --nl-color: var(--color-fish); }
    colour order variants to avoid similar colours appearing adjacent */
 .dot-col-left {
   left: 0;
-  width: 5px;
+  width: 20px;
   opacity: 1;
   z-index: 40;
   background-repeat: repeat-y;
-  background-color: transparent;
-  /* Default order — solid colour bands, no gaps (randomized by colour-strip.js) */
+  /* Paper base so the gaps between swatches always read white, whatever
+     section colour the fixed strip happens to be sitting over */
+  background-color: var(--color-paper);
+  /* Default order — randomized per load by colour-strip.js */
   background-image: repeating-linear-gradient(
     to bottom,
-    var(--color-kale) 0, var(--color-kale) 48px,
-    var(--color-tomato) 48px, var(--color-tomato) 96px,
-    var(--color-blueberry) 96px, var(--color-blueberry) 144px,
-    var(--color-olive) 144px, var(--color-olive) 192px,
-    var(--color-strawberry) 192px, var(--color-strawberry) 240px,
-    var(--color-chocolate) 240px, var(--color-chocolate) 288px,
-    var(--color-custard) 288px, var(--color-custard) 336px,
-    var(--color-fish) 336px, var(--color-fish) 384px
+    var(--color-kale) 0, var(--color-kale) 38px,
+    transparent 38px, transparent 48px,
+    var(--color-tomato) 48px, var(--color-tomato) 86px,
+    transparent 86px, transparent 96px,
+    var(--color-blueberry) 96px, var(--color-blueberry) 134px,
+    transparent 134px, transparent 144px,
+    var(--color-olive) 144px, var(--color-olive) 182px,
+    transparent 182px, transparent 192px,
+    var(--color-strawberry) 192px, var(--color-strawberry) 230px,
+    transparent 230px, transparent 240px,
+    var(--color-chocolate) 240px, var(--color-chocolate) 278px,
+    transparent 278px, transparent 288px,
+    var(--color-custard) 288px, var(--color-custard) 326px,
+    transparent 326px, transparent 336px,
+    var(--color-fish) 336px, var(--color-fish) 374px,
+    transparent 374px, transparent 384px
   );
 }
 

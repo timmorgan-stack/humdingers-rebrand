@@ -49,17 +49,22 @@
 
   var randomized = shuffleWithConstraint(colors);
 
-  // Build the gradient without gaps - solid colours only
+  // 38px swatch + 10px gap; the gaps are transparent so the element's paper
+  // background shows through as a white break between colours
   var gradientStops = [];
-  var segmentHeight = 48; // Height per colour segment (48px per colour)
+  var SWATCH = 38;
+  var GAP = 10;
 
   for (var i = 0; i < randomized.length; i++) {
     var color = randomized[i];
-    var startPos = i * segmentHeight;
-    var endPos = (i + 1) * segmentHeight;
+    var start = i * (SWATCH + GAP);
+    var swatchEnd = start + SWATCH;
+    var gapEnd = swatchEnd + GAP;
 
-    gradientStops.push('var(' + color.var + ') ' + startPos + 'px');
-    gradientStops.push('var(' + color.var + ') ' + endPos + 'px');
+    gradientStops.push('var(' + color.var + ') ' + start + 'px');
+    gradientStops.push('var(' + color.var + ') ' + swatchEnd + 'px');
+    gradientStops.push('transparent ' + swatchEnd + 'px');
+    gradientStops.push('transparent ' + gapEnd + 'px');
   }
 
   var gradient = 'repeating-linear-gradient(to bottom, ' + gradientStops.join(', ') + ')';
