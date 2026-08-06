@@ -235,20 +235,44 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .nav-toggle span::after { top: 8px; }
 .header-phone { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
 
-/* ---------------- Colour-block sections ---------------- */
-.band { padding: 96px 0; }
-.band-sm { padding: 56px 0; }
-.bg-kale { background: var(--color-kale); color: var(--color-paper); }
-.bg-tomato { background: var(--color-tomato); color: var(--color-paper); }
-.bg-blueberry { background: var(--color-blueberry); color: var(--color-fish); }
-.bg-blueberry-white { background: var(--color-blueberry); color: var(--color-paper); }
-.bg-olive { background: var(--color-olive); color: var(--color-custard); }
-.bg-strawberry { background: var(--color-strawberry); color: var(--color-chocolate); }
-.bg-chocolate { background: var(--color-chocolate); color: var(--color-custard); }
-.bg-custard { background: var(--color-custard); color: var(--color-chocolate); }
-.bg-fish { background: var(--color-fish); color: var(--color-blueberry); }
-.bg-ink { background: var(--color-ink); color: var(--color-paper); }
-.bg-paper { background: var(--color-paper); color: var(--color-ink); }
+/* Redesigned colour system: white backgrounds throughout, colour roles for text/accents only */
+.band { padding: 96px 0; background: var(--color-paper); color: var(--color-ink); }
+.band-sm { padding: 56px 0; background: var(--color-paper); color: var(--color-ink); }
+.band h2, .band-sm h2 { color: var(--color-ink); }
+.band h3, .band-sm h3 { color: var(--color-ink); }
+.band h4, .band-sm h4 { color: var(--color-ink); }
+
+/* Colour roles: map old .bg-* classes to text/border treatments instead of background blocks */
+.bg-kale { --role-accent: var(--color-kale); }
+.bg-tomato { --role-accent: var(--color-tomato); }
+.bg-blueberry { --role-accent: var(--color-blueberry); }
+.bg-blueberry-white { --role-accent: var(--color-blueberry); }
+.bg-olive { --role-accent: var(--color-olive); }
+.bg-strawberry { --role-accent: var(--color-strawberry); }
+.bg-chocolate { --role-accent: var(--color-chocolate); }
+.bg-custard { --role-accent: var(--color-custard); }
+.bg-fish { --role-accent: var(--color-fish); }
+.bg-ink { --role-accent: var(--color-ink); }
+.bg-paper { --role-accent: var(--color-paper); }
+
+/* Optional accent border for sections if desired */
+.band.bg-kale::before,
+.band.bg-tomato::before,
+.band.bg-blueberry::before,
+.band.bg-olive::before,
+.band.bg-strawberry::before,
+.band.bg-chocolate::before,
+.band.bg-custard::before,
+.band.bg-fish::before,
+.band.bg-ink::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--role-accent);
+}
 
 /* ---------------- Hero ---------------- */
 .hero {
