@@ -4,8 +4,11 @@
  */
 (function () {
   // Detect page and set appropriate offset
-  var isAboutPage = window.location.pathname.includes('/about.html');
-  var headerHeight = isAboutPage ? 120 : 80; // About page needs 40px more space
+  var pathname = window.location.pathname;
+  var needsExtraSpace = pathname.includes('/about.html') ||
+                        pathname.includes('/community-kitchen.html') ||
+                        pathname.includes('/catering-events.html');
+  var headerHeight = needsExtraSpace ? 120 : 80; // These pages need 40px more space
 
   function scrollToElement(element) {
     var elementTop = element.getBoundingClientRect().top + window.scrollY;
