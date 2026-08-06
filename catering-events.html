@@ -156,42 +156,68 @@
   </div>
 </section>
 
-<section id="weddings" class="band bg-strawberry ">
+<section id="weddings" class="band bg-paper" style="border-left:4px solid var(--color-strawberry);">
   <div class="wrap -content">
     <div class="-head">
-      <span class="eyebrow" style="color:var(--color-chocolate);">Wedding Catering</span>
-      <h2 style="color:var(--color-chocolate); font-size:clamp(1.8rem,3vw,2.4rem); max-width:20ch;">All our best weddings start with a point of connection.</h2>
-      <p style="color:var(--color-chocolate); max-width:64ch; font-size:1.1rem;">Our in-house caterers, led by Murphy &amp; Steve, pride themselves on creating lovingly prepared menus to fit the vision and feel for your special day — informal, formal, themed or bespoke, from timings and traditions to the food and drink itself.</p>
-      <span class="eyebrow" style="color:var(--color-chocolate); margin-top:16px;">Real Humdingers weddings</span>
+      <span class="eyebrow" style="color:var(--color-strawberry);">Wedding Catering</span>
+      <h2 style="font-size:clamp(1.8rem,3vw,2.4rem); max-width:20ch;">All our best weddings start with a point of connection.</h2>
+      <p style="max-width:64ch; font-size:1.1rem;">Our in-house caterers, led by Murphy &amp; Steve, pride themselves on creating lovingly prepared menus to fit the vision and feel for your special day — informal, formal, themed or bespoke, from timings and traditions to the food and drink itself.</p>
+      <span class="eyebrow" style="color:var(--color-strawberry); margin-top:16px;">Real Humdingers weddings</span>
     </div>
-    <div class="-body couples-grid" style="color:var(--color-chocolate);">
-      <div class="couple-inline">
-        <img src="assets/img/weddings/rowena-sam-4.jpg" alt="Rowena and Sam arriving at Wimborne House on their wedding day">
-        <blockquote>
-          <p>&ldquo;From our first tasting session with Niall through to the fantastic sharing plates on the day itself, our experience with Humdingers was exemplary. Staff were plentiful, polite and on point &mdash; we didn't need to worry about a thing.&rdquo;</p>
-          <cite>— Rowena &amp; Sam</cite>
-        </blockquote>
+    <div class="-body">
+      <!-- Photo grid: 4 couples × 4 images each = 16 photos in masonry layout -->
+      <div class="weddings-masonry">
+        <!-- Rowena & Sam -->
+        <div class="wedding-photo"><img src="assets/img/weddings/rowena-sam-4.jpg" alt="Rowena and Sam on their wedding day"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/rowena-sam-3.jpg" alt="Rowena and Sam's ceremony"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/rowena-sam-2.jpg" alt="Reception at Rowena and Sam's wedding"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/rowena-sam-1.jpg" alt="Reception table setting"></div>
+
+        <!-- Ellie & Andy -->
+        <div class="wedding-photo"><img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy's wedding"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy's reception"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy's celebration"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy's event"></div>
+
+        <!-- Jack & James -->
+        <div class="wedding-photo"><img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James' wedding"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James at the reception"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James' celebration"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James' event"></div>
+
+        <!-- Fiona & Chris -->
+        <div class="wedding-photo"><img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris on their wedding day"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris celebrating"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris' reception"></div>
+        <div class="wedding-photo"><img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris' event"></div>
       </div>
-      <div class="couple-inline">
-        <img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy's wedding">
-        <blockquote>
-          <p>&ldquo;My wife and I couldn't have been happier with our choice. Everything was delicious, freshly prepared and clearly made with great care and attention. On top of the food, Humdingers also took care of many of the organisation and preparation tasks for the venue on the day.&rdquo;</p>
-          <cite>— Ellie &amp; Andy</cite>
-        </blockquote>
-      </div>
-      <div class="couple-inline">
-        <img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James' wedding">
-        <blockquote>
-          <p>&ldquo;Everything ran better than we could have ever imagined. The food was outstanding &mdash; we've had so many great comments about everything from canap&eacute;s to lamb to dessert. Humdingers were some of the most dependable people in the whole planning process.&rdquo;</p>
-          <cite>— Jack &amp; James</cite>
-        </blockquote>
-      </div>
-      <div class="couple-inline">
-        <img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris celebrating with confetti on their wedding day">
-        <blockquote>
-          <p>&ldquo;Thanks so much for all you did to make our wedding day go without a hitch. We've had so many people pass on how great you were. The guests too, especially the vegans &amp; gluten free &mdash; thanks for looking after them so well!&rdquo;</p>
-          <cite>— Fiona &amp; Chris</cite>
-        </blockquote>
+
+      <!-- Testimonials grid -->
+      <div class="weddings-testimonials">
+        <div class="wedding-quote">
+          <blockquote>
+            <p>&ldquo;From our first tasting session with Niall through to the fantastic sharing plates on the day itself, our experience with Humdingers was exemplary. Staff were plentiful, polite and on point — we didn't need to worry about a thing.&rdquo;</p>
+            <cite>Rowena &amp; Sam</cite>
+          </blockquote>
+        </div>
+        <div class="wedding-quote">
+          <blockquote>
+            <p>&ldquo;My wife and I couldn't have been happier with our choice. Everything was delicious, freshly prepared and clearly made with great care and attention. Humdingers took care of many of the organisation tasks too.&rdquo;</p>
+            <cite>Ellie &amp; Andy</cite>
+          </blockquote>
+        </div>
+        <div class="wedding-quote">
+          <blockquote>
+            <p>&ldquo;Everything ran better than we could have ever imagined. The food was outstanding — we've had so many great comments about everything from canapés to lamb to dessert. Humdingers were some of the most dependable people in the whole planning process.&rdquo;</p>
+            <cite>Jack &amp; James</cite>
+          </blockquote>
+        </div>
+        <div class="wedding-quote">
+          <blockquote>
+            <p>&ldquo;Thanks so much for all you did to make our wedding day go without a hitch. We've had so many people pass on how great you were. The guests too, especially the vegans &amp; gluten free — thanks for looking after them so well!&rdquo;</p>
+            <cite>Fiona &amp; Chris</cite>
+          </blockquote>
+        </div>
       </div>
     </div>
   </div>
