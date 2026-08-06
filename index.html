@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260806s">
+<link rel="stylesheet" href="assets/css/style.css?v=20260806w">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -37,11 +37,14 @@
 </script>
 <!-- NOTE: url/image values above are placeholders pointing at the GitHub Pages staging URL — update to the live domain before launch. -->
 </head>
-<body>
+<body class="home">
+
+<div class="dot-col dot-col-left" aria-hidden="true"></div>
+<div class="dot-col dot-col-right" aria-hidden="true"></div>
 
 <header class="site-header">
   <div class="wrap">
-    <a href="index.html" class="logo"><span class="logo-word">Humdingers</span></a>
+    <a href="index.html" class="logo"><img class="logo-mark logo-mark-lg" src="assets/logo/humdingers-logo-black.svg" alt="Humdingers"></a>
     <nav class="main-nav">
       <div class="nav-item">
         <a href="catering-events.html">Catering &amp; Events</a>
@@ -89,12 +92,12 @@
   </div>
 </header>
 
-<section class="band bg-custard">
-  <div class="wrap hero">
+<section class="band">
+  <div class="wrap wrap-narrow hero">
     <div>
-      <span class="eyebrow">Whatever makes it</span>
+      <span class="eyebrow" style="color:var(--role-cta); font-size:1.6rem;">Independent caterers, rooted in Hoxton</span>
       <h1>A humdinger.</h1>
-      <p class="hero-lede">Independent caterers and a community kitchen, working out of Hoxton since day one. Weddings, corporate events, brand launches and 1,000+ free hot meals a week — all from the same table.</p>
+      <p class="hero-lede">Weddings, private parties, corporate events and award ceremonies across London — with a Community Kitchen serving 1,000+ free meals a week standing behind every plate we send out.</p>
       <div style="display:flex; gap:16px; flex-wrap:wrap; margin-top:28px;">
         <a class="btn btn-solid" href="contact.html">Enquire now</a>
         <a class="btn" href="menus.html">See our menus</a>
@@ -105,36 +108,28 @@
         <p style="margin:0;">A remarkable or outstanding thing of its kind.</p>
       </div>
     </div>
-    <div class="hero-figure hero-carousel">
-      <div class="carousel-slide active" style="background-image:url(assets/img/hero-carousel/flavour.jpg);"><span class="carousel-label" style="color:var(--color-custard);">Flavour</span></div>
-      <div class="carousel-slide" style="background-image:url(assets/img/hero-carousel/texture.jpg);"><span class="carousel-label" style="color:var(--color-tomato);">Texture</span></div>
-      <div class="carousel-slide" style="background-image:url(assets/img/hero-carousel/colour.jpg);"><span class="carousel-label" style="color:var(--color-custard);">Colour</span></div>
-      <div class="carousel-slide" style="background-image:url(assets/img/hero-carousel/size.jpg);"><span class="carousel-label" style="color:var(--color-fish);">Size</span></div>
-      <div class="carousel-slide" style="background-image:url(assets/img/hero-carousel/character.jpg);"><span class="carousel-label" style="color:var(--color-custard);">Character</span></div>
-      <div class="carousel-slide carousel-slide-text bg-strawberry">
-        <span class="script" style="color:var(--color-chocolate); font-size:1.2rem;">Whatever makes it</span>
-        <h3 style="color:var(--color-chocolate); font-size:2.2rem; margin:0;">A humdinger.</h3>
-      </div>
-      <div class="carousel-dots">
-        <span class="active"></span><span></span><span></span><span></span><span></span><span></span>
-      </div>
+    <div class="hero-figure">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/img/premium/long-table.jpg">
+        <source src="assets/video/humdingers-kitchen.mp4?v=20260806u" type="video/mp4">
+        <img src="assets/img/premium/long-table.jpg" alt="Inside the Humdingers kitchen">
+      </video>
     </div>
   </div>
 </section>
 
-<section id="two-ways" class="band bg-paper fit-screen" data-fit-noscroll>
-  <div class="wrap fit-screen-content">
-    <div class="fit-screen-head">
-      <h2 style="font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:0.3em;">Two ways to work with us.</h2>
-      <p class="eyebrow" style="max-width:60ch; margin-bottom:0;">Not sure which you need? Here's the short version.</p>
-    </div>
-    <div class="fit-screen-body path-grid">
+<section id="two-ways" class="band-sm">
+  <div class="wrap wrap-narrow">
+    <h2 style="font-size:clamp(1.8rem,3vw,2.4rem); margin-bottom:0.3em;">Two ways to work with us.</h2>
+    <p class="eyebrow" style="max-width:60ch; margin-bottom:1.2em;">Not sure which you need? Here's the short version.</p>
+    <div class="path-grid">
       <a class="path-card bg-fish" href="menus.html">
+        <img class="path-mark" src="assets/logo/humdingers-logo-blueberry.svg" alt="Humdingers">
         <h3>Delivered by Us</h3>
         <p>Perfect for office lunches, meetings and informal gatherings — order from our menus and we'll drop it off.</p>
         <span class="path-cta">See drop-off menus &rarr;</span>
       </a>
-      <a class="path-card bg-chocolate" href="catering-events.html">
+      <a class="path-card bg-blueberry-white" href="catering-events.html">
+        <img class="path-mark" src="assets/logo/humdingers-logo-fish.svg" alt="Humdingers">
         <h3>Served by Us</h3>
         <p>Full event catering with our chefs and front-of-house team — weddings, corporate events, private parties and more.</p>
         <span class="path-cta">Explore full-service events &rarr;</span>
@@ -143,53 +138,23 @@
   </div>
 </section>
 
-<section class="band-sm bg-custard">
-  <div class="wrap">
-    <div class="newsletter-row newsletter-row-light">
-      <div>
-        <span class="eyebrow" style="color:var(--color-chocolate);">Stay in the loop</span>
-        <h3 style="margin:0; font-size:1.3rem;">Seasonal menus and event ideas, straight to your inbox.</h3>
-      </div>
-      <form onsubmit="return false;" class="newsletter-form newsletter-form-light">
-        <input type="email" placeholder="Your email address" required>
-        <button type="submit" class="btn btn-solid">Subscribe</button>
-      </form>
+<section class="band-sm">
+  <div class="wrap wrap-narrow split">
+    <img src="assets/img/premium/canapes-lobster.jpg" alt="Beautifully presented canapés from a Humdingers catering menu">
+    <div>
+      <span class="eyebrow" style="color:var(--role-catering-ink); font-size:1.5rem;">Why choose us</span>
+      <h2 style="font-size:clamp(1.7rem,2.6vw,2.2rem);">Why choose Humdingers Catering London?</h2>
+      <p>Our catering menus are seasonal and, wherever possible, we make everything in-house from scratch with fresh, locally sourced ingredients. We keep up with what's current, but don't pander to trends. Our food is beautifully presented &amp; unique, and we never compromise on flavour. We see joy in every part of life and bring a revelry to our cooking. We believe food should be enjoyed; our portions are generous, and our food is well-seasoned and big on flavour. Our team of chefs come from a diverse background, and these varying influences continuously shape our menus. We're always on the lookout for new ideas and concepts and we love fulfilling our clients' wide-ranging requests.</p>
     </div>
   </div>
 </section>
 
-<section id="collective-table" class="band bg-ink fit-screen" data-fit-noscroll>
-  <div class="wrap fit-screen-content">
-    <div class="fit-screen-head">
-      <span class="eyebrow" style="color:var(--color-custard);">The Collective Table</span>
-    <h2 style="max-width:16ch; font-size:clamp(2rem,4vw,3.2rem);">London's most trusted hospitality collective.</h2>
-      <p style="max-width:60ch; font-size:1.15rem; opacity:0.85; margin-bottom:0;">We're proof that exceptional food and real social impact can share a table. Every wedding, launch and boardroom lunch we cater helps fund a Community Kitchen that's served over 100,000 free meals to people who need one.</p>
-    </div>
-    <div class="fit-screen-body stat-row">
-      <div>
-        <div class="num" style="color:var(--color-fish);">1,000+</div>
-        <p style="opacity:0.8;">free hot meals served every week by our Community Kitchen</p>
-      </div>
-      <div>
-        <div class="num" style="color:var(--color-strawberry);">100,000+</div>
-        <p style="opacity:0.8;">meals served since the Community Kitchen opened its doors</p>
-      </div>
-      <div>
-        <div class="num" style="color:var(--color-custard);">16</div>
-        <p style="opacity:0.8;">partner venues we cater in across London</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="two-callings" class="band bg-paper fit-screen" data-fit-noscroll>
-  <div class="wrap fit-screen-content">
-    <div class="fit-screen-head">
-      <h2 class="eyebrow" style="margin-bottom:0;">One kitchen, two callings.</h2>
-    </div>
-    <div class="fit-screen-body card-grid card-grid-2">
+<section id="two-callings" class="band-sm bg-paper">
+  <div class="wrap wrap-narrow">
+    <h2 class="eyebrow" style="margin-bottom:1em;">One kitchen, two callings.</h2>
+    <div class="card-grid card-grid-2">
       <a class="subbrand-card" href="catering-events.html">
-        <img src="assets/img/events.jpg" alt="Humdingers catering an event">
+        <img src="assets/img/premium/long-table.jpg" alt="Humdingers catering an event">
         <span class="tag">Humdingers</span>
         <h3>Catering &amp; Events</h3>
       </a>
@@ -197,38 +162,38 @@
         <img src="assets/img/soup-kitchen.jpg" alt="Humdingers Community Kitchen serving free meals">
         <span class="tag">Humdingers</span>
         <h3>Community Kitchen</h3>
+        <span class="mini-badge" style="color:var(--color-paper); margin-top:8px;"><img src="assets/logo/humdingers-logo-kale.svg" alt="">1,000+ free meals served every week</span>
       </a>
     </div>
   </div>
 </section>
 
-<section id="optimism" class="band bg-blueberry fit-screen" data-fit-noscroll>
-  <div class="wrap fit-screen-content" style="text-align:center;">
-   <div class="fit-screen-body">
-    <p class="script" style="font-size:1.4rem; opacity:0.85;">Catering with craft &amp; character.<br>And—most importantly—</p>
-    <h2 style="font-size:clamp(3rem,9vw,6rem); color:var(--color-fish); margin:0;">Optimism.</h2>
-   </div>
+<section class="band-sm">
+  <div class="wrap wrap-narrow split">
+    <div>
+      <span class="eyebrow" style="color:var(--role-cta); font-size:1.5rem;">Rooted in Hoxton</span>
+      <h2 style="font-size:clamp(1.7rem,2.6vw,2.2rem);">Outstanding catering London</h2>
+      <p>Humdingers is an independent caterer and event planner rooted in the heart of Hoxton. We craft high-end, unforgettable food experiences for weddings, private parties, location catering, corporate gatherings, banquets, and award ceremonies. Whether you want complete, hands-on support from the very first spark of an idea, or just expert guidance in the days, weeks, or months leading up to your event, we'll create the perfect catering and events package tailored to your desires. Events catering in London has never felt this effortless—or this irresistible. Every enquiry begins with an intimate conversation. We listen closely to your vision, your tastes, and your ambitions. For us, truly knowing the people we work with is the secret ingredient that turns a great event into something exceptional.</p>
+      <a class="btn btn-solid" style="margin-top:8px;" href="contact.html">Start the conversation</a>
+    </div>
+    <img src="assets/img/premium/tablescape.jpg" alt="An elegantly styled Humdingers event table">
   </div>
 </section>
 
-<section id="positioning" class="band bg-paper fit-screen" data-fit-noscroll>
-  <div class="wrap fit-screen-content">
-   <div class="fit-screen-body split">
-    <div class="illustration-figure">
-      <img src="assets/illustrations/catering-events-hero.jpg" alt="Illustrated Collective Table artwork of a shared celebration">
-    </div>
+<section id="positioning" class="band-sm bg-paper">
+  <div class="wrap wrap-narrow split">
+    <img src="assets/img/premium/corporate-event.jpg" alt="Humdingers catering a corporate event in London">
     <div>
-      <span class="eyebrow">Our positioning</span>
-      <h2 style="font-size:clamp(1.8rem,3vw,2.4rem);">The premium catering collective that proves you don't have to choose.</h2>
+      <span class="eyebrow" style="color:var(--role-corporate); font-size:1.5rem;">Our positioning</span>
+      <h2 style="font-size:clamp(1.7rem,2.6vw,2.2rem);">The premium catering collective that proves you don't have to choose.</h2>
       <p>Reliable, exceptional catering that enhances your reputation. Confidence from partnering with people who genuinely care about your success. Pride in supporting a business that makes a real difference locally. That's the whole idea — quality and social impact, on the same table.</p>
       <a class="btn btn-solid" href="about.html">More about us</a>
     </div>
-   </div>
   </div>
 </section>
 
 <section class="band-sm bg-paper" style="border-top:1px solid rgba(0,0,0,0.1); border-bottom:1px solid rgba(0,0,0,0.1);">
-  <div class="wrap">
+  <div class="wrap wrap-narrow">
     <p style="text-align:center; font-family:var(--font-display); font-weight:700; opacity:0.6; margin-bottom:28px;">As trusted by</p>
     <div class="logo-strip">
       <img src="assets/img/clients/vogue.png" alt="Vogue">
@@ -255,33 +220,31 @@
   </div>
 </section>
 
-<section id="testimonials" class="band bg-strawberry fit-screen">
-  <div class="wrap fit-screen-content">
-    <div class="fit-screen-head">
-      <span class="eyebrow" style="color:var(--color-chocolate);">A few kind words</span>
-    </div>
-    <div class="fit-screen-body testimonial-grid">
-      <blockquote class="testimonial">
+<section id="testimonials" class="band-sm bg-paper">
+  <div class="wrap wrap-narrow">
+    <span class="eyebrow" style="color:var(--role-celebration); font-size:1.6rem; margin-bottom:1em;">A few kind words</span>
+    <div class="testimonial-grid testimonial-grid-2">
+      <blockquote class="testimonial testimonial-card">
         “Esme, your team was brilliant and lovely. Could not have asked for more. 5 stars!”
         <cite>— Sarah, corporate client, July 2026</cite>
       </blockquote>
-      <blockquote class="testimonial">
+      <blockquote class="testimonial testimonial-card">
         “I thought the food and service were both brilliant — the client was really pleased with how the event went.”
         <cite>— Alasdair, Event Agency, February 2026</cite>
       </blockquote>
-      <blockquote class="testimonial">
+      <blockquote class="testimonial testimonial-card">
         “We had such a great day — the food was absolutely fantastic and the table set up was perfect.”
         <cite>— Kate, Wedding, February 2026</cite>
       </blockquote>
-      <blockquote class="testimonial">
+      <blockquote class="testimonial testimonial-card">
         “The catering staff were amazing — we've had very positive feedback regarding the canap&eacute;s and service. Amalia and her team were all so wonderful, super organised and efficient.”
         <cite>— Thirdspace, May 2025</cite>
       </blockquote>
-      <blockquote class="testimonial">
+      <blockquote class="testimonial testimonial-card">
         “Everything was so well organised, from delivering the equipment the day before to the food arriving beautifully presented — completely stress-free. We will absolutely be using Humdingers again.”
         <cite>— Rachel, corporate client, July 2026</cite>
       </blockquote>
-      <blockquote class="testimonial">
+      <blockquote class="testimonial testimonial-card">
         “Thanks so much for all you did to make our wedding day go without a hitch — you went above and beyond.”
         <cite>— Fiona &amp; Chris</cite>
       </blockquote>
@@ -289,10 +252,8 @@
   </div>
 </section>
 
-
-
 <section class="band bg-chocolate">
-  <div class="wrap closing-cta">
+  <div class="wrap wrap-narrow closing-cta">
     <div>
       <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem); margin-bottom:0.3em;">Ready when you are.</h2>
       <p style="opacity:0.85; margin-bottom:0;">Get a full quote in under an hour during working hours &mdash; or just say hello.</p>
@@ -304,7 +265,7 @@
 </section>
 
 <section class="band-sm bg-ink">
-  <div class="wrap">
+  <div class="wrap wrap-narrow">
     <div class="newsletter-row">
       <div>
         <span class="eyebrow" style="color:var(--color-custard);">Stay in the loop</span>
@@ -323,7 +284,7 @@
   <div class="wrap">
     <div class="footer-grid">
       <div>
-        <span class="logo-word" style="color:var(--color-custard);">Humdingers</span>
+        <img class="logo-mark logo-mark-lg" src="assets/logo/humdingers-logo-custard.svg" alt="Humdingers">
         <p style="margin-top:16px; max-width:32ch;">The collective table — premium catering that proves quality and community care aren't a trade-off.</p>
       </div>
       <div>
@@ -377,8 +338,6 @@
 <script src="assets/js/nav.js?v=20260806s"></script>
 <script src="assets/js/img-preload.js?v=20260806s"></script>
 <script src="assets/js/scroll-reveal.js?v=20260806s"></script>
-<script src="assets/js/carousel.js?v=20260806s"></script>
-<script src="assets/js/fit-screen.js?v=20260806s"></script>
 
 <div id="cookie-banner" class="cookie-banner">
   <p>We use cookies to keep the site working well and to understand how it's used. <a href="https://www.humdingers.org.uk/privacy-policy/" target="_blank" rel="noopener">Learn more</a>.</p>

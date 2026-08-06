@@ -19,6 +19,14 @@
              with the brand team and swap files if needed.
    ========================================================================== */
 
+@font-face {
+  font-family: 'Control Cursive';
+  src: url('../fonts/ControlCursive-Regular-Web.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   /* ---- Brand colour palette (Humdingers_Final_Identity, p.6) ---- */
   --color-kale: #0B8241;
@@ -34,7 +42,7 @@
 
   /* ---- Type (placeholder stand-ins, see note above) ---- */
   --font-display: 'Baloo 2', system-ui, sans-serif;   /* stand-in for Dunbar Low */
-  --font-script: 'Caveat', cursive;                    /* stand-in for Control Cursive */
+  --font-script: 'Control Cursive', 'Caveat', cursive; /* real brand script font, supplied Aug 2026 */
   --font-logo: 'Lora', Georgia, serif;                 /* stand-in for custom wordmark */
   --font-body: 'Baloo 2', system-ui, sans-serif;
 
@@ -72,13 +80,16 @@ p { margin: 0 0 1em; }
 }
 .script {
   font-family: var(--font-script);
-  font-weight: 600;
+  /* Control Cursive ships one weight (Regular) — 600 was tuned for the
+     Caveat stand-in, which browsers would otherwise fake-bold into a
+     muddier stroke than the real font is designed to render. */
+  font-weight: 400;
   font-style: italic;
 }
 .eyebrow {
   font-family: var(--font-script);
   font-size: 2.3rem;
-  font-weight: 600;
+  font-weight: 400;
   display: inline-block;
   margin-bottom: 0.5em;
 }
@@ -99,7 +110,9 @@ p { margin: 0 0 1em; }
   color: var(--color-paper);
   border-color: var(--color-ink);
 }
-.btn-solid:hover { background: var(--color-kale); border-color: var(--color-kale); }
+/* Tomato is the assigned CTA role colour (see the style-guide comment further
+   down) — kale is Community Kitchen's colour, not a general action colour. */
+.btn-solid:hover { background: var(--role-cta, var(--color-tomato)); border-color: var(--role-cta, var(--color-tomato)); }
 .btn-sm { padding: 9px 20px; font-size: 0.85rem; }
 
 /* ---------------- Header / nav ---------------- */
@@ -555,23 +568,37 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .press-card .press-meta a { font-weight: 700; text-decoration: underline; opacity: 1; }
 
-/* ---------------- Wedding case studies ---------------- */
+/* ---------------- Wedding case studies (inline photo + quote) ---------------- */
 .couples-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+.couple-inline {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
-.couple-card {
-  display: block;
-  border: 3px solid currentColor;
-  border-radius: var(--radius-md);
-  padding: 22px 18px;
-  text-align: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  transition: transform 0.15s ease, background 0.15s ease;
+.couple-inline img {
+  width: 100%;
+  border-radius: var(--radius-lg);
 }
-.couple-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15); }
+.couple-inline blockquote {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+.couple-inline blockquote p {
+  margin: 0 0 0.5em;
+}
+.couple-inline blockquote cite {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 1em;
+}
 
 /* ---------------- Enquiry form (contact.html) ---------------- */
 .enquiry-form { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
@@ -860,7 +887,7 @@ footer.site-footer {
   font-size: 1.1rem;
   padding: 18px 34px;
 }
-.closing-cta .btn-solid:hover { background: var(--color-kale); color: var(--color-paper); border-color: var(--color-kale); }
+.closing-cta .btn-solid:hover { background: var(--role-cta, var(--color-tomato)); color: var(--color-paper); border-color: var(--role-cta, var(--color-tomato)); }
 .newsletter-row {
   display: flex;
   justify-content: space-between;
@@ -1141,6 +1168,146 @@ footer.site-footer {
 .fit-carousel-arrow:hover:not(:disabled) { background: rgba(128,128,128,0.28); }
 .fit-carousel-arrow:disabled { opacity: 0.3; cursor: default; }
 .fit-carousel-arrow:disabled:hover { background: transparent; }
+
+/* ==========================================================================
+   BRAND COLOUR SYSTEM — style-guide roles (Aug 2026 client brief: tone the
+   bold multi-colour treatment down and stop picking a colour per section on
+   a whim — give every colour one assigned job instead). A matching logo
+   file exists for each: assets/logo/humdingers-logo-<colour>.svg, one per
+   palette colour plus black/white. Pair a coloured element with its own
+   logo variant, never a mismatched one.
+
+     --role-catering        Fish + Blueberry   Catering & Events (matches the
+                                                nav dropdown pairing already
+                                                in use — reversible: fish bg
+                                                with blueberry ink, or the
+                                                other way round)
+     --role-community       Kale               Community Kitchen
+     --role-corporate       Chocolate + Custard About Us, footer, whole-company voice
+     --role-cta              Tomato             primary actions, links, accents
+     --role-celebration      Strawberry         weddings, testimonials
+     --role-sustainability   Olive              provenance / sustainability content
+
+   The full 8-colour set (everything but ink/paper, which are structural, not
+   "brand swatches") still appears together — always in this fixed order —
+   as a swatch strip: the footer .colour-strip and the .dot-col margin
+   decoration below both use it, never shuffled or partial. That repetition
+   is what makes it read as a style guide rather than a random splash.
+   ========================================================================== */
+:root {
+  --role-catering: var(--color-fish);
+  --role-catering-ink: var(--color-blueberry);
+  --role-community: var(--color-kale);
+  --role-corporate: var(--color-chocolate);
+  --role-corporate-accent: var(--color-custard);
+  --role-cta: var(--color-tomato);
+  --role-celebration: var(--color-strawberry);
+  --role-sustainability: var(--color-olive);
+}
+
+/* Real wordmark, swapped in for the .logo-word text placeholder. Ratio is
+   fixed by the cropped viewBox (1215:249 ≈ 4.88:1) so only height need be set. */
+.logo-mark { display: block; height: 28px; width: auto; }
+.logo-mark-lg { height: 40px; }
+
+/* ==========================================================================
+   PREMIUM HOMEPAGE THEME (Aug 2026 client brief)
+   Toned down, more corporate: content sits in a capped column with the page's
+   own white showing either side on wide screens, rather than full-bleed
+   colour bands. This is additive and scoped to new classnames only — every
+   other page keeps the original .band/.bg-*/.fit-screen system untouched
+   until it's rebuilt in the same style during the site-wide roll-out.
+   ========================================================================== */
+.wrap-narrow { max-width: 960px; margin: 0 auto; padding: 0 24px; }
+
+/* Decorative treatment in the true page margins, outside the content column.
+   Fixed so it runs the full page height regardless of scroll position;
+   z-index:-1 so it sits behind the page's own content — any full-width
+   element simply paints over it, so it only ever shows where there's
+   genuinely nothing else there. One-sided rather than mirrored on both
+   edges: a swatch ribbon on the left, a plain keyline on the right — matched
+   dots/ribbons on both edges read too symmetric (film-reel sprocket holes at
+   dot scale; a picture-frame at ribbon scale). One thick side and one thin
+   line reads as an editorial margin device instead. */
+.dot-col {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+/* The swatch ribbon — the footer .colour-strip rotated vertical, always the
+   same 8-colour order (see the style-guide comment above). */
+.dot-col-left {
+  left: 0;
+  width: 10px;
+  opacity: 0.9;
+  background-repeat: repeat-y;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-kale) 0, var(--color-kale) 38px,
+    transparent 38px, transparent 48px,
+    var(--color-tomato) 48px, var(--color-tomato) 86px,
+    transparent 86px, transparent 96px,
+    var(--color-blueberry) 96px, var(--color-blueberry) 134px,
+    transparent 134px, transparent 144px,
+    var(--color-olive) 144px, var(--color-olive) 182px,
+    transparent 182px, transparent 192px,
+    var(--color-strawberry) 192px, var(--color-strawberry) 230px,
+    transparent 230px, transparent 240px,
+    var(--color-chocolate) 240px, var(--color-chocolate) 278px,
+    transparent 278px, transparent 288px,
+    var(--color-custard) 288px, var(--color-custard) 326px,
+    transparent 326px, transparent 336px,
+    var(--color-fish) 336px, var(--color-fish) 374px,
+    transparent 374px, transparent 384px
+  );
+}
+/* A plain hairline on the right — balances the page without repeating the
+   full colour treatment on both sides. */
+.dot-col-right {
+  right: 0;
+  width: 1px;
+  background: rgba(0,0,0,0.14);
+}
+/* Below this the shell is close enough to the viewport edge that the margin
+   devices would collide with content, and on touch-width screens they'd
+   just be clutter beside an already-full-width layout. */
+@media (max-width: 1360px) { .dot-col { display: none; } }
+
+.hero-figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Small role-coloured wordmark used as a corner mark on the two-ways cards —
+   ties each card back to its role colour via the matching logo variant
+   rather than an unrelated accent. */
+.path-mark { height: 22px; width: auto; opacity: 0.92; margin-bottom: 18px; }
+
+/* Quote cards for testimonials — a role-coloured rule rather than a full
+   strawberry-filled band, so the colour still reads as "celebration" without
+   another full-bleed panel. */
+.testimonial-card {
+  border-left: 4px solid var(--role-celebration);
+  padding: 2px 0 2px 22px;
+}
+/* Two columns instead of the default three — reads better in the narrower
+   premium content column. min-width query so it still yields to the
+   existing @media(max-width:900px) single-column collapse further down. */
+@media (min-width: 901px) {
+  .testimonial-grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* Small inline stat badge — used to give Community Kitchen a light-touch
+   mention on the homepage without a full stats panel, now that the page's
+   primary billing is Catering & Events. */
+.mini-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+.mini-badge img { height: 18px; width: auto; }
 
 /* Slightly larger body copy on spacious screens — headings/buttons/spacing
    are untouched (they're sized individually via clamp()/rem elsewhere), and
