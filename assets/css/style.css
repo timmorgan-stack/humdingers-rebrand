@@ -677,6 +677,50 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
+/* Wedding panels with 4 images per couple */
+.wedding-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+}
+.wedding-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.wedding-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.wedding-grid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+.wedding-info {
+  flex-grow: 1;
+}
+.wedding-info h3 {
+  font-size: 1.3rem;
+  margin: 0 0 1em;
+  font-weight: 700;
+}
+.wedding-info blockquote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-style: italic;
+  padding: 16px;
+  background: rgba(0,0,0,0.03);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-strawberry);
+}
+.wedding-info blockquote p {
+  margin: 0;
+}
+
 .wedding-quote {
   padding: 24px;
   background: rgba(0,0,0,0.03);
