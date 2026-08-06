@@ -862,6 +862,8 @@ blockquote.testimonial {
   font-family: var(--font-display);
   font-size: 1.3rem;
   max-width: 60ch;
+  padding-left: 20px;
+  border-left: 4px solid var(--color-fish);
 }
 blockquote.testimonial cite {
   display: block;
@@ -872,9 +874,18 @@ blockquote.testimonial cite {
 }
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
 }
+/* Rotate border colours through the testimonials for visual variety */
+.testimonial-grid blockquote:nth-child(1) { border-left-color: var(--color-fish); }
+.testimonial-grid blockquote:nth-child(2) { border-left-color: var(--color-kale); }
+.testimonial-grid blockquote:nth-child(3) { border-left-color: var(--color-tomato); }
+.testimonial-grid blockquote:nth-child(4) { border-left-color: var(--color-custard); }
+.testimonial-grid blockquote:nth-child(5) { border-left-color: var(--color-olive); }
+.testimonial-grid blockquote:nth-child(6) { border-left-color: var(--color-blueberry); }
+.testimonial-grid blockquote:nth-child(7) { border-left-color: var(--color-strawberry); }
+.testimonial-grid blockquote:nth-child(8) { border-left-color: var(--color-chocolate); }
 
 .illustration-figure {
   border-radius: var(--radius-lg);
