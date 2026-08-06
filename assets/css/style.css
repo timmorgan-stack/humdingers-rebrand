@@ -444,12 +444,18 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   margin: 0;
   border-left: 4px solid var(--color-ink);
   padding-left: 1em;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Keyline text with rotating brand colours */
 .keyline-text {
   border-left: 4px solid var(--color-ink);
   padding-left: 1em;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
 }
 body .keyline-text:nth-of-type(1) { border-left-color: var(--color-kale); }
 body .keyline-text:nth-of-type(2) { border-left-color: var(--color-tomato); }
