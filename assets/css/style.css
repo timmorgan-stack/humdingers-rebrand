@@ -1451,9 +1451,9 @@ body:nth-of-type(8) .newsletter-coloured { --nl-color: var(--color-fish); }
   opacity: 1;
   z-index: 40;
   background-repeat: repeat-y;
-  /* Paper base so the gaps between swatches always read white, whatever
-     section colour the fixed strip happens to be sitting over */
-  background-color: var(--color-paper);
+  /* Gaps stay transparent so whatever the strip sits over shows through —
+     white against the page bands, black against the footer */
+  background-color: transparent;
   /* Default order — randomized per load by colour-strip.js */
   background-image: repeating-linear-gradient(
     to bottom,
