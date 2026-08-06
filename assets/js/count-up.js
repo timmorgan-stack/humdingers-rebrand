@@ -8,7 +8,7 @@
  * the correct number is on screen the whole time; nothing is left at zero.
  */
 (function () {
-  var DURATION = 1700;
+  var DURATION = 2400;
   var THRESHOLD = 0.6; // most of the panel visible before it starts
 
   var targets = document.querySelectorAll('.stat-card .num');
@@ -36,14 +36,10 @@
     function frame(now) {
       if (startTime === null) startTime = now;
       var t = Math.min((now - startTime) / DURATION, 1);
-      // Start at normal pace, then slow dramatically from 60% onwards
-      var eased;
-      if (t < 0.6) {
-        eased = t / 0.6; // Linear pace for first 60%
-      } else {
-        var remaining = (t - 0.6) / 0.4;
-        eased = 0.6 + 0.4 * (1 - Math.pow(1 - remaining, 4)); // Strong ease-out for final 40%
-      }
+      // easeOutQuart: clears 60% of the range in the first fifth of the run,
+      // then spends the remaining four fifths crawling through the last 40% —
+      // so the figure visibly decelerates into its final number.
+      var eased = 1 - Math.pow(1 - t, 4);
       if (t < 1) {
         render(Math.round(target * eased));
         requestAnimationFrame(frame);
