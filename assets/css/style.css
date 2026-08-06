@@ -869,6 +869,38 @@ footer.site-footer {
 .newsletter-form-light input[type="email"]::placeholder { color: rgba(58,32,19,0.55); }
 .newsletter-form-light .btn-solid { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
 
+/* ---------------- Contact page ---------------- */
+/* One band painted in two tones rather than two sections, so the enquiry
+   form card can start at the top of the page and run across the colour
+   change instead of being boxed into the lower half. */
+.contact-band {
+  --contact-blue-depth: 360px;
+  background: linear-gradient(
+    to bottom,
+    var(--color-blueberry) 0,
+    var(--color-blueberry) var(--contact-blue-depth),
+    var(--color-paper) var(--contact-blue-depth),
+    var(--color-paper) 100%
+  );
+  color: var(--color-ink);
+}
+/* Sits in the blue zone, so it carries the light text with it. Its height is
+   not tied to --contact-blue-depth: contact-band.js measures this block and
+   sets the boundary just below it, so the blue always contains the intro
+   however the text rewraps. The CSS default above is the fallback. */
+.contact-band .contact-intro {
+  color: var(--color-paper);
+  margin-bottom: 36px;
+}
+.contact-band .contact-intro h1 { font-size: clamp(1.9rem, 3.4vw, 2.6rem); }
+@media (max-width: 900px) {
+  /* Stacked, the colour boundary no longer lines up with the intro, so the
+     band goes plain and the intro takes the normal dark text. */
+  .contact-band { background: var(--color-paper); }
+  .contact-band .contact-intro { color: inherit; min-height: 0; }
+  .contact-band .contact-intro .eyebrow { color: var(--color-blueberry) !important; }
+}
+
 /* ---------------- Scroll reveal ---------------- */
 .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
 .reveal-visible { opacity: 1; transform: translateY(0); }
