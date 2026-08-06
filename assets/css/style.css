@@ -236,8 +236,8 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .header-phone { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
 
 /* Redesigned colour system: white backgrounds throughout, colour roles for text/accents only */
-.band { padding: 96px 0; background: var(--color-paper); color: var(--color-ink); }
-.band-sm { padding: 56px 0; background: var(--color-paper); color: var(--color-ink); }
+.band { padding: 72px 0; background: var(--color-paper); color: var(--color-ink); }
+.band-sm { padding: 40px 0; background: var(--color-paper); color: var(--color-ink); }
 .band h2, .band-sm h2 { color: var(--color-ink); }
 .band h3, .band-sm h3 { color: var(--color-ink); }
 .band h4, .band-sm h4 { color: var(--color-ink); }
