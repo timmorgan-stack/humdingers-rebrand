@@ -3,7 +3,9 @@
  * Ensures linked content appears with breathing room from top
  */
 (function () {
-  var headerHeight = 80; // Approximate height of sticky header + padding
+  // Detect page and set appropriate offset
+  var isAboutPage = window.location.pathname.includes('/about.html');
+  var headerHeight = isAboutPage ? 120 : 80; // About page needs 40px more space
 
   function scrollToElement(element) {
     var elementTop = element.getBoundingClientRect().top + window.scrollY;
