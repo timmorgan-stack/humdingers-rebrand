@@ -1,33 +1,28 @@
 /*
- * Apply rotating brand colours to newsletter signup bars
- * Colour is based on page pathname for consistency across refreshes
+ * Picks a brand colour for the newsletter signup bar, re-rolled on each load.
+ *
+ * Only the palette colours that hold up as text on a white band are used.
+ * Contrast against #FFF: chocolate 15.0, blueberry 10.1, olive 7.3, kale 4.9
+ * all clear WCAG AA (4.5). Excluded: custard 1.7, strawberry 2.1, fish 2.2 —
+ * far too pale; and tomato 4.4, which is marginally under AA for the bold 16px
+ * "Subscribe" label. Re-add tomato if that label grows past 18.66px bold.
+ *
+ * Sets --nl-color; the stylesheet decides what that colour is applied to.
  */
 (function () {
-  var colors = [
-    'var(--color-kale)',
-    'var(--color-tomato)',
-    'var(--color-blueberry)',
-    'var(--color-olive)',
-    'var(--color-strawberry)',
-    'var(--color-chocolate)',
-    'var(--color-custard)',
-    'var(--color-fish)'
+  var READABLE_ON_PAPER = [
+    '--color-kale',
+    '--color-blueberry',
+    '--color-olive',
+    '--color-chocolate'
   ];
 
-  var path = window.location.pathname;
-  var hash = 0;
-  for (var i = 0; i < path.length; i++) {
-    hash = ((hash << 5) - hash) + path.charCodeAt(i);
-    hash = hash & hash; // Convert to 32bit integer
-  }
-  var colorIndex = Math.abs(hash) % colors.length;
-  var selectedColor = colors[colorIndex];
+  var bars = document.querySelectorAll('.newsletter-row');
+  if (!bars.length) return;
 
-  var style = document.createElement('style');
-  style.textContent = '.newsletter-band-sm { --nl-color: ' + selectedColor + '; }' +
-    '.newsletter-band-sm h3, .newsletter-band-sm .eyebrow { color: ' + selectedColor + '; }' +
-    '.newsletter-band-sm input[type="email"] { border-color: ' + selectedColor + '; color: ' + selectedColor + '; }' +
-    '.newsletter-band-sm input[type="email"]::placeholder { color: ' + selectedColor + '; opacity: 0.6; }' +
-    '.newsletter-band-sm .btn-solid { background: ' + selectedColor + '; color: var(--color-paper); border-color: ' + selectedColor + '; }';
-  document.head.appendChild(style);
+  var pick = READABLE_ON_PAPER[Math.floor(Math.random() * READABLE_ON_PAPER.length)];
+
+  Array.prototype.forEach.call(bars, function (bar) {
+    bar.style.setProperty('--nl-color', 'var(' + pick + ')');
+  });
 })();
