@@ -430,8 +430,29 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   flex-direction: column;
 }
 
-/* Keyline text with randomized brand colours (set via keyline-colors.js) */
-.keyline-text {
+/* Keyline text with randomized brand colours (set via keyline-colors.js).
+   Applied to .keyline-text explicitly, and automatically to the opening
+   paragraph of any body-copy block — :first-of-type covers both "lone
+   paragraph" and "first of several", which is the same selector. */
+/* The opt-out list sits inside :not(:where(...)) — :where() contributes no
+   specificity, so these exclusions cannot lose a specificity fight with the
+   rule they are qualifying (a separate override block would, and did).
+   Excluded are labels, captions, decorative script, and paragraphs inside a
+   component that already carries its own rule or border.
+   Caveat: :not() does not re-rank :first-of-type. Where a block's opening
+   paragraph is excluded (e.g. a .script line), the body copy that should
+   carry the accent needs .keyline-text set on it explicitly. */
+.keyline-text,
+.band p:first-of-type:not(:where(
+    .script, .placeholder-tag,
+    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *,
+    .contact-intro *, .menu-category *, blockquote *, form *
+  )),
+.band-sm p:first-of-type:not(:where(
+    .script, .placeholder-tag,
+    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *,
+    .contact-intro *, .menu-category *, blockquote *, form *
+  )) {
   border-left: 4px solid var(--keyline-color, var(--color-ink));
   padding-left: 1em;
   min-height: 50px;
