@@ -690,7 +690,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .stat-card .num { margin-bottom: 0; }
 .stat-card p { margin: 0; }
 .stat-figure { display: flex; align-items: center; gap: 12px; }
-.stat-icon { width: 32px; height: 32px; flex-shrink: 0; }
+.stat-icon { width: 46px; height: 46px; flex-shrink: 0; }
 .stat-row-stacked.stat-cards { gap: 14px; }
 @media (max-width: 900px) {
   .stat-card { grid-template-columns: 1fr; gap: 6px; }

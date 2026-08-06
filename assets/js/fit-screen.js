@@ -19,7 +19,8 @@
  */
 (function () {
   var MIN_WIDTH = 901;
-  var SCALE_FLOOR = 0.8; // gentler than this and text gets too small — page instead
+  var SCALE_FLOOR = 0.8;
+  var MIN_READABLE_SCALE = 0.9; // below this, grow the panel rather than shrink the text
 
   function isDesktop() {
     return window.innerWidth >= MIN_WIDTH;
@@ -252,7 +253,11 @@
     var noScroll = section.hasAttribute('data-fit-noscroll');
     var scale = budget / natural;
     if (noScroll) {
-      scale = Math.max(scale, 0.55);
+      // Only ever shrink a little. Past this the copy stops being comfortably
+      // readable on smaller laptops, so the panel is allowed to run taller
+      // than one screen instead — readable content beats a rigid one-screen
+      // rule.
+      if (scale < MIN_READABLE_SCALE) return;
       applyScale(body, bodyNatural, scale);
       if (siblingImg) siblingImg.style.height = (imgNatural * scale) + 'px';
       return;
