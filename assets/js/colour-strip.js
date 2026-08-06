@@ -49,21 +49,17 @@
 
   var randomized = shuffleWithConstraint(colors);
 
-  // Build the gradient with 38px colour + 10px gap pattern
+  // Build the gradient without gaps - solid colours only
   var gradientStops = [];
-  var currentPos = 0;
+  var segmentHeight = 48; // Height per colour segment (48px per colour)
 
   for (var i = 0; i < randomized.length; i++) {
     var color = randomized[i];
-    var nextPos = currentPos + 38;
-    var gapEnd = nextPos + 10;
+    var startPos = i * segmentHeight;
+    var endPos = (i + 1) * segmentHeight;
 
-    gradientStops.push('var(' + color.var + ') ' + currentPos + 'px');
-    gradientStops.push('var(' + color.var + ') ' + nextPos + 'px');
-    gradientStops.push('transparent ' + nextPos + 'px');
-    gradientStops.push('transparent ' + gapEnd + 'px');
-
-    currentPos = gapEnd;
+    gradientStops.push('var(' + color.var + ') ' + startPos + 'px');
+    gradientStops.push('var(' + color.var + ') ' + endPos + 'px');
   }
 
   var gradient = 'repeating-linear-gradient(to bottom, ' + gradientStops.join(', ') + ')';
