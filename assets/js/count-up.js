@@ -36,7 +36,14 @@
     function frame(now) {
       if (startTime === null) startTime = now;
       var t = Math.min((now - startTime) / DURATION, 1);
-      var eased = 1 - Math.pow(1 - t, 3); // fast out of the gate, easing to a stop
+      // Start at normal pace, then slow dramatically from 60% onwards
+      var eased;
+      if (t < 0.6) {
+        eased = t / 0.6; // Linear pace for first 60%
+      } else {
+        var remaining = (t - 0.6) / 0.4;
+        eased = 0.6 + 0.4 * (1 - Math.pow(1 - remaining, 4)); // Strong ease-out for final 40%
+      }
       if (t < 1) {
         render(Math.round(target * eased));
         requestAnimationFrame(frame);
