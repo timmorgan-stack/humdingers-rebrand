@@ -1063,6 +1063,26 @@ footer.site-footer {
 .newsletter-form-light input[type="email"]::placeholder { color: rgba(58,32,19,0.55); }
 .newsletter-form-light .btn-solid { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
 
+/* Newsletter bar with rotating brand colours */
+.newsletter-coloured {
+  --nl-color: var(--color-kale);
+}
+.newsletter-coloured h3,
+.newsletter-coloured .eyebrow { color: var(--nl-color); }
+.newsletter-coloured input[type="email"] { border-color: var(--nl-color); color: var(--nl-color); }
+.newsletter-coloured input[type="email"]::placeholder { color: var(--nl-color); opacity: 0.6; }
+.newsletter-coloured .btn-solid { background: var(--nl-color); color: var(--color-paper); border-color: var(--nl-color); }
+
+/* Rotate colours per page via nth-of-type or data-attribute */
+body:nth-of-type(1) .newsletter-coloured { --nl-color: var(--color-kale); }
+body:nth-of-type(2) .newsletter-coloured { --nl-color: var(--color-tomato); }
+body:nth-of-type(3) .newsletter-coloured { --nl-color: var(--color-blueberry); }
+body:nth-of-type(4) .newsletter-coloured { --nl-color: var(--color-olive); }
+body:nth-of-type(5) .newsletter-coloured { --nl-color: var(--color-strawberry); }
+body:nth-of-type(6) .newsletter-coloured { --nl-color: var(--color-chocolate); }
+body:nth-of-type(7) .newsletter-coloured { --nl-color: var(--color-custard); }
+body:nth-of-type(8) .newsletter-coloured { --nl-color: var(--color-fish); }
+
 /* ---------------- Contact page ---------------- */
 /* One band painted in two tones rather than two sections, so the enquiry
    form card can start at the top of the page and run across the colour
