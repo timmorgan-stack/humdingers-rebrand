@@ -1,9 +1,17 @@
 /*
- * Randomize keyline colours with constraint that consecutive paragraphs in same group get same colour
- * Groups by parent container so related paragraphs share a colour
+ * Assigns a brand colour to each left keyline, re-rolled on every page load.
+ *
+ * Grouping is per <section>: every keylined paragraph within one section shares
+ * a colour, so a block of related copy reads as one group, and adjacent
+ * sections get different colours.
+ *
+ * Which paragraphs count is decided by the stylesheet, not duplicated here —
+ * we query the same selectors and then keep only the elements that actually
+ * ended up with a left border, so the CSS opt-out list stays the single source
+ * of truth.
  */
 (function () {
-  var colors = [
+  var COLORS = [
     '--color-kale',
     '--color-tomato',
     '--color-blueberry',
@@ -14,48 +22,37 @@
     '--color-fish'
   ];
 
-  function getRandomColor() {
-    return colors[Math.floor(Math.random() * colors.length)];
+  var SELECTOR = '.keyline-text, .band p:first-of-type, .band-sm p:first-of-type, .service-item p';
+
+  // Shuffled deck, refilled when exhausted, so a page cycles all eight colours
+  // before repeating rather than landing on the same one twice by chance.
+  var deck = [];
+  function nextColor() {
+    if (!deck.length) {
+      deck = COLORS.slice();
+      for (var i = deck.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = deck[i]; deck[i] = deck[j]; deck[j] = tmp;
+      }
+    }
+    return deck.pop();
   }
 
-  // Group keyline-text elements by their parent container
-  var containers = {};
-  var keylineElements = document.querySelectorAll('.keyline-text');
+  var groups = new Map();
 
-  keylineElements.forEach(function (el) {
-    var parent = el.closest('section') || el.closest('.band') || el.parentElement;
-    var parentKey = parent ? parent.id || parent.className : 'default';
+  Array.prototype.forEach.call(document.querySelectorAll(SELECTOR), function (el) {
+    // The stylesheet decides eligibility: no border means an opt-out matched.
+    if (parseFloat(getComputedStyle(el).borderLeftWidth) === 0) return;
 
-    if (!containers[parentKey]) {
-      containers[parentKey] = {
-        color: getRandomColor(),
-        elements: []
-      };
-    }
-
-    containers[parentKey].elements.push(el);
+    var section = el.closest('section') || el.parentElement;
+    if (!groups.has(section)) groups.set(section, []);
+    groups.get(section).push(el);
   });
 
-  // Apply the grouped colour to all keyline elements in each container
-  Object.keys(containers).forEach(function (key) {
-    var color = containers[key].color;
-    containers[key].elements.forEach(function (el) {
+  groups.forEach(function (elements) {
+    var color = nextColor();
+    elements.forEach(function (el) {
       el.style.setProperty('--keyline-color', 'var(' + color + ')');
     });
-  });
-
-  // Also randomize service-item paragraph colours
-  var serviceItems = document.querySelectorAll('.service-item p');
-  var serviceColors = {};
-
-  serviceItems.forEach(function (el, index) {
-    var parent = el.closest('.service-grid') || el.parentElement;
-    var parentKey = parent ? parent.id || parent.className : 'service-' + index;
-
-    if (!serviceColors[parentKey]) {
-      serviceColors[parentKey] = getRandomColor();
-    }
-
-    el.style.setProperty('--keyline-color', 'var(' + serviceColors[parentKey] + ')');
   });
 })();
