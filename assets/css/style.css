@@ -882,23 +882,57 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .stat-row-stacked p { font-size: 0.95rem; opacity: 0.85; }
 /* Boxed variant — keeps a column of figures reading as a tidy set rather
    than loose text floating beside a photo */
+/* Stat pill: figure on the left on paper, the fact on the right on a light
+   palette wash, split by a vertical rule. Each pill takes a light/dark pair
+   via --stat-light / --stat-dark; both are palette colours and every pairing
+   clears WCAG AA (fish/blueberry 4.7, custard/chocolate 9.1,
+   strawberry/blueberry 4.8). */
 .stat-card {
-  border: 2px solid currentColor;
+  --stat-light: var(--color-fish);
+  --stat-dark: var(--color-blueberry);
+  border: 2px solid var(--stat-dark);
   border-radius: var(--radius-md);
-  padding: 18px 22px;
-  /* Split in two: figure on the left, what it means on the right */
+  color: var(--stat-dark);
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  align-items: center;
+  gap: 0;
+  align-items: stretch;
+  /* Clips the fact panel's wash to the rounded corners */
+  overflow: hidden;
 }
 .stat-card .num { margin-bottom: 0; }
-.stat-card p { margin: 0; }
-.stat-figure { display: flex; align-items: center; gap: 12px; }
+.stat-card p {
+  margin: 0;
+  padding: 18px 22px;
+  background: var(--stat-light);
+  color: var(--stat-dark);
+  /* Same face as the "Our impact" eyebrow */
+  font-family: var(--font-script);
+  font-size: 1.35rem;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+}
+/* Icon sits above the number, both centred in the column. The figure takes its
+   own palette colour, drawn separately from the fact panel's pairing. */
+.stat-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 18px 22px;
+  border-right: 2px solid var(--stat-dark);
+  color: var(--stat-figure, var(--stat-dark));
+}
 .stat-icon { width: 46px; height: 46px; flex-shrink: 0; }
 .stat-row-stacked.stat-cards { gap: 14px; }
+
 @media (max-width: 900px) {
-  .stat-card { grid-template-columns: 1fr; gap: 6px; }
+  .stat-card { grid-template-columns: 1fr; }
+  /* Stacked, the divider belongs under the figure rather than beside it */
+  .stat-figure { border-right: 0; border-bottom: 2px solid var(--stat-dark); }
 }
 
 .list-plain { list-style: none; margin: 0; padding: 0; }
