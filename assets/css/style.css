@@ -235,20 +235,25 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .nav-toggle span::after { top: 8px; }
 .header-phone { font-family: var(--font-display); font-weight: 700; white-space: nowrap; }
 
-/* ---------------- Colour-block sections ---------------- */
-.band { padding: 96px 0; }
-.band-sm { padding: 56px 0; }
-.bg-kale { background: var(--color-kale); color: var(--color-paper); }
-.bg-tomato { background: var(--color-tomato); color: var(--color-paper); }
-.bg-blueberry { background: var(--color-blueberry); color: var(--color-fish); }
-.bg-blueberry-white { background: var(--color-blueberry); color: var(--color-paper); }
-.bg-olive { background: var(--color-olive); color: var(--color-custard); }
-.bg-strawberry { background: var(--color-strawberry); color: var(--color-chocolate); }
-.bg-chocolate { background: var(--color-chocolate); color: var(--color-custard); }
-.bg-custard { background: var(--color-custard); color: var(--color-chocolate); }
-.bg-fish { background: var(--color-fish); color: var(--color-blueberry); }
-.bg-ink { background: var(--color-ink); color: var(--color-paper); }
-.bg-paper { background: var(--color-paper); color: var(--color-ink); }
+/* Redesigned colour system: white backgrounds throughout, colour roles for text/accents only */
+.band { padding: 72px 0; background: var(--color-paper); color: var(--color-ink); }
+.band-sm { padding: 40px 0; background: var(--color-paper); color: var(--color-ink); }
+.band h2, .band-sm h2 { color: var(--color-ink); }
+.band h3, .band-sm h3 { color: var(--color-ink); }
+.band h4, .band-sm h4 { color: var(--color-ink); }
+
+/* Colour roles: map old .bg-* classes to text/border treatments instead of background blocks */
+.bg-kale { --role-accent: var(--color-kale); }
+.bg-tomato { --role-accent: var(--color-tomato); }
+.bg-blueberry { --role-accent: var(--color-blueberry); }
+.bg-blueberry-white { --role-accent: var(--color-blueberry); }
+.bg-olive { --role-accent: var(--color-olive); }
+.bg-strawberry { --role-accent: var(--color-strawberry); }
+.bg-chocolate { --role-accent: var(--color-chocolate); }
+.bg-custard { --role-accent: var(--color-custard); }
+.bg-fish { --role-accent: var(--color-fish); }
+.bg-ink { --role-accent: var(--color-ink); }
+.bg-paper { --role-accent: var(--color-paper); }
 
 /* ---------------- Hero ---------------- */
 .hero {
@@ -414,7 +419,25 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   gap: 32px;
 }
 .service-item h4 { font-size: 1.15rem; margin-bottom: 0.3em; }
-.service-item p { font-size: 0.95rem; opacity: 0.85; margin: 0; }
+.service-item p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin: 0;
+  border-left: 4px solid var(--keyline-color, var(--color-ink));
+  padding-left: 1em;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keyline text with randomized brand colours (set via keyline-colors.js) */
+.keyline-text {
+  border-left: 4px solid var(--keyline-color, var(--color-ink));
+  padding-left: 1em;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+}
 
 /* ---------------- Venue list ---------------- */
 .venue-grid {
@@ -558,7 +581,14 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   font-weight: 700;
   font-size: 1.05rem;
   flex-grow: 1;
+  color: var(--color-ink);
 }
+/* Colour rotate through brand palette */
+.press-grid .press-card:nth-child(1) .headline { color: var(--color-fish); }
+.press-grid .press-card:nth-child(2) .headline { color: var(--color-kale); }
+.press-grid .press-card:nth-child(3) .headline { color: var(--color-tomato); }
+.press-grid .press-card:nth-child(4) .headline { color: var(--color-custard); }
+.press-grid .press-card:nth-child(5) .headline { color: var(--color-olive); }
 .press-card .press-meta {
   display: flex;
   justify-content: space-between;
@@ -568,23 +598,164 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .press-card .press-meta a { font-weight: 700; text-decoration: underline; opacity: 1; }
 
-/* ---------------- Wedding case studies ---------------- */
-.couples-grid {
+/* Masonry-style wedding photo grid — 4 couples × 4 photos = 16 images arranged as interlocking squares */
+.weddings-masonry {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: auto;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+.wedding-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-ink);
+}
+.wedding-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+.wedding-photo:hover img { opacity: 0.9; }
+
+/* Grid sizing: create a balanced square layout with varying sizes */
+.wedding-photo.size-1 { grid-column: span 1; grid-row: span 1; aspect-ratio: 1; }
+.wedding-photo.size-2 { grid-column: span 2; grid-row: span 2; aspect-ratio: 1; }
+
+/* Rowena & Sam — large featured (span 2x2) */
+.wedding-photo:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+/* Rowena additional photos */
+.wedding-photo:nth-child(2) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(3) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(4) { grid-column: span 1; grid-row: span 1; }
+
+/* Ellie & Andy — featured (2x2) */
+.wedding-photo:nth-child(5) { grid-column: span 2; grid-row: span 2; }
+/* Ellie additional photos */
+.wedding-photo:nth-child(6) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(7) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(8) { grid-column: span 1; grid-row: span 1; }
+
+/* Jack & James — featured (2x2) */
+.wedding-photo:nth-child(9) { grid-column: span 2; grid-row: span 2; }
+/* Jack additional photos */
+.wedding-photo:nth-child(10) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(11) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(12) { grid-column: span 1; grid-row: span 1; }
+
+/* Fiona & Chris — featured (2x2) */
+.wedding-photo:nth-child(13) { grid-column: span 2; grid-row: span 2; }
+/* Fiona additional photos */
+.wedding-photo:nth-child(14) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(15) { grid-column: span 1; grid-row: span 1; }
+.wedding-photo:nth-child(16) { grid-column: span 1; grid-row: span 1; }
+
+.weddings-testimonials {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+/* Wedding panels with 4 images per couple */
+.wedding-panels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+}
+.wedding-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.wedding-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.wedding-grid img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+}
+.wedding-info {
+  flex-grow: 1;
+}
+.wedding-info h3 {
+  font-size: 1.3rem;
+  margin: 0 0 1em;
+  font-weight: 700;
+}
+.wedding-info blockquote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-style: italic;
+  padding: 16px;
+  background: rgba(0,0,0,0.03);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-strawberry);
+}
+.wedding-info blockquote p {
+  margin: 0;
+}
+
+.wedding-quote {
+  padding: 24px;
+  background: rgba(0,0,0,0.03);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-strawberry);
+}
+.wedding-quote blockquote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  font-style: italic;
+}
+.wedding-quote blockquote p {
+  margin: 0 0 0.5em;
+}
+.wedding-quote blockquote cite {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-top: 1em;
+}
+
+/* Legacy styles kept for backward compatibility */
+.couples-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+.couple-inline {
+  display: flex;
+  flex-direction: column;
   gap: 20px;
 }
-.couple-card {
-  display: block;
-  border: 3px solid currentColor;
-  border-radius: var(--radius-md);
-  padding: 22px 18px;
-  text-align: center;
-  font-family: var(--font-display);
-  font-weight: 700;
-  transition: transform 0.15s ease, background 0.15s ease;
+.couple-inline img {
+  width: 100%;
+  border-radius: var(--radius-lg);
 }
-.couple-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15); }
+.couple-inline blockquote {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+.couple-inline blockquote p {
+  margin: 0 0 0.5em;
+}
+.couple-inline blockquote cite {
+  display: block;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-top: 1em;
+}
 
 /* ---------------- Enquiry form (contact.html) ---------------- */
 .enquiry-form { display: flex; flex-direction: column; gap: 14px; margin-top: 16px; }
@@ -741,6 +912,8 @@ blockquote.testimonial {
   font-family: var(--font-display);
   font-size: 1.3rem;
   max-width: 60ch;
+  padding-left: 20px;
+  border-left: 4px solid var(--color-fish);
 }
 blockquote.testimonial cite {
   display: block;
@@ -751,9 +924,18 @@ blockquote.testimonial cite {
 }
 .testimonial-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 32px;
 }
+/* Rotate border colours through the testimonials for visual variety */
+.testimonial-grid blockquote:nth-child(1) { border-left-color: var(--color-fish); }
+.testimonial-grid blockquote:nth-child(2) { border-left-color: var(--color-kale); }
+.testimonial-grid blockquote:nth-child(3) { border-left-color: var(--color-tomato); }
+.testimonial-grid blockquote:nth-child(4) { border-left-color: var(--color-custard); }
+.testimonial-grid blockquote:nth-child(5) { border-left-color: var(--color-olive); }
+.testimonial-grid blockquote:nth-child(6) { border-left-color: var(--color-blueberry); }
+.testimonial-grid blockquote:nth-child(7) { border-left-color: var(--color-strawberry); }
+.testimonial-grid blockquote:nth-child(8) { border-left-color: var(--color-chocolate); }
 
 .illustration-figure {
   border-radius: var(--radius-lg);
@@ -901,6 +1083,26 @@ footer.site-footer {
 .newsletter-form-light input[type="email"] { border-color: var(--color-chocolate); color: var(--color-chocolate); }
 .newsletter-form-light input[type="email"]::placeholder { color: rgba(58,32,19,0.55); }
 .newsletter-form-light .btn-solid { background: var(--color-chocolate); color: var(--color-custard); border-color: var(--color-chocolate); }
+
+/* Newsletter bar with rotating brand colours */
+.newsletter-coloured {
+  --nl-color: var(--color-kale);
+}
+.newsletter-coloured h3,
+.newsletter-coloured .eyebrow { color: var(--nl-color); }
+.newsletter-coloured input[type="email"] { border-color: var(--nl-color); color: var(--nl-color); }
+.newsletter-coloured input[type="email"]::placeholder { color: var(--nl-color); opacity: 0.6; }
+.newsletter-coloured .btn-solid { background: var(--nl-color); color: var(--color-paper); border-color: var(--nl-color); }
+
+/* Rotate colours per page via nth-of-type or data-attribute */
+body:nth-of-type(1) .newsletter-coloured { --nl-color: var(--color-kale); }
+body:nth-of-type(2) .newsletter-coloured { --nl-color: var(--color-tomato); }
+body:nth-of-type(3) .newsletter-coloured { --nl-color: var(--color-blueberry); }
+body:nth-of-type(4) .newsletter-coloured { --nl-color: var(--color-olive); }
+body:nth-of-type(5) .newsletter-coloured { --nl-color: var(--color-strawberry); }
+body:nth-of-type(6) .newsletter-coloured { --nl-color: var(--color-chocolate); }
+body:nth-of-type(7) .newsletter-coloured { --nl-color: var(--color-custard); }
+body:nth-of-type(8) .newsletter-coloured { --nl-color: var(--color-fish); }
 
 /* ---------------- Contact page ---------------- */
 /* One band painted in two tones rather than two sections, so the enquiry
@@ -1219,16 +1421,21 @@ footer.site-footer {
   position: fixed;
   top: 0;
   bottom: 0;
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
 }
-/* The swatch ribbon — the footer .colour-strip rotated vertical, always the
-   same 8-colour order (see the style-guide comment above). */
+/* The swatch ribbon — the footer .colour-strip rotated vertical, with randomized
+   colour order variants to avoid similar colours appearing adjacent */
 .dot-col-left {
   left: 0;
-  width: 10px;
-  opacity: 0.9;
+  width: 20px;
+  opacity: 1;
+  z-index: 40;
   background-repeat: repeat-y;
+  /* Gaps stay transparent so whatever the strip sits over shows through —
+     white against the page bands, black against the footer */
+  background-color: transparent;
+  /* Default order — randomized per load by colour-strip.js */
   background-image: repeating-linear-gradient(
     to bottom,
     var(--color-kale) 0, var(--color-kale) 38px,
@@ -1249,6 +1456,7 @@ footer.site-footer {
     transparent 374px, transparent 384px
   );
 }
+
 /* A plain hairline on the right — balances the page without repeating the
    full colour treatment on both sides. */
 .dot-col-right {
