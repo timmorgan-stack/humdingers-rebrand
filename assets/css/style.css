@@ -438,7 +438,13 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   gap: 32px;
 }
 .service-item h4 { font-size: 1.15rem; margin-bottom: 0.3em; }
-.service-item p { font-size: 0.95rem; opacity: 0.85; margin: 0; }
+.service-item p {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin: 0;
+  border-left: 4px solid var(--color-ink);
+  padding-left: 1em;
+}
 
 /* ---------------- Venue list ---------------- */
 .venue-grid {
@@ -582,7 +588,14 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   font-weight: 700;
   font-size: 1.05rem;
   flex-grow: 1;
+  color: var(--color-ink);
 }
+/* Colour rotate through brand palette */
+.press-grid .press-card:nth-child(1) .headline { color: var(--color-fish); }
+.press-grid .press-card:nth-child(2) .headline { color: var(--color-kale); }
+.press-grid .press-card:nth-child(3) .headline { color: var(--color-tomato); }
+.press-grid .press-card:nth-child(4) .headline { color: var(--color-custard); }
+.press-grid .press-card:nth-child(5) .headline { color: var(--color-olive); }
 .press-card .press-meta {
   display: flex;
   justify-content: space-between;
@@ -656,7 +669,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   padding: 24px;
   background: rgba(0,0,0,0.03);
   border-radius: var(--radius-md);
-  border-left: 3px solid var(--color-strawberry);
+  border-left: 4px solid var(--color-strawberry);
 }
 .wedding-quote blockquote {
   margin: 0;
