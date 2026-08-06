@@ -36,10 +36,10 @@
     function frame(now) {
       if (startTime === null) startTime = now;
       var t = Math.min((now - startTime) / DURATION, 1);
-      // easeOutQuart: clears 60% of the range in the first fifth of the run,
-      // then spends the remaining four fifths crawling through the last 40% —
-      // so the figure visibly decelerates into its final number.
-      var eased = 1 - Math.pow(1 - t, 4);
+      // Steep ease-out: clears 60% of the range in the first ~14% of the run,
+      // then spends the remaining ~86% crawling through the last 40%, so the
+      // figure decelerates hard into its final number.
+      var eased = 1 - Math.pow(1 - t, 7);
       if (t < 1) {
         render(Math.round(target * eased));
         requestAnimationFrame(frame);

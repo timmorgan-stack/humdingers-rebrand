@@ -255,25 +255,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .bg-ink { --role-accent: var(--color-ink); }
 .bg-paper { --role-accent: var(--color-paper); }
 
-/* Optional accent border for sections if desired */
-.band.bg-kale::before,
-.band.bg-tomato::before,
-.band.bg-blueberry::before,
-.band.bg-olive::before,
-.band.bg-strawberry::before,
-.band.bg-chocolate::before,
-.band.bg-custard::before,
-.band.bg-fish::before,
-.band.bg-ink::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 4px;
-  height: 100%;
-  background: var(--role-accent);
-}
-
 /* ---------------- Hero ---------------- */
 .hero {
   display: grid;
