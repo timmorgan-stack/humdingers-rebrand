@@ -1260,13 +1260,14 @@ footer.site-footer {
   z-index: -1;
   pointer-events: none;
 }
-/* The swatch ribbon — the footer .colour-strip rotated vertical, always the
-   same 8-colour order (see the style-guide comment above). */
+/* The swatch ribbon — the footer .colour-strip rotated vertical, with randomized
+   colour order variants to avoid similar colours appearing adjacent */
 .dot-col-left {
   left: 0;
   width: 10px;
   opacity: 0.9;
   background-repeat: repeat-y;
+  /* Default order (kale, tomato, blueberry, olive, strawberry, chocolate, custard, fish) */
   background-image: repeating-linear-gradient(
     to bottom,
     var(--color-kale) 0, var(--color-kale) 38px,
@@ -1284,6 +1285,73 @@ footer.site-footer {
     var(--color-custard) 288px, var(--color-custard) 326px,
     transparent 326px, transparent 336px,
     var(--color-fish) 336px, var(--color-fish) 374px,
+    transparent 374px, transparent 384px
+  );
+}
+
+/* Colour order variations to randomize across pages while avoiding similar colours next to each other */
+.dot-col-order-2 {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-fish) 0, var(--color-fish) 38px,
+    transparent 38px, transparent 48px,
+    var(--color-kale) 48px, var(--color-kale) 86px,
+    transparent 86px, transparent 96px,
+    var(--color-custard) 96px, var(--color-custard) 134px,
+    transparent 134px, transparent 144px,
+    var(--color-blueberry) 144px, var(--color-blueberry) 182px,
+    transparent 182px, transparent 192px,
+    var(--color-chocolate) 192px, var(--color-chocolate) 230px,
+    transparent 230px, transparent 240px,
+    var(--color-strawberry) 240px, var(--color-strawberry) 278px,
+    transparent 278px, transparent 288px,
+    var(--color-olive) 288px, var(--color-olive) 326px,
+    transparent 326px, transparent 336px,
+    var(--color-tomato) 336px, var(--color-tomato) 374px,
+    transparent 374px, transparent 384px
+  );
+}
+
+.dot-col-order-3 {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-strawberry) 0, var(--color-strawberry) 38px,
+    transparent 38px, transparent 48px,
+    var(--color-blueberry) 48px, var(--color-blueberry) 86px,
+    transparent 86px, transparent 96px,
+    var(--color-tomato) 96px, var(--color-tomato) 134px,
+    transparent 134px, transparent 144px,
+    var(--color-custard) 144px, var(--color-custard) 182px,
+    transparent 182px, transparent 192px,
+    var(--color-olive) 192px, var(--color-olive) 230px,
+    transparent 230px, transparent 240px,
+    var(--color-fish) 240px, var(--color-fish) 278px,
+    transparent 278px, transparent 288px,
+    var(--color-chocolate) 288px, var(--color-chocolate) 326px,
+    transparent 326px, transparent 336px,
+    var(--color-kale) 336px, var(--color-kale) 374px,
+    transparent 374px, transparent 384px
+  );
+}
+
+.dot-col-order-4 {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--color-chocolate) 0, var(--color-chocolate) 38px,
+    transparent 38px, transparent 48px,
+    var(--color-olive) 48px, var(--color-olive) 86px,
+    transparent 86px, transparent 96px,
+    var(--color-fish) 96px, var(--color-fish) 134px,
+    transparent 134px, transparent 144px,
+    var(--color-tomato) 144px, var(--color-tomato) 182px,
+    transparent 182px, transparent 192px,
+    var(--color-custard) 192px, var(--color-custard) 230px,
+    transparent 230px, transparent 240px,
+    var(--color-kale) 240px, var(--color-kale) 278px,
+    transparent 278px, transparent 288px,
+    var(--color-blueberry) 288px, var(--color-blueberry) 326px,
+    transparent 326px, transparent 336px,
+    var(--color-strawberry) 336px, var(--color-strawberry) 374px,
     transparent 374px, transparent 384px
   );
 }
