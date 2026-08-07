@@ -136,6 +136,33 @@
     });
   })();
 
+  /* ---- Testimonial keylines ----------------------------------------------
+     Each card's left rule takes its own colour from a shuffled full-palette
+     deck, re-rolled per load; the deck cycles so adjacent cards differ. */
+  (function testimonialKeylines() {
+    var cards = document.querySelectorAll('blockquote.testimonial');
+    if (!cards.length) return;
+    var deck = [];
+    Array.prototype.forEach.call(cards, function (card) {
+      if (!deck.length) deck = shuffled(ALL);
+      card.style.setProperty('--keyline-color', v(deck.pop()));
+    });
+  })();
+
+  /* ---- Inline wordmarks ---------------------------------------------------
+     The small Humdingers wordmarks on content cards re-roll their colour on
+     each load, distinct from one another, restricted to the variants that
+     read on the white page (the light three are too pale for a wordmark). */
+  (function pathMarks() {
+    var marks = document.querySelectorAll('img.path-mark');
+    if (!marks.length) return;
+    var deck = shuffled(['kale', 'tomato', 'blueberry', 'olive', 'chocolate']);
+    Array.prototype.forEach.call(marks, function (img, i) {
+      var pick = deck[i % deck.length];
+      img.src = img.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+    });
+  })();
+
   /* ---- Footer colourway --------------------------------------------------
      One light colour per load — fish, custard or strawberry — applied
      together to the eyebrow, the column headings and the logo file, so the

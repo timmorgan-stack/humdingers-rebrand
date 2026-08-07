@@ -1115,7 +1115,7 @@ blockquote.testimonial {
   font-size: 1.3rem;
   max-width: 60ch;
   padding-left: 20px;
-  border-left: 4px solid var(--color-fish);
+  border-left: 4px solid var(--keyline-color, var(--color-fish));
 }
 blockquote.testimonial cite {
   display: block;
@@ -1130,14 +1130,6 @@ blockquote.testimonial cite {
   gap: 32px;
 }
 /* Rotate border colours through the testimonials for visual variety */
-.testimonial-grid blockquote:nth-child(1) { border-left-color: var(--color-fish); }
-.testimonial-grid blockquote:nth-child(2) { border-left-color: var(--color-kale); }
-.testimonial-grid blockquote:nth-child(3) { border-left-color: var(--color-tomato); }
-.testimonial-grid blockquote:nth-child(4) { border-left-color: var(--color-custard); }
-.testimonial-grid blockquote:nth-child(5) { border-left-color: var(--color-olive); }
-.testimonial-grid blockquote:nth-child(6) { border-left-color: var(--color-blueberry); }
-.testimonial-grid blockquote:nth-child(7) { border-left-color: var(--color-strawberry); }
-.testimonial-grid blockquote:nth-child(8) { border-left-color: var(--color-chocolate); }
 
 .illustration-figure {
   border-radius: var(--radius-lg);
@@ -1468,7 +1460,7 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 /* Small role-coloured wordmark used as a corner mark on the two-ways cards —
    ties each card back to its role colour via the matching logo variant
    rather than an unrelated accent. */
-.path-mark { height: 22px; width: auto; opacity: 0.92; margin-bottom: 18px; }
+.path-mark { height: 34px; width: auto; opacity: 0.92; margin-bottom: 18px; }
 
 /* Quote cards for testimonials — a role-coloured rule rather than a full
    strawberry-filled band, so the colour still reads as "celebration" without
