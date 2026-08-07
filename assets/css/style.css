@@ -317,6 +317,33 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   }
   .band[id] > .wrap { width: 100%; }
 }
+/* Narrow viewports flow naturally, so the desktop panel paddings would read
+   as long dead scrolls of white. Close them up, and mark each panel break
+   with the footer's horizontal swatch strip (same fixed colour order)
+   instead of empty space. */
+@media (max-width: 900px) {
+  .band { padding: 44px 0; }
+  .band-sm { padding: 32px 0; }
+  main > section.band:not(:first-child),
+  main > section.band-sm:not(:first-child) { padding-top: 0; }
+  main > section.band:not(:first-child)::before,
+  main > section.band-sm:not(:first-child)::before {
+    content: "";
+    display: block;
+    height: 14px;
+    margin-bottom: 44px;
+    background: linear-gradient(to right,
+      var(--color-kale)       0 12.5%,
+      var(--color-tomato)     12.5% 25%,
+      var(--color-blueberry)  25% 37.5%,
+      var(--color-olive)      37.5% 50%,
+      var(--color-strawberry) 50% 62.5%,
+      var(--color-chocolate)  62.5% 75%,
+      var(--color-custard)    75% 87.5%,
+      var(--color-fish)       87.5% 100%);
+  }
+}
+
 .band h2, .band-sm h2 { color: var(--color-ink); }
 .band h3, .band-sm h3 { color: var(--color-ink); }
 .band h4, .band-sm h4 { color: var(--color-ink); }
