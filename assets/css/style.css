@@ -699,9 +699,16 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 
 /* ---------------- Press cards ("As featured in") ---------------- */
 .press-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  /* Five cards balance as 3 + 2 with the short row centred — flex-wrap with
+     a fixed basis gives the pyramid; grid columns left a lopsided gap. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 24px;
+}
+.press-grid .press-card {
+  flex: 0 1 calc((100% - 48px) / 3);
+  min-width: 260px;
 }
 .press-card {
   display: flex;
@@ -728,12 +735,16 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   flex-grow: 1;
   color: var(--color-ink);
 }
-/* Colour rotate through brand palette */
-.press-grid .press-card:nth-child(1) .headline { color: var(--color-fish); }
-.press-grid .press-card:nth-child(2) .headline { color: var(--color-kale); }
-.press-grid .press-card:nth-child(3) .headline { color: var(--color-tomato); }
-.press-grid .press-card:nth-child(4) .headline { color: var(--color-custard); }
-.press-grid .press-card:nth-child(5) .headline { color: var(--color-olive); }
+/* Ink headlines; the brand colour moves into a left keyline per card */
+.press-card .headline {
+  border-left: 4px solid var(--color-ink);
+  padding-left: 14px;
+}
+.press-grid .press-card:nth-child(1) .headline { border-left-color: var(--color-fish); }
+.press-grid .press-card:nth-child(2) .headline { border-left-color: var(--color-kale); }
+.press-grid .press-card:nth-child(3) .headline { border-left-color: var(--color-tomato); }
+.press-grid .press-card:nth-child(4) .headline { border-left-color: var(--color-custard); }
+.press-grid .press-card:nth-child(5) .headline { border-left-color: var(--color-olive); }
 .press-card .press-meta {
   display: flex;
   justify-content: space-between;
