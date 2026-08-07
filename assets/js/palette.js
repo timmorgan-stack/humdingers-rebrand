@@ -185,10 +185,13 @@
       // Footer sits on ink — the readable-on-paper deck would go invisible
       // there; its colourway is rolled separately.
       if (el.closest('footer')) return;
-      // h4s that follow a panel icon join the roll even when currently black.
+      // Eyebrows always carry a brand colour; h4s that follow a panel icon
+      // join the roll even when currently black. Other headings only re-roll
+      // if they already sit in a palette colour.
+      var isEyebrow = el.classList.contains('eyebrow');
       var sib = el.previousElementSibling;
       var afterIcon = sib && sib.classList && sib.classList.contains('panel-icon');
-      if (!afterIcon && !PALETTE_RGB[getComputedStyle(el).color]) return;
+      if (!isEyebrow && !afterIcon && !PALETTE_RGB[getComputedStyle(el).color]) return;
       el.style.color = 'var(' + Decks.draw('headings', READABLE) + ')';
     });
   })();
