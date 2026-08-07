@@ -1460,7 +1460,7 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 /* Small role-coloured wordmark used as a corner mark on the two-ways cards —
    ties each card back to its role colour via the matching logo variant
    rather than an unrelated accent. */
-.path-mark { height: 34px; width: auto; opacity: 0.92; margin-bottom: 18px; }
+.path-mark { height: 44px; width: auto; opacity: 0.92; margin-bottom: 18px; }
 
 /* Quote cards for testimonials — a role-coloured rule rather than a full
    strawberry-filled band, so the colour still reads as "celebration" without
