@@ -529,6 +529,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   grid-template-columns: auto 1fr;
   column-gap: 14px;
   align-items: center;
+  /* Pack rows to the top: without this, cards shorter than their grid row
+     stretch internally and their copy floats at different heights across
+     the row. */
+  align-content: start;
 }
 .service-item .panel-icon { grid-row: 1; margin: 0; width: 30px; height: 30px; }
 .service-item h4 { grid-row: 1; font-size: 1.15rem; margin: 0; }
