@@ -26,20 +26,25 @@
   function syncHeroMedia() {
     var hero = document.querySelector('.band-hero .hero');
     if (!hero) return;
-    var column = hero.querySelector(':scope > div:first-child');
     var figure = hero.querySelector('.hero-figure');
-    if (!column || !figure) return;
+    if (!figure) return;
     if (window.innerWidth <= 900) {
       figure.style.height = '';
       return;
     }
-    figure.style.height = column.getBoundingClientRect().height + 'px';
+    // One frame late, so hero-fit.js has finished any relocation first; the
+    // row (wrap) height is the slice both columns share.
+    requestAnimationFrame(function () {
+      figure.style.height = '';
+      figure.style.height = hero.getBoundingClientRect().height + 'px';
+    });
   }
 
   function relayout() { setStickyVar(); syncHeroMedia(); }
   relayout();
   window.addEventListener('resize', relayout);
   window.addEventListener('load', relayout);
+  window.addEventListener('hero-relayout', relayout);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
 
   // While a landing scroll animates, data-landing is set on <html>; images
