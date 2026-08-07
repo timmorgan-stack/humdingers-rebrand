@@ -688,6 +688,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   transition: transform 0.15s ease;
 }
 .press-card:hover { transform: translateY(-3px); }
+/* The whole card is the link: the Read article anchor stretches over it */
+.press-card { position: relative; }
+.press-card .press-meta a::after { content: ""; position: absolute; inset: 0; }
+.press-card:hover .press-meta a { text-decoration: underline; }
 .press-card .pub-mark {
   font-family: var(--font-logo);
   font-weight: 700;
@@ -1578,7 +1582,7 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .header-phone { display: none; }
   .btn-now { display: none; }
   .site-header .wrap { padding-top: 12px; padding-bottom: 12px; }
-  .site-header + section.band { padding-top: 41px; }
-  .site-header + section.band-sm { padding-top: 16px; }
+  main > section.band:first-child { padding-top: 41px; }
+  main > section.band-sm:first-child { padding-top: 16px; }
   .hero { min-height: auto; }
 }

@@ -118,6 +118,32 @@
     land(target);
   });
 
+  // Scroll-spy: when scrolling comes to rest, the URL's hash follows the
+  // panel under the viewport's midpoint (replaceState, so no history spam) —
+  // a reload or a shared link then returns to the same panel via the load
+  // lander below. Quiet while a landing animates; the hero clears the hash.
+  if (history.replaceState) {
+    var spyTimer = null;
+    window.addEventListener('scroll', function () {
+      if (spyTimer) clearTimeout(spyTimer);
+      spyTimer = setTimeout(function () {
+        spyTimer = null;
+        if (document.documentElement.hasAttribute('data-landing')) return;
+        var offset = stickyOffset();
+        var probe = document.elementFromPoint(
+          Math.floor(window.innerWidth / 2),
+          Math.floor(offset + (window.innerHeight - offset) / 2));
+        var section = probe && probe.closest('section.band[id], .band-hero');
+        if (!section) return;
+        if (section.id && window.location.hash !== '#' + section.id) {
+          history.replaceState(null, '', '#' + section.id);
+        } else if (!section.id && window.location.hash) {
+          history.replaceState(null, '', window.location.pathname + window.location.search);
+        }
+      }, 180);
+    }, { passive: true });
+  }
+
   // Arriving from another page with a hash: land it once layout has settled.
   window.addEventListener('load', function () {
     if (!window.location.hash) return;
