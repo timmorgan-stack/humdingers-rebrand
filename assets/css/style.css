@@ -1587,12 +1587,16 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   width: 1px;
   background: rgba(0,0,0,0.14);
 }
-/* The strip stays on all tablet and desktop sizes. Only phone-width screens
-   drop it, where the layout runs genuinely full-bleed. */
-@media (max-width: 767px) { .dot-col { display: none; } }
+/* The strip stays on every size down to small phones; only the very
+   narrowest screens drop it, where every pixel of width is content. */
+@media (max-width: 379px) { .dot-col { display: none; } }
 /* Below 1360px the page margins are gone and the ribbon overlaps the wrap's
    edge — widen the wrap's side padding (symmetric, so content stays centred)
-   to keep clear air between the 20px ribbon and where content starts. */
+   to keep clear air between the 20px ribbon and where content starts.
+   Phones get a slimmer allowance: width is scarcer there. */
+@media (min-width: 380px) and (max-width: 767px) {
+  .wrap { padding-left: 40px; padding-right: 40px; }
+}
 @media (min-width: 768px) and (max-width: 1360px) {
   .wrap { padding-left: 52px; padding-right: 52px; }
 }
@@ -1644,8 +1648,11 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .newsletter-form input[type="email"] { min-width: 0; flex: 1; }
   .definition { padding: 24px 20px; }
   /* Single-column collapse: the hero stacks text over media again — all the
-     desktop-only fit/compression logic stands down below 901px. */
+     desktop-only fit/compression logic stands down below 901px. Stacked,
+     the overflow card loses its desktop pinning margins, so it takes the
+     standard rhythm gap to breathe below the buttons. */
   .hero, .split { grid-template-columns: 1fr; }
+  .hero .hero-overflow { margin-top: var(--stack-gap); }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid, .press-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
