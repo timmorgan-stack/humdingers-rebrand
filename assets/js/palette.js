@@ -112,6 +112,27 @@
     });
   })();
 
+  /* ---- Brand-coloured headings -------------------------------------------
+     Any eyebrow or h1 already set in a palette colour re-rolls on each load.
+     Restricted to the five colours that hold 3:1 on paper at heading sizes
+     (custard 1.65, strawberry 2.1 and fish 2.15 fail even as large text).
+     Newsletter eyebrows are skipped — they follow their banner's own roll. */
+  (function brandHeadings() {
+    var PALETTE_RGB = {
+      'rgb(11, 130, 65)': 1, 'rgb(202, 84, 32)': 1, 'rgb(0, 69, 109)': 1,
+      'rgb(84, 91, 13)': 1, 'rgb(255, 145, 170)': 1, 'rgb(58, 32, 19)': 1,
+      'rgb(255, 191, 43)': 1, 'rgb(116, 183, 238)': 1
+    };
+    var READABLE = ['--color-kale', '--color-tomato', '--color-blueberry', '--color-olive', '--color-chocolate'];
+    var deck = [];
+    function next() { if (!deck.length) deck = shuffled(READABLE); return deck.pop(); }
+    document.querySelectorAll('.eyebrow, h1').forEach(function (el) {
+      if (el.closest('.newsletter-row')) return;
+      if (!PALETTE_RGB[getComputedStyle(el).color]) return;
+      el.style.color = 'var(' + next() + ')';
+    });
+  })();
+
   /* ---- Definition card (homepage) ---------------------------------------
      A light background paired with dark text, drawn from the pairings that
      clear AA for body copy. Paper backgrounds widen the pool. */
