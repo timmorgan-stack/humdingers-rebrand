@@ -320,6 +320,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
     flex-direction: column;
     justify-content: center;
     scroll-margin-top: var(--sticky-h, 80px);
+    /* Asymmetric padding (same total as 72/72) floats the centred content
+       20px above true centre — panels read very slightly top-weighted. */
+    padding-top: 52px;
+    padding-bottom: 92px;
   }
   .band[id] > .wrap { width: 100%; }
 }
@@ -364,7 +368,8 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 @media (min-width: 901px) {
   .band-hero {
     box-sizing: border-box;
-    padding: 32px 0;
+    /* Same 16px upward float as .band[id], same total as 32/32 */
+    padding: 16px 0 48px;
     /* The band fills the viewport below the header and centres the splash
        slice inside it — equal air above and below on every page. */
     min-height: calc(100dvh - var(--sticky-h, 80px));
@@ -513,7 +518,11 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   inset: 0;
   background: linear-gradient(to top, rgba(0,0,0,0.65), rgba(0,0,0,0.05));
   z-index: 1;
+  transition: opacity 0.3s ease;
 }
+/* Hover lifts the dim so the photo reads in full colour; a trace of the
+   gradient stays behind the caption for legibility. */
+.subbrand-card:hover::after { opacity: 0.3; }
 .subbrand-card > * { position: relative; z-index: 2; }
 .subbrand-card h3 { color: var(--color-paper); font-size: 1.8rem; margin-bottom: 4px; }
 .subbrand-card .tag {
