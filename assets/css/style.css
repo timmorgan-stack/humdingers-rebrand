@@ -46,6 +46,7 @@
   --font-logo: 'Lora', Georgia, serif;                 /* stand-in for custom wordmark */
   --font-body: 'Baloo 2', system-ui, sans-serif;
 
+  --stack-gap: 20px;
   --radius-lg: 28px;
   --radius-md: 16px;
   --container: 1180px;
@@ -68,10 +69,13 @@ h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
   line-height: 1.05;
-  margin: 0 0 0.4em;
+  /* --stack-gap is the one vertical rhythm: the space under a heading, under
+     a paragraph, and before a button are all the same 20px. */
+  margin: 0 0 var(--stack-gap);
   letter-spacing: -0.01em;
 }
-p { margin: 0 0 1em; }
+p { margin: 0 0 var(--stack-gap); }
+p:last-child { margin-bottom: 0; }
 #story .fit-screen-body p { font-size: 1.1rem; }
 .wrap {
   max-width: var(--container);
@@ -303,19 +307,37 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .bg-paper { --role-accent: var(--color-paper); }
 
 /* ---------------- Hero ---------------- */
+/* Every page's top panel shares one layout: the title group ranges top with
+   the hero image, the figure ranges top AND bottom with the content column,
+   and the band fills the viewport below the header (desktop) so the whole
+   hero — image included — scales to fit the space. */
+@media (min-width: 901px) {
+  .band-hero {
+    box-sizing: border-box;
+    min-height: calc(100dvh - var(--sticky-h, 80px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
 .hero {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
+  align-items: stretch;
   gap: 48px;
-  min-height: 64vh;
 }
+.hero .eyebrow { font-size: 1.6rem; margin-bottom: 8px; }
 .hero h1 { font-size: clamp(2.6rem, 5.5vw, 4.6rem); }
 .hero-lede { font-size: 1.2rem; max-width: 46ch; }
 .hero-figure {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 4/5;
+  /* Height comes from the stretched grid row, so the media always ranges
+     top and bottom with the text column and rescales with the viewport */
+  min-height: 0;
+}
+@media (max-width: 900px) {
+  .hero-figure { aspect-ratio: 4/3; }
 }
 .hero-figure img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -607,18 +629,13 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   width: 56px;
   height: 56px;
   border-radius: 12px;
-  overflow: hidden;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1ef;
 }
-.service-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  /* stylised duotone, echoing the flat, bold-colour brand illustrations
-     rather than a straight photo */
-  filter: grayscale(1) contrast(1.3) brightness(1.15);
-  mix-blend-mode: multiply;
-}
+.service-thumb .panel-icon { margin: 0; width: 30px; height: 30px; }
 
 /* ---------------- Press cards ("As featured in") ---------------- */
 .press-grid {
@@ -917,6 +934,15 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .menu-group .dish .name { font-weight: 700; font-size: 1.2rem; }
 .menu-group .dish .desc { opacity: 0.85; font-size: 1.05rem; margin-top: 0.15em; }
 .menu-group .dish .tags { font-size: 0.85rem; }
+
+/* Greyscale panel icons (inline SVG, stroke follows color) */
+.panel-icon {
+  width: 34px;
+  height: 34px;
+  display: block;
+  color: #595959;
+  margin-bottom: 12px;
+}
 
 /* ---------------- Generic layout helpers ---------------- */
 .split {
