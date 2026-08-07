@@ -649,9 +649,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
-/* One way per panel: a lone card keeps the two-up card width, centred,
-   rather than stretching across the whole wrap. */
-.path-grid-single { grid-template-columns: minmax(0, calc(50% - 14px)); justify-content: center; }
 .path-card {
   display: block;
   border-radius: var(--radius-lg);

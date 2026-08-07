@@ -53,6 +53,12 @@
         break;
       }
     }
+
+    // A kept column that outgrows the slice re-centres taller and would shift
+    // the title relative to other pages; hero-grown pins the wrap to the
+    // shared 10dvh top offset instead, so any growth — even a few px —
+    // spills downward only.
+    band.classList.toggle('hero-grown', column.scrollHeight > slice + 2);
   }
 
   var announce = function () { window.dispatchEvent(new Event('hero-relayout')); };
