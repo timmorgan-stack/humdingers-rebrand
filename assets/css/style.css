@@ -1180,7 +1180,7 @@ blockquote.testimonial cite {
 }
 .statement-card .eyebrow,
 .statement-card h2 { color: inherit; }
-.statement-card p { opacity: 0.85; }
+.statement-card p { opacity: 0.85; font-weight: 700; }
 
 /* ---------------- Lightbox ---------------- */
 .lightbox {
