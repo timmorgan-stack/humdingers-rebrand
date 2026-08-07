@@ -1199,7 +1199,7 @@ blockquote.testimonial cite {
   cursor: pointer;
 }
 .lightbox-close:hover { background: rgba(255, 255, 255, 0.3); }
-.wedding-grid img, .hero-figure img { cursor: zoom-in; }
+.wedding-grid img, .hero-figure img, .split img, .illustration-figure img { cursor: zoom-in; }
 
 /* ---------------- Footer ---------------- */
 footer.site-footer {

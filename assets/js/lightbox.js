@@ -3,7 +3,7 @@
  * the x, the backdrop or Escape. One overlay per page, built on demand.
  */
 (function () {
-  var SOURCES = '.wedding-grid img, .hero-figure img';
+  var SOURCES = '.wedding-grid img, .hero-figure img, .split img, .illustration-figure img';
   if (!document.querySelector(SOURCES)) return;
 
   var overlay = document.createElement('div');
