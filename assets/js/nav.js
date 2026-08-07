@@ -38,4 +38,15 @@ document.addEventListener('DOMContentLoaded', function () {
     toggle.setAttribute('aria-expanded', expanded);
     if (!expanded) closeAllSubs();
   });
+
+  // Following any nav link closes the hamburger. Cross-page links replace
+  // the document anyway; this is for same-page hash links, where the panel
+  // would otherwise stay covering the content it just scrolled to.
+  nav.addEventListener('click', function (e) {
+    if (!e.target.closest('a')) return;
+    if (!nav.classList.contains('open')) return;
+    nav.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+    closeAllSubs();
+  });
 });

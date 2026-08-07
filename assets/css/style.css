@@ -1685,6 +1685,32 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .hero, .split { grid-template-columns: 1fr; }
   .hero .hero-overflow { margin-top: var(--stack-gap); }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid, .press-grid { grid-template-columns: 1fr; }
+  /* Press grid is flex, not grid — a stacked card takes the full row */
+  .press-grid .press-card { flex: 1 1 100%; min-width: 0; }
+  /* About's founder portrait: the inline height:0/min-height:100% stretch
+     trick needs the desktop split row for its height — stacked on mobile it
+     collapses to nothing, so restore a natural photo block under the title.
+     !important is required to beat the inline style that drives desktop. */
+  #story.story-longform .split img {
+    height: auto !important;
+    min-height: 0 !important;
+    aspect-ratio: 4 / 3;
+  }
+  /* More Ways We Help / How It Works etc: one card per row */
+  .service-grid { grid-template-columns: 1fr; gap: 40px 32px; }
+  /* Browse by Service: one tile per row */
+  .service-link-grid { grid-template-columns: 1fr; }
+  /* Venues become list rows: thumbnail beside venue name/location, ink text
+     instead of the photo-overlay treatment. */
+  .venue-grid { grid-template-columns: 1fr; gap: 10px; }
+  .venue-card { display: flex; align-items: center; gap: 14px; overflow: visible; }
+  .venue-card img { width: 104px; flex-shrink: 0; border-radius: var(--radius-md); }
+  .venue-card::after { display: none; }
+  .venue-card > span {
+    position: static;
+    color: var(--color-ink);
+  }
+  .venue-card .sub { opacity: 0.65; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
   .enquiry-form .field-row { flex-direction: column; gap: 14px; }
@@ -1695,8 +1721,8 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     background: var(--color-paper);
     flex-direction: column;
     align-items: stretch;
-    padding: 32px 24px;
-    gap: 20px;
+    padding: 16px 24px 32px;
+    gap: 0;
     overflow-y: auto;
     transform: translateX(100%);
     transition: transform 0.25s ease;
@@ -1704,17 +1730,26 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   nav.main-nav.open { transform: translateX(0); }
   /* The hamburger menu is an accordion: each level's links sit collapsed
      behind a chevron (injected by nav.js); the link itself still navigates.
-     Rows are flex so link and chevron share the line, and the panel wraps
-     to a full-width row beneath them. */
-  .nav-item { position: static; display: flex; flex-wrap: wrap; align-items: center; }
-  .nav-item > a { flex: 1; }
+     Every row is left-aligned, full width, one consistent rhythm: link and
+     chevron share a flex row (the anchor can shrink, so the chevron never
+     wraps), and open panels drop below as an indented block. Hairlines
+     separate the three top-level sections. */
+  nav.main-nav a { text-align: left; }
+  .nav-item {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    border-bottom: 1px solid rgba(0,0,0,0.12);
+  }
+  .nav-item > a { flex: 1 1 0; min-width: 0; padding: 14px 0; font-size: 1.05rem; }
   .nav-dropdown {
     position: static;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
     transform: none;
-    padding-top: 4px;
+    padding-top: 0;
     flex-basis: 100%;
     display: none;
   }
@@ -1722,15 +1757,27 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .nav-dropdown-inner {
     border: none;
     box-shadow: none;
-    padding: 2px 0 4px 14px;
+    padding: 0 0 12px 16px;
     min-width: 0;
     background: transparent;
-    color: inherit;
+    color: var(--color-ink);
+    gap: 0;
   }
-  .nav-dropdown a { font-size: 0.85rem; font-weight: 500; opacity: 0.7; padding: 7px 0; white-space: normal; color: var(--color-ink); }
-  /* Third level: a further-indented collapsible list */
-  .nav-subitem { position: static; display: flex; flex-wrap: wrap; align-items: center; }
-  .nav-subitem > a { flex: 1; }
+  .nav-dropdown a {
+    font-size: 0.9rem;
+    font-weight: 600;
+    opacity: 0.85;
+    padding: 10px 0;
+    white-space: normal;
+    color: var(--color-ink);
+    border-radius: 0;
+  }
+  .nav-dropdown a:hover { background: transparent; color: var(--color-ink); }
+  /* Third level: a further-indented collapsible list.
+     flex-direction: row overrides the desktop column stack — without it the
+     link and chevron pile up centred instead of sharing a row. */
+  .nav-subitem { position: static; display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; }
+  .nav-subitem > a { flex: 1 1 0; min-width: 0; justify-content: flex-start; }
   .nav-flyout,
   .nav-flyout-cols {
     position: static;
@@ -1740,31 +1787,33 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     visibility: visible;
     pointer-events: auto;
     min-width: 0;
-    padding: 0 0 2px 16px;
+    padding: 0 0 8px 16px;
     background: transparent;
     border: none;
     box-shadow: none;
     flex-basis: 100%;
+    gap: 0;
   }
   .nav-subitem.sub-open > .nav-flyout { display: flex; }
-  .nav-flyout a { font-size: 0.8rem; opacity: 0.6; padding: 5px 0; }
+  .nav-flyout a { font-size: 0.85rem; font-weight: 500; opacity: 0.7; padding: 8px 0; }
   .nav-more { display: none; }
   .nav-sub-toggle {
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: none;
     border: 0;
     padding: 0;
     cursor: pointer;
+    flex: 0 0 auto;
   }
   .nav-sub-toggle::before {
     content: "";
     width: 9px;
     height: 9px;
-    border-right: 2px solid var(--color-ink);
-    border-bottom: 2px solid var(--color-ink);
+    border-right: 2.5px solid var(--color-ink);
+    border-bottom: 2.5px solid var(--color-ink);
     transform: rotate(45deg) translate(-2px, -2px);
     transition: transform 0.2s ease;
   }
