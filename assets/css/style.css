@@ -475,7 +475,8 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
+  /* double the air between rows compared to columns */
+  gap: 64px 32px;
 }
 /* Icon, heading and copy read as one group: icon sits beside the heading on
    the top row, the copy spans beneath both. */
