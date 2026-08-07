@@ -163,6 +163,20 @@
     });
   })();
 
+  /* ---- Statement cards ---------------------------------------------------
+     Each card draws a distinct light wash with an AA-passing dark text
+     colour, same pairing table as the definition card's coloured rows. */
+  (function statementCards() {
+    var cards = document.querySelectorAll('.statement-card');
+    if (!cards.length) return;
+    var washes = shuffled(['--color-custard', '--color-strawberry', '--color-fish']);
+    var DARKS = ['--color-chocolate', '--color-blueberry'];
+    Array.prototype.forEach.call(cards, function (card, i) {
+      card.style.setProperty('--statement-light', v(washes[i % washes.length]));
+      card.style.setProperty('--statement-dark', v(DARKS[Math.floor(Math.random() * DARKS.length)]));
+    });
+  })();
+
   /* ---- Footer colourway --------------------------------------------------
      One light colour per load — fish, custard or strawberry — applied
      together to the eyebrow, the column headings and the logo file, so the

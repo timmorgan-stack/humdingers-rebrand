@@ -523,12 +523,12 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .keyline-text,
 .band p:first-of-type:not(:where(
     .script, .placeholder-tag,
-    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *,
+    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *, .statement-card *,
     .contact-intro *, .menu-category *, blockquote *, form *
   )),
 .band-sm p:first-of-type:not(:where(
     .script, .placeholder-tag,
-    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *,
+    .stat-card *, .press-card *, .newsletter-row *, .wedding-info *, .statement-card *,
     .contact-intro *, .menu-category *, blockquote *, form *
   )) {
   border-left: 4px solid var(--keyline-color, var(--color-ink));
@@ -1166,6 +1166,19 @@ blockquote.testimonial cite {
 @media (prefers-reduced-motion: reduce) {
   .img-shimmer { animation: none; background: #efefed; }
 }
+
+/* Statement cards (Vision / Mission): light brand washes in the same family
+   as the stat pills and definition card. Wash + text set per load by
+   palette.js from the AA pairings; the fallback keeps them legible. */
+.statement-card {
+  background: var(--statement-light, var(--color-custard));
+  color: var(--statement-dark, var(--color-chocolate));
+  border-radius: var(--radius-lg);
+  padding: 36px;
+}
+.statement-card .eyebrow,
+.statement-card h2 { color: inherit; }
+.statement-card p { opacity: 0.85; }
 
 /* ---------------- Lightbox ---------------- */
 .lightbox {
