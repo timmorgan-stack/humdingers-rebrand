@@ -544,14 +544,15 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   flex-direction: column;
 }
 
-/* Our story fits one screen: the portrait shrinks to a quarter-width column
-   (half its old share) and the copy flows in two columns; the button spans
-   beneath them. */
+/* About's "Our story" fits one screen: the portrait shrinks to a quarter-
+   width column and the copy flows in two columns; the button spans beneath.
+   Scoped by class — community-kitchen has its own #story with a plain split,
+   which these rules were shredding. */
 @media (min-width: 901px) {
-  #story .split { grid-template-columns: 1fr 3fr; }
-  #story .-body { columns: 2; column-gap: 40px; }
-  #story .-body p { break-inside: avoid; }
-  #story .-body .btn { column-span: all; margin-top: 12px; }
+  #story.story-longform .split { grid-template-columns: 1fr 3fr; }
+  #story.story-longform .-body { columns: 2; column-gap: 40px; }
+  #story.story-longform .-body p { break-inside: avoid; }
+  #story.story-longform .-body .btn { column-span: all; margin-top: 12px; }
 }
 
 /* Keyline text with randomized brand colours (set via keyline-colors.js).
