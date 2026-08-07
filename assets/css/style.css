@@ -542,6 +542,16 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   flex-direction: column;
 }
 
+/* Our story fits one screen: the portrait shrinks to a quarter-width column
+   (half its old share) and the copy flows in two columns; the button spans
+   beneath them. */
+@media (min-width: 901px) {
+  #story .split { grid-template-columns: 1fr 3fr; }
+  #story .-body { columns: 2; column-gap: 40px; }
+  #story .-body p { break-inside: avoid; }
+  #story .-body .btn { column-span: all; margin-top: 12px; }
+}
+
 /* Keyline text with randomized brand colours (set via keyline-colors.js).
    Applied to .keyline-text explicitly, and automatically to the opening
    paragraph of any body-copy block — :first-of-type covers both "lone
