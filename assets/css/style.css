@@ -714,8 +714,13 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 /* Wedding panels with 4 images per couple */
 .wedding-panels {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  /* Four couples: always a 2×2 grid (1 column on small screens) — auto-fit
+     minmax left a widowed panel alone on the last row at some widths. */
+  grid-template-columns: repeat(2, 1fr);
   gap: 40px;
+}
+@media (max-width: 700px) {
+  .wedding-panels { grid-template-columns: 1fr; }
 }
 .wedding-panel {
   display: flex;
@@ -839,43 +844,53 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .enquiry-form legend { font-family: var(--font-display); font-weight: 700; padding: 0 6px; }
 
 /* ---------------- Menu page (menus.html) ---------------- */
-.menu-jump-bar {
-  position: sticky;
-  top: var(--header-h, 81px);
-  z-index: 49;
-  background: var(--color-custard);
-  color: var(--color-chocolate);
-  border-bottom: 3px solid var(--color-ink);
+/* Each category is a collapsible panel: the closed face shows the thumbnail,
+   the menu name and its brief note; opening reveals the dishes. Native
+   <details>/<summary>, so it works with no JS and stays keyboard-accessible. */
+.menu-category { padding: 12px 0; scroll-margin-top: 110px; }
+.menu-category h2 { font-size: clamp(1.7rem,2.6vw,2.4rem); margin: 0.1em 0 0.2em; }
+.menu-category .note { font-family: var(--font-script); font-size: 1.35rem; opacity: 0.8; margin-bottom: 0; }
+.menu-panel {
+  border: 3px solid var(--color-ink);
+  border-radius: var(--radius-lg);
 }
-.menu-jump-bar .wrap { padding: 14px 24px; }
-.menu-jump {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px 20px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.1rem;
+.menu-panel > summary {
+  list-style: none;
+  cursor: pointer;
 }
-.menu-jump a { border-bottom: 2px solid transparent; }
-.menu-jump a:hover { border-bottom-color: currentColor; }
-/* Marks whichever category is currently in view — updated on scroll too */
-.menu-jump a.current { border-bottom-color: currentColor; }
-.menu-category { padding: 64px 0 56px; border-top: 3px solid var(--color-ink); scroll-margin-top: 160px; }
-.menu-category h2 { font-size: clamp(1.7rem,2.6vw,2.4rem); margin-top: 0.2em; }
-.menu-category .note { font-family: var(--font-script); font-size: 1.35rem; opacity: 0.8; margin-bottom: 1em; }
+.menu-panel > summary::-webkit-details-marker { display: none; }
+.menu-panel > summary:hover h2 { text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 5px; }
+.menu-panel[open] > summary { border-bottom: 3px solid var(--color-ink); }
+.menu-panel-body { padding: 32px 28px 10px; }
 .menu-category-head {
   display: flex;
   align-items: center;
   gap: 28px;
-  margin-bottom: 2.5em;
+  padding: 18px 24px;
 }
 .menu-category-img {
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   border-radius: var(--radius-md);
   object-fit: cover;
   flex-shrink: 0;
   border: 3px solid currentColor;
+}
+/* Caret at the right-hand end of the closed face; flips when open */
+.menu-chevron {
+  margin-left: auto;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-right: 3px solid currentColor;
+  border-bottom: 3px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+.menu-panel[open] .menu-chevron { transform: rotate(225deg); }
+@media (max-width: 700px) {
+  .menu-category-head { gap: 16px; padding: 14px 16px; }
+  .menu-category-img { width: 72px; height: 72px; }
 }
 .menu-group { margin-bottom: 2.4em; }
 .menu-group h4 {
@@ -1652,9 +1667,5 @@ footer.site-footer {
   .site-header .wrap { padding-top: 12px; padding-bottom: 12px; }
   .site-header + section.band { padding-top: 41px; }
   .site-header + section.band-sm { padding-top: 16px; }
-  .site-header + .menu-jump-bar + section.band-sm { padding-top: 16px; }
   .hero { min-height: auto; }
-  .menu-jump-bar .wrap { padding: 12px 20px; }
-  .menu-jump { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 22px; }
-  .menu-jump a { white-space: nowrap; }
 }
