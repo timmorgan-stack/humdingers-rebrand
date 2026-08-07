@@ -241,6 +241,16 @@
     });
   })();
 
+  /* ---- Path-card outlines -------------------------------------------------
+     The two-ways cards each draw a brand colour for their border per load. */
+  (function pathCardBorders() {
+    var cards = document.querySelectorAll('.path-card');
+    if (!cards.length) return;
+    Array.prototype.forEach.call(cards, function (card) {
+      card.style.setProperty('--path-border', v(Decks.draw('path-borders', ALL)));
+    });
+  })();
+
   /* ---- Statement cards ---------------------------------------------------
      Each card draws a distinct light wash with an AA-passing dark text
      colour, same pairing table as the definition card's coloured rows. */
