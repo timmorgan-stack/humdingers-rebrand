@@ -136,6 +136,22 @@
     });
   })();
 
+  /* ---- Footer colourway --------------------------------------------------
+     One light colour per load — fish, custard or strawberry — applied
+     together to the eyebrow, the column headings and the logo file, so the
+     footer always reads as a single colourway on its ink background. */
+  (function footerColourway() {
+    var foot = document.querySelector('footer.site-footer');
+    if (!foot) return;
+    var LIGHT = ['fish', 'custard', 'strawberry'];
+    var pick = LIGHT[Math.floor(Math.random() * LIGHT.length)];
+    foot.querySelectorAll('.eyebrow, h4').forEach(function (el) {
+      el.style.color = 'var(--color-' + pick + ')';
+    });
+    var logo = foot.querySelector('img.logo-mark');
+    if (logo) logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+  })();
+
   /* ---- Definition card (homepage) ---------------------------------------
      A light background paired with dark text, drawn from the pairings that
      clear AA for body copy. Paper backgrounds widen the pool. */
