@@ -270,6 +270,21 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 /* Redesigned colour system: white backgrounds throughout, colour roles for text/accents only */
 .band { padding: 72px 0; background: var(--color-paper); color: var(--color-ink); }
 .band-sm { padding: 40px 0; background: var(--color-paper); color: var(--color-ink); }
+/* Sections the navigation lands on are viewport panels: each fills the space
+   below the sticky header and centres its content vertically with equal
+   margins, so the panel above or below never bleeds into view. --sticky-h is
+   measured by smooth-scroll.js; the fallback matches the usual header height.
+   Narrow viewports flow normally — there's no height to spare there. */
+@media (min-width: 901px) {
+  .band[id] {
+    box-sizing: border-box;
+    min-height: calc(100dvh - var(--sticky-h, 80px));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-margin-top: var(--sticky-h, 80px);
+  }
+}
 .band h2, .band-sm h2 { color: var(--color-ink); }
 .band h3, .band-sm h3 { color: var(--color-ink); }
 .band h4, .band-sm h4 { color: var(--color-ink); }
