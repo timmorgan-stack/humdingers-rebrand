@@ -1701,8 +1701,10 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   }
   /* More Ways We Help / How It Works etc: one card per row */
   .service-grid { grid-template-columns: 1fr; gap: 40px 32px; }
-  /* Browse by Service: one tile per row */
+  /* Browse by Service: one tile per row, and — with no hover on touch —
+     each icon wears its dealt brand colour by default. */
   .service-link-grid { grid-template-columns: 1fr; }
+  .service-link-grid a .panel-icon { color: var(--tile-hover, var(--color-ink)); }
   /* Venues become list rows: thumbnail beside venue name/location, ink text
      instead of the photo-overlay treatment. */
   .venue-grid { grid-template-columns: 1fr; gap: 10px; }
@@ -1712,8 +1714,9 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .venue-card > span {
     position: static;
     color: var(--color-ink);
+    font-size: 1.05rem;
   }
-  .venue-card .sub { opacity: 0.65; }
+  .venue-card .sub { opacity: 0.65; font-size: 0.85rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
   .enquiry-form .field-row { flex-direction: column; gap: 14px; }
