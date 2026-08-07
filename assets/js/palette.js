@@ -286,8 +286,11 @@
   (function pathCardBorders() {
     var cards = document.querySelectorAll('.path-card');
     if (!cards.length) return;
+    var WASHES = ['--color-custard', '--color-strawberry', '--color-fish'];
     Array.prototype.forEach.call(cards, function (card, i) {
       card.style.setProperty('--path-border', v(Decks.draw('path-borders', ALL, i)));
+      // Hover wash: light colours only, so the ink text stays AA on hover
+      card.style.setProperty('--path-hover', v(Decks.draw('path-hovers', WASHES, i)));
     });
   })();
 
