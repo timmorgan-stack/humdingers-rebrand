@@ -304,12 +304,21 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   .band-hero {
     box-sizing: border-box;
     padding: 32px 0;
-    /* The band is exactly the splash slice — no viewport-filling stretch —
-       so whatever follows it (home: the definition card) starts inside the
-       first screen rather than below the fold. */
+    /* The band fills the viewport below the header and centres the splash
+       slice inside it — equal air above and below on every page. */
+    min-height: calc(100dvh - var(--sticky-h, 80px));
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+  }
+  /* Row that receives the definition card when hero-fit.js finds the text
+     column too tall for the slice at the current viewport. */
+  .band-hero .hero-after {
+    width: 100%;
+    max-width: var(--container);
+    padding: 0 24px;
+    margin-top: 32px;
   }
   /* In a flex column, .wrap's auto margins stop it stretching, so it shrinks
      to its content's max-content width and page widths drift apart. Force
@@ -885,7 +894,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
    the later menu sections — scroll-reveal's transform puts each .wrap in its
    own stacking context, and later DOM contexts otherwise paint on top of the
    open dropdown. */
-section:has(.menu-filter) { position: relative; z-index: 45; }
+section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px; }
 /* Live filter above the menu list */
 .menu-filter {
   position: relative;
