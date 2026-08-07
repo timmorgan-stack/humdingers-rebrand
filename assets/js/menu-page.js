@@ -3,47 +3,132 @@
  * and scrolling behaviour lives in smooth-scroll.js; expand/collapse is the
  * native <details> behaviour.
  */
-/* Live filter above the list: matches category names AND the dishes inside.
-   A panel whose match is body-level opens so it's clear why it stayed;
-   clearing the filter returns everything to the closed default. */
+/* Filter above the list. Clicking the input opens a dropdown of the menus
+   (thumbnail + name); picking one adds it as a removable pill below the bar
+   and the list shows only picked menus. Free text still deep-filters on
+   category names and dish text — combined with pills, it narrows within the
+   picked set. A panel whose text matched opens so the hit is visible. */
 document.addEventListener('DOMContentLoaded', function () {
   var input = document.getElementById('menu-filter-input');
   if (!input) return;
   var clear = document.getElementById('menu-filter-clear');
+  var drop = document.getElementById('menu-filter-drop');
+  var pillsBox = document.getElementById('menu-filter-pills');
   var emptyNote = document.getElementById('menu-filter-empty');
 
   var categories = Array.prototype.map.call(
     document.querySelectorAll('section.menu-category'),
     function (sec) {
       var h2 = sec.querySelector('h2');
+      var img = sec.querySelector('.menu-category-img');
       return {
         sec: sec,
         panel: sec.querySelector('details'),
+        label: h2 ? h2.textContent.trim() : sec.id,
         name: (h2 ? h2.textContent : '').toLowerCase(),
-        text: sec.textContent.toLowerCase()
+        text: sec.textContent.toLowerCase(),
+        imgSrc: img ? img.getAttribute('src') : null,
+        picked: false
       };
     });
 
   function apply() {
     var q = input.value.trim().toLowerCase();
     clear.hidden = !q;
+    var anyPicked = categories.some(function (c) { return c.picked; });
     var any = false;
     categories.forEach(function (c) {
+      var candidate = !anyPicked || c.picked;
       var inName = !q || c.name.indexOf(q) !== -1;
-      var hit = inName || c.text.indexOf(q) !== -1;
+      var hit = candidate && (inName || c.text.indexOf(q) !== -1);
       c.sec.style.display = hit ? '' : 'none';
       if (hit) any = true;
       if (c.panel) {
         if (q && hit && !inName) c.panel.open = true;
-        if (!q) c.panel.open = false;
+        if (!q && !anyPicked) c.panel.open = false;
       }
     });
     emptyNote.hidden = any;
   }
 
-  input.addEventListener('input', apply);
+  function renderPills() {
+    pillsBox.textContent = '';
+    categories.forEach(function (c) {
+      if (!c.picked) return;
+      var pill = document.createElement('span');
+      pill.className = 'menu-pill';
+      pill.textContent = c.label;
+      var x = document.createElement('button');
+      x.type = 'button';
+      x.className = 'menu-pill-remove';
+      x.setAttribute('aria-label', 'Remove ' + c.label);
+      x.textContent = '×';
+      x.addEventListener('click', function () {
+        c.picked = false;
+        renderPills();
+        renderDrop();
+        apply();
+      });
+      pill.appendChild(x);
+      pillsBox.appendChild(pill);
+    });
+  }
+
+  function renderDrop() {
+    var q = input.value.trim().toLowerCase();
+    drop.textContent = '';
+    var shown = 0;
+    categories.forEach(function (c) {
+      if (c.picked) return;
+      if (q && c.name.indexOf(q) === -1) return;
+      var item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'menu-drop-item';
+      item.setAttribute('role', 'option');
+      if (c.imgSrc) {
+        var im = document.createElement('img');
+        im.src = c.imgSrc;
+        im.alt = '';
+        item.appendChild(im);
+      }
+      var label = document.createElement('span');
+      label.textContent = c.label;
+      item.appendChild(label);
+      item.addEventListener('click', function () {
+        c.picked = true;
+        input.value = '';
+        renderPills();
+        renderDrop();
+        apply();
+        input.focus();
+      });
+      drop.appendChild(item);
+      shown++;
+    });
+    drop.hidden = !dropOpen || shown === 0;
+  }
+
+  var dropOpen = false;
+  function openDrop() { dropOpen = true; renderDrop(); }
+  function closeDrop() { dropOpen = false; drop.hidden = true; }
+
+  input.addEventListener('focus', openDrop);
+  input.addEventListener('click', openDrop);
+  input.addEventListener('input', function () { renderDrop(); apply(); });
+  input.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeDrop(); return; }
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      var first = drop.querySelector('.menu-drop-item');
+      if (first && !drop.hidden) first.click();
+    }
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.menu-filter')) closeDrop();
+  });
   clear.addEventListener('click', function () {
     input.value = '';
+    renderDrop();
     apply();
     input.focus();
   });
