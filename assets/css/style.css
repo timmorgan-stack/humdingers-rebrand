@@ -328,14 +328,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
     height: calc(80dvh - var(--sticky-h, 80px) - 64px);
     min-height: min-content;
   }
-  /* If a page's content column outgrows the viewport (home, with its
-     definition card, on shorter windows), the panel grows with it — cap the
-     media at the visible height so the video's bottom edge never falls past
-     the fold. Where content fits, the cap never binds and the figure still
-     ranges the full panel. */
-  .band-hero .hero-figure {
-    max-height: calc(80dvh - var(--sticky-h, 80px) - 64px);
-  }
 }
 .hero {
   display: grid;

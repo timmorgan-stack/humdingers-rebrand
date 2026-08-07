@@ -18,9 +18,29 @@
   function setStickyVar() {
     document.documentElement.style.setProperty('--sticky-h', stickyOffset() + 'px');
   }
-  setStickyVar();
-  window.addEventListener('resize', setStickyVar);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStickyVar);
+
+  // Hard guarantee: the hero media is always exactly the height of the text
+  // column beside it. CSS stretch already does this; pinning the measured
+  // height as well means no future style change can silently break the
+  // alignment. Cleared on narrow viewports, where the hero stacks.
+  function syncHeroMedia() {
+    var hero = document.querySelector('.band-hero .hero');
+    if (!hero) return;
+    var column = hero.querySelector(':scope > div:first-child');
+    var figure = hero.querySelector('.hero-figure');
+    if (!column || !figure) return;
+    if (window.innerWidth <= 900) {
+      figure.style.height = '';
+      return;
+    }
+    figure.style.height = column.getBoundingClientRect().height + 'px';
+  }
+
+  function relayout() { setStickyVar(); syncHeroMedia(); }
+  relayout();
+  window.addEventListener('resize', relayout);
+  window.addEventListener('load', relayout);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
 
   // While a landing scroll animates, data-landing is set on <html>; images
   // (img-preload.js) hold their reveals until the landing-done event, so the
