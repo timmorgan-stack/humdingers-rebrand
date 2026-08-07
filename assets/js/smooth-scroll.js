@@ -51,15 +51,34 @@
   // (img-preload.js) hold their reveals until the landing-done event, so the
   // scroll finishes before imagery fades in.
   var landingTimer = null;
+  // Media hidden for the current landing's post-scroll reveal.
+  var refadeMedia = [];
+
   function landingDone() {
     landingTimer = null;
     document.documentElement.removeAttribute('data-landing');
+    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-loading'); });
     document.dispatchEvent(new Event('landing-done'));
   }
 
   function land(target) {
     var panel = target.querySelector('details.menu-panel');
     if (panel) panel.open = true;
+
+    // Every landing replays the choreography: the target's media hides now
+    // and fades back in once the scroll settles — every click, not only
+    // first loads. Media still loading stays with img-preload.js, which
+    // already reveals on landing-done; unloaded images are skipped here so
+    // they are never unveiled before their pixels exist.
+    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-loading'); });
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      Array.prototype.forEach.call(target.querySelectorAll('img, video'), function (m) {
+        if (m.tagName === 'IMG' && !m.complete) return;
+        if (m.classList.contains('img-loading')) return;
+        m.classList.add('img-loading');
+        refadeMedia.push(m);
+      });
+    }
 
     var offset = stickyOffset();
     var rect = target.getBoundingClientRect();
