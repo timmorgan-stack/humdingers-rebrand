@@ -910,6 +910,25 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
   flex-direction: column;
   gap: 4px;
 }
+/* Always-visible brand scrollbar so the list reads as scrollable — tomato
+   is the CTA role colour. Chrome/Safari take the ::-webkit form (which also
+   defeats macOS overlay hiding); Firefox alone gets the standard properties,
+   because setting them in Chrome would disable the webkit styling. */
+@supports not selector(::-webkit-scrollbar) {
+  .menu-filter-drop { scrollbar-width: thin; scrollbar-color: var(--role-cta, var(--color-tomato)) #f1f1ef; }
+}
+.menu-filter-drop::-webkit-scrollbar { width: 12px; }
+.menu-filter-drop::-webkit-scrollbar-track {
+  background: #f1f1ef;
+  border-radius: 999px;
+  margin: 8px 0;
+}
+.menu-filter-drop::-webkit-scrollbar-thumb {
+  background: var(--role-cta, var(--color-tomato));
+  border-radius: 999px;
+  border: 3px solid #f1f1ef;
+}
+.menu-filter-drop::-webkit-scrollbar-thumb:hover { background: var(--color-chocolate); }
 .menu-drop-item {
   display: flex;
   align-items: center;
@@ -1613,6 +1632,9 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 @media (max-width: 900px) {
   .newsletter-form input[type="email"] { min-width: 0; flex: 1; }
   .definition { padding: 24px 20px; }
+  /* Single-column collapse: the hero stacks text over media again — all the
+     desktop-only fit/compression logic stands down below 901px. */
+  .hero, .split { grid-template-columns: 1fr; }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid, .press-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .logo-strip { grid-template-columns: repeat(3, 1fr); }
