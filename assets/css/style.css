@@ -1683,6 +1683,9 @@ footer.site-footer .colour-strip { margin-top: 40px; }
      the overflow card loses its desktop pinning margins, so it takes the
      standard rhythm gap to breathe below the buttons. */
   .hero, .split { grid-template-columns: 1fr; }
+  /* Some splits (contact) set their column ratio inline — on mobile the
+     stack must win over those too. */
+  .split { grid-template-columns: 1fr !important; }
   .hero .hero-overflow { margin-top: var(--stack-gap); }
   .card-grid, .menu-columns, .testimonial-grid, .stat-row, .path-grid, .press-grid { grid-template-columns: 1fr; }
   /* Press grid is flex, not grid — a stacked card takes the full row */
