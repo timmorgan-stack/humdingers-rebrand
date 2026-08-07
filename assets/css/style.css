@@ -365,7 +365,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
      bottom-aligns with the hero image. */
   .band-hero .hero > div:first-child:not(:has(.hero-overflow)) > .btn:last-child { margin-top: auto; }
   .band-hero .hero > div:first-child > a.hero-overflow { align-self: flex-start; }
-  .band-hero .hero > div:first-child > *:has(+ .hero-overflow) { margin-bottom: 32px; }
+  .band-hero .hero > div:first-child > *:has(+ .hero-overflow) { margin-bottom: clamp(16px, 4dvh, 32px); }
   .band-hero .hero-figure { position: relative; }
   .band-hero .hero-figure img,
   .band-hero .hero-figure video {
@@ -383,6 +383,25 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
     height: calc(80dvh - var(--sticky-h, 80px) - 64px);
     min-height: min-content;
   }
+  /* When hero-fit keeps a column that outgrows the fixed slice, the wrap
+     pins to the exact top offset the centred slice has on every other page
+     (centring a slice 20dvh shorter than the band always leaves a 10dvh top
+     gap) and the growth spills downward — so the title never moves from
+     page to page, whatever the window size. */
+  .band-hero.hero-grown { justify-content: flex-start; }
+  .band-hero.hero-grown > .wrap { margin-top: 10dvh; }
+  /* Shallow-window compression: hero type and the definition card shrink
+     with viewport height so the splash still fits on one screen. Every clamp
+     hits its normal-size cap by ~800px of height — on taller windows these
+     rules change nothing. */
+  .band-hero .hero .eyebrow { font-size: clamp(1.05rem, 3.2dvh, 1.6rem); }
+  .band-hero .hero h1 { font-size: clamp(2.2rem, min(5.5vw, 9dvh), 4.6rem); }
+  .band-hero .hero .hero-lede { font-size: clamp(0.95rem, 2.4dvh, 1.2rem); }
+  .band-hero .hero .btn { padding: clamp(9px, 1.75dvh, 14px) 28px; }
+  .band-hero .definition { padding: clamp(12px, 4dvh, 32px) clamp(16px, 4.5dvh, 36px); }
+  .band-hero .definition .pos { font-size: clamp(0.65rem, 1.6dvh, 0.8rem); }
+  .band-hero .definition .term { font-size: clamp(1rem, min(7.2cqw, 4.8dvh), 2.4rem); }
+  .band-hero .definition p { font-size: clamp(0.85rem, 2dvh, 1rem); line-height: 1.5; }
 }
 .hero {
   display: grid;
@@ -412,7 +431,16 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   padding: 32px 36px;
   max-width: 640px;
 }
-.definition .term { font-family: var(--font-logo); font-size: clamp(0.8rem, 5.2vw, 2.4rem); margin: 0.2em 0; white-space: nowrap; }
+/* The term sizes against the card itself (container units), so the card can
+   live in the hero column or a full-width row and the text always fits.
+   Wrapping is possible only at the <wbr> after "er\" — the last resort. */
+.definition { container-type: inline-size; }
+.definition .term {
+  font-family: var(--font-logo);
+  font-size: clamp(1rem, 7.2cqw, 2.4rem);
+  margin: 0.2em 0;
+  white-space: normal;
+}
 .definition .pos { font-family: var(--font-display); text-transform: uppercase; letter-spacing: 0.2em; font-size: 0.8rem; }
 
 /* ---------------- Sub-brand cards ---------------- */
@@ -621,6 +649,9 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   grid-template-columns: repeat(2, 1fr);
   gap: 28px;
 }
+/* One way per panel: a lone card keeps the two-up card width, centred,
+   rather than stretching across the whole wrap. */
+.path-grid-single { grid-template-columns: minmax(0, calc(50% - 14px)); justify-content: center; }
 .path-card {
   display: block;
   border-radius: var(--radius-lg);
@@ -647,8 +678,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   transition: background 0.15s ease;
 }
 .service-link-grid a:hover > span:last-child { text-decoration: underline; }
-.service-link-grid a:hover .service-thumb { background: #e7e7e4; }
-.service-link-grid a:hover .panel-icon { color: var(--color-ink); }
+/* Hover tints the icon's outline (and the thumb's ring) with the tile's
+   per-load brand colour, dealt by palette.js via --tile-hover. */
+.service-link-grid a:hover .service-thumb { background: #e7e7e4; box-shadow: inset 0 0 0 3px var(--tile-hover, var(--color-ink)); }
+.service-link-grid a:hover .panel-icon { color: var(--tile-hover, var(--color-ink)); }
 .service-link-grid a > span:last-child {
   font-family: var(--font-display);
   font-weight: 700;
@@ -687,9 +720,9 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   border: 3px solid currentColor;
   border-radius: var(--radius-lg);
   padding: 26px;
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, background 0.15s ease;
 }
-.press-card:hover { transform: translateY(-3px); }
+.press-card:hover { transform: translateY(-3px); background: var(--press-hover, transparent); }
 /* The whole card is the link: the Read article anchor stretches over it */
 .press-card { position: relative; }
 .press-card .press-meta a::after { content: ""; position: absolute; inset: 0; }
@@ -1351,6 +1384,41 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   border-color: var(--color-ink);
 }
 
+/* ---------------- Enquire-now CTA banner (reusable) ----------------
+   Full width of its content panel; palette.js deals a light wash +
+   AA dark ink pair per load via --cta-light/--cta-dark. */
+.cta-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  width: 100%;
+  background: var(--cta-light, var(--color-custard));
+  color: var(--cta-dark, var(--color-chocolate));
+  border-radius: var(--radius-lg);
+  padding: 28px 36px;
+}
+.cta-banner .script { font-size: 1.5rem; display: block; }
+.cta-banner strong {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  display: block;
+}
+/* The button borrows the banner's dealt ink so the whole banner reads as
+   one colourway; hover falls back to the site-wide tomato CTA role. */
+.cta-banner .btn-solid {
+  background: var(--cta-dark, var(--color-ink));
+  border-color: var(--cta-dark, var(--color-ink));
+  color: var(--cta-light, var(--color-paper));
+}
+.cta-banner .btn-solid:hover {
+  background: var(--role-cta, var(--color-tomato));
+  border-color: var(--role-cta, var(--color-tomato));
+  color: var(--color-paper);
+}
+
 /* ---------------- Contact page ---------------- */
 /* The enquiry form sits in a bordered card on the shared white page. */
 .enquiry-card {
@@ -1475,10 +1543,10 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   width: 1px;
   background: rgba(0,0,0,0.14);
 }
-/* Below this the shell is close enough to the viewport edge that the margin
-   devices would collide with content, and on touch-width screens they'd
-   just be clutter beside an already-full-width layout. */
-@media (max-width: 1360px) { .dot-col { display: none; } }
+/* The strip stays on all tablet and desktop sizes — .wrap's 24px side
+   padding always clears the 20px ribbon. Only phone-width screens drop it,
+   where the layout runs genuinely full-bleed. */
+@media (max-width: 767px) { .dot-col { display: none; } }
 
 .hero-figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
 

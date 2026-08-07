@@ -1,7 +1,14 @@
 /*
  * palette.js — every "re-roll brand colours on page load" behaviour in one
  * place: the left swatch strip, paragraph keylines, the newsletter bar, the
- * impact stat pills, and the homepage definition card.
+ * impact stat pills, the header logo, tile-icon hovers, press-card hovers,
+ * and the homepage definition card.
+ *
+ * Brand colour rules (apply to every rolling element):
+ *   1. A colour is never the same as the one that element drew last load.
+ *   2. Assignment within the pool is random.
+ *   3. Every colour in the pool is used once before any repeats — decks
+ *      persist across loads (localStorage) and reshuffle only when empty.
  *
  * Legibility ground rules, computed against WCAG:
  *   - Dark-on-paper text colours (≥4.5 on white): kale 4.9, blueberry 10.1,
@@ -31,25 +38,61 @@
     return d;
   }
 
+  /* ---- Persistent decks ---------------------------------------------------
+     One named deck per rolling element group. draw(name, pool) pops the next
+     colour; an empty deck reshuffles the whole pool, swapping so the first
+     card of the new deck never equals the last one dealt (rule 1). Multiple
+     draws in one load simply consume the deck faster — the full-cycle
+     guarantee (rule 3) holds across loads. */
+  var Decks = (function () {
+    var KEY = 'hd-palette-decks';
+    var store = {};
+    try { store = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch (e) { store = {}; }
+    function persist() {
+      try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* private mode: session-only rolls */ }
+    }
+    function draw(name, pool) {
+      var st = store[name];
+      var valid = st && Array.isArray(st.deck) && st.deck.every(function (c) { return pool.indexOf(c) !== -1; });
+      if (!valid) st = store[name] = { deck: [], last: null };
+      if (!st.deck.length) {
+        var d = shuffled(pool);
+        if (pool.length > 1 && d[d.length - 1] === st.last) {
+          var j = Math.floor(Math.random() * (d.length - 1));
+          var t = d[d.length - 1]; d[d.length - 1] = d[j]; d[j] = t;
+        }
+        st.deck = d;
+      }
+      st.last = st.deck.pop();
+      persist();
+      return st.last;
+    }
+    return { draw: draw };
+  })();
+
   /* ---- Left swatch strip -------------------------------------------------
      Random order, but colours from the same temperature group never sit
-     adjacent, so similar hues don't blur together. 38px swatch + 10px
-     transparent gap (whatever is behind the fixed strip shows through). */
+     adjacent, so similar hues don't blur together — and the order always
+     differs from the previous load's. 38px swatch + 10px transparent gap
+     (whatever is behind the fixed strip shows through). */
   (function colourStrip() {
     if (!document.querySelector('.dot-col-left')) return;
     var GROUP = {
       '--color-kale': 'cool', '--color-blueberry': 'cool', '--color-olive': 'cool', '--color-fish': 'cool',
       '--color-tomato': 'warm', '--color-strawberry': 'warm', '--color-chocolate': 'warm', '--color-custard': 'warm'
     };
+    var prev = '';
+    try { prev = localStorage.getItem('hd-strip-order') || ''; } catch (e) {}
     var order = ALL;
     for (var attempt = 0; attempt < 100; attempt++) {
       var candidate = shuffled(ALL);
-      var ok = true;
-      for (var i = 0; i < candidate.length - 1; i++) {
-        if (GROUP[candidate[i]] === GROUP[candidate[i + 1]]) { ok = false; break; }
+      var ok = candidate.join(',') !== prev;
+      for (var i = 0; ok && i < candidate.length - 1; i++) {
+        if (GROUP[candidate[i]] === GROUP[candidate[i + 1]]) ok = false;
       }
       if (ok) { order = candidate; break; }
     }
+    try { localStorage.setItem('hd-strip-order', order.join(',')); } catch (e) {}
     var SWATCH = 38, GAP = 10, stops = [];
     order.forEach(function (name, i) {
       var start = i * (SWATCH + GAP), end = start + SWATCH;
@@ -61,16 +104,25 @@
     document.head.appendChild(style);
   })();
 
+  /* ---- Header logo -------------------------------------------------------
+     The main site logo cycles the full palette: every colour appears once
+     before the sequence reshuffles, never repeating the previous load's. */
+  (function headerLogo() {
+    var logo = document.querySelector('.site-header img.logo-mark');
+    if (!logo) return;
+    var NAMES = ['kale', 'tomato', 'blueberry', 'olive', 'strawberry', 'chocolate', 'custard', 'fish'];
+    var pick = Decks.draw('header-logo', NAMES);
+    logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+  })();
+
   /* ---- Paragraph keylines ------------------------------------------------
      Which paragraphs carry a keyline is the stylesheet's decision; anything
      the CSS gave a left border gets a colour here. Grouped per <section> so
-     related copy shares one colour; a shuffled deck keeps adjacent sections
-     different and cycles all eight before repeating. */
+     related copy shares one colour; the persistent deck keeps adjacent
+     sections different and cycles all eight before repeating. */
   (function keylines() {
     var els = document.querySelectorAll('.keyline-text, .band p:first-of-type, .band-sm p:first-of-type, .service-item p');
     if (!els.length) return;
-    var deck = [];
-    function next() { if (!deck.length) deck = shuffled(ALL); return deck.pop(); }
     var groups = new Map();
     Array.prototype.forEach.call(els, function (el) {
       if (parseFloat(getComputedStyle(el).borderLeftWidth) === 0) return;
@@ -79,7 +131,7 @@
       groups.get(section).push(el);
     });
     groups.forEach(function (members) {
-      var color = v(next());
+      var color = v(Decks.draw('keylines', ALL));
       members.forEach(function (el) { el.style.setProperty('--keyline-color', color); });
     });
   })();
@@ -89,7 +141,7 @@
   (function newsletter() {
     var bars = document.querySelectorAll('.newsletter-row');
     if (!bars.length) return;
-    var pick = v(DARK_ON_PAPER[Math.floor(Math.random() * DARK_ON_PAPER.length)]);
+    var pick = v(Decks.draw('newsletter', DARK_ON_PAPER));
     Array.prototype.forEach.call(bars, function (bar) {
       bar.style.setProperty('--nl-color', pick);
     });
@@ -102,21 +154,22 @@
   (function statPills() {
     var cards = document.querySelectorAll('.stat-card');
     if (!cards.length) return;
+    var WASHES = ['--color-custard', '--color-strawberry', '--color-fish'];
     var DARK_ON_WASH = ['--color-chocolate', '--color-blueberry'];
-    var washes = shuffled(['--color-custard', '--color-strawberry', '--color-fish']);
-    var figures = shuffled(DARK_ON_PAPER.concat('--color-tomato')); // tomato ok: 2.4rem bold + icon only need 3.0
-    Array.prototype.forEach.call(cards, function (card, i) {
-      card.style.setProperty('--stat-light', v(washes[i % washes.length]));
-      card.style.setProperty('--stat-dark', v(DARK_ON_WASH[Math.floor(Math.random() * DARK_ON_WASH.length)]));
-      card.style.setProperty('--stat-figure', v(figures[i % figures.length]));
+    var FIGURES = DARK_ON_PAPER.concat('--color-tomato'); // tomato ok: 2.4rem bold + icon only need 3.0
+    Array.prototype.forEach.call(cards, function (card) {
+      card.style.setProperty('--stat-light', v(Decks.draw('stat-washes', WASHES)));
+      card.style.setProperty('--stat-dark', v(Decks.draw('stat-darks', DARK_ON_WASH)));
+      card.style.setProperty('--stat-figure', v(Decks.draw('stat-figures', FIGURES)));
     });
   })();
 
   /* ---- Brand-coloured headings -------------------------------------------
-     Any eyebrow or h1 already set in a palette colour re-rolls on each load.
-     Restricted to the five colours that hold 3:1 on paper at heading sizes
-     (custard 1.65, strawberry 2.1 and fish 2.15 fail even as large text).
-     Newsletter eyebrows are skipped — they follow their banner's own roll. */
+     Any eyebrow or h2–h4 already set in a palette colour re-rolls on each
+     load, as do h1s. Restricted to the five colours that hold 3:1 on paper
+     at heading sizes (custard 1.65, strawberry 2.1 and fish 2.15 fail even
+     as large text). Newsletter eyebrows are skipped — they follow their
+     banner's own roll. */
   (function brandHeadings() {
     var PALETTE_RGB = {
       'rgb(11, 130, 65)': 1, 'rgb(202, 84, 32)': 1, 'rgb(0, 69, 109)': 1,
@@ -124,31 +177,30 @@
       'rgb(255, 191, 43)': 1, 'rgb(116, 183, 238)': 1
     };
     var READABLE = ['--color-kale', '--color-tomato', '--color-blueberry', '--color-olive', '--color-chocolate'];
-    var deck = [];
-    function next() { if (!deck.length) deck = shuffled(READABLE); return deck.pop(); }
-    document.querySelectorAll('.eyebrow, h1').forEach(function (el) {
+    document.querySelectorAll('.eyebrow, h1, h2, h3, h4').forEach(function (el) {
       if (el.closest('.newsletter-row')) return;
       // Statement cards set their own coherent ink; the paper-readable deck
       // would clash with the wash behind it.
       if (el.closest('.statement-card')) return;
       // Footer sits on ink — the readable-on-paper deck would go invisible
-      // there; its custard stays fixed.
+      // there; its colourway is rolled separately.
       if (el.closest('footer')) return;
-      if (!PALETTE_RGB[getComputedStyle(el).color]) return;
-      el.style.color = 'var(' + next() + ')';
+      // h4s that follow a panel icon join the roll even when currently black.
+      var sib = el.previousElementSibling;
+      var afterIcon = sib && sib.classList && sib.classList.contains('panel-icon');
+      if (!afterIcon && !PALETTE_RGB[getComputedStyle(el).color]) return;
+      el.style.color = 'var(' + Decks.draw('headings', READABLE) + ')';
     });
   })();
 
   /* ---- Testimonial keylines ----------------------------------------------
-     Each card's left rule takes its own colour from a shuffled full-palette
-     deck, re-rolled per load; the deck cycles so adjacent cards differ. */
+     Each card's left rule takes its own colour from the persistent deck, so
+     adjacent cards differ and all eight cycle before repeating. */
   (function testimonialKeylines() {
     var cards = document.querySelectorAll('blockquote.testimonial');
     if (!cards.length) return;
-    var deck = [];
     Array.prototype.forEach.call(cards, function (card) {
-      if (!deck.length) deck = shuffled(ALL);
-      card.style.setProperty('--keyline-color', v(deck.pop()));
+      card.style.setProperty('--keyline-color', v(Decks.draw('testimonials', ALL)));
     });
   })();
 
@@ -159,10 +211,33 @@
   (function pathMarks() {
     var marks = document.querySelectorAll('img.path-mark');
     if (!marks.length) return;
-    var deck = shuffled(['kale', 'tomato', 'blueberry', 'olive', 'chocolate']);
-    Array.prototype.forEach.call(marks, function (img, i) {
-      var pick = deck[i % deck.length];
+    Array.prototype.forEach.call(marks, function (img) {
+      var pick = Decks.draw('path-marks', ['kale', 'tomato', 'blueberry', 'olive', 'chocolate']);
       img.src = img.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+    });
+  })();
+
+  /* ---- Service-tile icon hovers ------------------------------------------
+     Each browse-by-service tile draws its own brand colour per load; CSS
+     applies it to the icon's outline/border on hover via --tile-hover. */
+  (function tileHovers() {
+    var tiles = document.querySelectorAll('.service-link-grid a');
+    if (!tiles.length) return;
+    Array.prototype.forEach.call(tiles, function (tile) {
+      tile.style.setProperty('--tile-hover', v(Decks.draw('tile-hovers', ALL)));
+    });
+  })();
+
+  /* ---- Press-card hovers --------------------------------------------------
+     Each "As featured in" card draws a light wash it tints to on hover —
+     restricted to the washes dark text stays AA on, since the card keeps
+     its ink/dark text while hovered. */
+  (function pressHovers() {
+    var cards = document.querySelectorAll('.press-card');
+    if (!cards.length) return;
+    var WASHES = ['--color-custard', '--color-strawberry', '--color-fish'];
+    Array.prototype.forEach.call(cards, function (card) {
+      card.style.setProperty('--press-hover', v(Decks.draw('press-hovers', WASHES)));
     });
   })();
 
@@ -172,11 +247,11 @@
   (function statementCards() {
     var cards = document.querySelectorAll('.statement-card');
     if (!cards.length) return;
-    var washes = shuffled(['--color-custard', '--color-strawberry', '--color-fish']);
+    var WASHES = ['--color-custard', '--color-strawberry', '--color-fish'];
     var DARKS = ['--color-chocolate', '--color-blueberry'];
-    Array.prototype.forEach.call(cards, function (card, i) {
-      card.style.setProperty('--statement-light', v(washes[i % washes.length]));
-      card.style.setProperty('--statement-dark', v(DARKS[Math.floor(Math.random() * DARKS.length)]));
+    Array.prototype.forEach.call(cards, function (card) {
+      card.style.setProperty('--statement-light', v(Decks.draw('statement-washes', WASHES)));
+      card.style.setProperty('--statement-dark', v(Decks.draw('statement-darks', DARKS)));
     });
   })();
 
@@ -187,13 +262,27 @@
   (function footerColourway() {
     var foot = document.querySelector('footer.site-footer');
     if (!foot) return;
-    var LIGHT = ['fish', 'custard', 'strawberry'];
-    var pick = LIGHT[Math.floor(Math.random() * LIGHT.length)];
+    var pick = Decks.draw('footer', ['fish', 'custard', 'strawberry']);
     foot.querySelectorAll('.eyebrow, h4').forEach(function (el) {
       el.style.color = 'var(--color-' + pick + ')';
     });
     var logo = foot.querySelector('img.logo-mark');
     if (logo) logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+  })();
+
+  /* ---- Enquire-now CTA banner ---------------------------------------------
+     The reusable banner draws a light wash + AA dark ink pair per load. */
+  (function ctaBanner() {
+    var banners = document.querySelectorAll('.cta-banner');
+    if (!banners.length) return;
+    var WASHES = ['--color-custard', '--color-strawberry', '--color-fish'];
+    var DARKS = ['--color-chocolate', '--color-blueberry'];
+    var wash = v(Decks.draw('cta-washes', WASHES));
+    var dark = v(Decks.draw('cta-darks', DARKS));
+    Array.prototype.forEach.call(banners, function (b) {
+      b.style.setProperty('--cta-light', wash);
+      b.style.setProperty('--cta-dark', dark);
+    });
   })();
 
   /* ---- Definition card (homepage) ---------------------------------------
@@ -215,7 +304,8 @@
       ['--color-fish', '--color-chocolate'],       // 7.0
       ['--color-fish', '--color-blueberry']        // 4.7
     ];
-    var pair = PAIRS[Math.floor(Math.random() * PAIRS.length)];
+    var idx = parseInt(Decks.draw('definition', PAIRS.map(function (_, i) { return String(i); })), 10);
+    var pair = PAIRS[idx];
     card.style.background = v(pair[0]);
     card.style.color = v(pair[1]);
     card.style.borderColor = v(pair[1]);

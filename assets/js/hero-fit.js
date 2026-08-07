@@ -32,15 +32,21 @@
     homes.forEach(function (h) { afterRow.appendChild(h.el); });
     var slice = wrap.getBoundingClientRect().height;
 
-    // Readmit from the top only while the column genuinely fits the slice.
+    // The column may outgrow the 80dvh slice as long as the whole splash
+    // still roughly fits one screen below the header (the wrap's min-content
+    // lets it grow, the band keeps it centred, the figure stretches with it).
+    // Keeping the layout intact beats a hard fold: up to a quarter of the
+    // screen may hang below it before relocation — the genuine last resort —
+    // kicks in.
+    var sticky = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sticky-h')) || 80;
+    var limit = Math.max(slice + 24, (window.innerHeight - sticky - 64) * 1.25);
+
+    // Readmit from the top only while the column genuinely fits.
     afterRow.hidden = true;
     for (var i = 0; i < homes.length; i++) {
       var h = homes[i];
       column.insertBefore(h.el, h.next);
-      // Small overshoot is absorbed in place (the wrap grows a few px,
-      // shifting centring imperceptibly); relocation is reserved for
-      // viewports where keeping the element would visibly distort the hero.
-      if (column.scrollHeight > slice + 24) {
+      if (column.scrollHeight > limit) {
         afterRow.appendChild(h.el);
         afterRow.hidden = false;
         for (var j = i + 1; j < homes.length; j++) afterRow.appendChild(homes[j].el);

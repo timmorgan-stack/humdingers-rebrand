@@ -148,6 +148,25 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+/* Opening a menu panel scrolls that menu's top to the top of the viewport
+   (just under the sticky header), so the newly revealed content starts from
+   its heading rather than wherever the click happened to land. */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('section.menu-category details').forEach(function (panel) {
+    panel.addEventListener('toggle', function () {
+      if (!panel.open) return;
+      var sec = panel.closest('section.menu-category');
+      if (!sec) return;
+      var sticky = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sticky-h')) || 80;
+      // Proximity snap would drag the target away mid-scroll — pause it.
+      var root = document.documentElement;
+      root.style.scrollSnapType = 'none';
+      window.scrollTo({ top: sec.getBoundingClientRect().top + window.scrollY - sticky, behavior: 'smooth' });
+      setTimeout(function () { root.style.scrollSnapType = ''; }, 800);
+    });
+  });
+});
+
 document.addEventListener('DOMContentLoaded', function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!('IntersectionObserver' in window)) return;
