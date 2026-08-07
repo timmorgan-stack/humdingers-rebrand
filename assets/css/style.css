@@ -76,7 +76,6 @@ h1, h2, h3, h4 {
 }
 p { margin: 0 0 var(--stack-gap); }
 p:last-child { margin-bottom: 0; }
-#story .fit-screen-body p { font-size: 1.1rem; }
 .wrap {
   max-width: var(--container);
   margin: 0 auto;
@@ -294,17 +293,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .band h4, .band-sm h4 { color: var(--color-ink); }
 
 /* Colour roles: map old .bg-* classes to text/border treatments instead of background blocks */
-.bg-kale { --role-accent: var(--color-kale); }
-.bg-tomato { --role-accent: var(--color-tomato); }
-.bg-blueberry { --role-accent: var(--color-blueberry); }
-.bg-blueberry-white { --role-accent: var(--color-blueberry); }
-.bg-olive { --role-accent: var(--color-olive); }
-.bg-strawberry { --role-accent: var(--color-strawberry); }
-.bg-chocolate { --role-accent: var(--color-chocolate); }
-.bg-custard { --role-accent: var(--color-custard); }
-.bg-fish { --role-accent: var(--color-fish); }
-.bg-ink { --role-accent: var(--color-ink); }
-.bg-paper { --role-accent: var(--color-paper); }
 
 /* ---------------- Hero ---------------- */
 /* Every page's top panel shares one layout: the title group ranges top with
@@ -805,28 +793,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   margin: 0;
 }
 
-.wedding-quote {
-  padding: 24px;
-  background: rgba(0,0,0,0.03);
-  border-radius: var(--radius-md);
-  border-left: 4px solid var(--color-strawberry);
-}
-.wedding-quote blockquote {
-  margin: 0;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  font-style: italic;
-}
-.wedding-quote blockquote p {
-  margin: 0 0 0.5em;
-}
-.wedding-quote blockquote cite {
-  display: block;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 0.85rem;
-  margin-top: 1em;
-}
 
 /* Legacy styles kept for backward compatibility */
 .couples-grid {
@@ -1111,6 +1077,20 @@ blockquote.testimonial cite {
 .colour-strip { display: flex; height: 14px; }
 .colour-strip span { flex: 1; }
 
+/* Light-grey pulse on a frame whose image is still arriving */
+.img-shimmer {
+  background: linear-gradient(100deg, #ececea 40%, #f7f7f5 50%, #ececea 60%);
+  background-size: 200% 100%;
+  animation: img-shimmer 1.4s ease-in-out infinite;
+}
+@keyframes img-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .img-shimmer { animation: none; background: #efefed; }
+}
+
 /* ---------------- Footer ---------------- */
 footer.site-footer {
   background: var(--color-ink);
@@ -1299,218 +1279,6 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 .menu-head-reveal { opacity: 0; transition: opacity 0.5s ease; }
 .menu-head-reveal.menu-head-visible { opacity: 1; }
 
-/* ---------------- Fit-to-viewport sub-nav panels ---------------- */
-/* Every section a header-dropdown sub-nav link jumps to becomes its own "screen":
-   at least one viewport tall, its content either scaled down (fit-screen.js measures
-   and applies a shrink transform) or, when there's too much to scale legibly, split
-   into a small carousel — see fit-screen.js. Desktop/tablet only: on narrow viewports
-   there isn't a spare screen's worth of height to spare, so these sections revert to
-   normal flowing scroll. */
-@media (min-width: 901px) {
-  .fit-screen {
-    min-height: calc(100dvh - var(--viewport-fit-offset, 81px));
-    scroll-margin-top: var(--viewport-fit-offset, 81px);
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    scroll-snap-align: start;
-    overflow: hidden;
-    /* Anchors the absolutely-positioned next-section chevron to this section
-       rather than to the page. */
-    position: relative;
-    /* Reserves the strip the next-section chevron sits in. Content is laid out
-       inside the padding box, so it can never reach the chevron, and the JS
-       reads this padding when sizing panels — the two stay in step. */
-    padding-bottom: 92px;
-  }
-  .fit-screen .fit-screen-content { width: 100%; }
-  .fit-screen .fit-screen-body { transform-origin: top center; }
-
-  /* Menu categories specifically: every one of the 14 needs an *identical*
-     layout so nothing shifts as you click through the sub-nav — the head
-     always starts at the same spot, and carousel controls always land at
-     the same Y. That means a fixed section height (not just a minimum) with
-     the carousel viewport as the flexible middle and controls pinned after
-     it, rather than the whole block just centering as a variable-height unit. */
-  .menu-category.fit-screen {
-    height: calc(100dvh - var(--viewport-fit-offset, 81px));
-    min-height: 0;
-    align-items: stretch;
-  }
-  /* Two columns: the category's photo and description stay put on the left
-     while the dish list scrolls on the right. Explicit row/column placement
-     keeps the scroll controls under the dish list rather than becoming a
-     third column of their own. */
-  .menu-category.fit-screen .fit-screen-content {
-    display: grid;
-    /* Left column is exactly the photo's width, with a 20px gutter to the
-       dish list — everything else goes to the menu content. */
-    grid-template-columns: 260px minmax(0, 1fr);
-    grid-template-rows: 1fr auto;
-    column-gap: 20px;
-    align-items: start;
-    height: 100%;
-  }
-  .menu-category.fit-screen .fit-screen-head {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 20px;
-    margin-bottom: 0;
-    align-self: start;
-  }
-  .menu-category.fit-screen .menu-category-img {
-    width: 100%;
-    max-width: 260px;
-    height: auto;
-    aspect-ratio: 1 / 1;
-  }
-  .menu-category.fit-screen .fit-screen-viewport,
-  .menu-category.fit-screen .fit-screen-body {
-    grid-column: 2;
-    grid-row: 1;
-    margin-left: 30px;
-    /* Overrides the base width:100%, which combined with the margin pushed
-       the panel 30px past the right edge of its column */
-    width: auto;
-  }
-  .menu-category.fit-screen .fit-carousel-controls {
-    grid-column: 2;
-    grid-row: 2;
-    justify-content: center;
-    margin-top: 16px;
-    /* Padding rather than margin: the controls stay the full width of the
-       column, so centring inside their content box lands them exactly under
-       the dish list, which is itself inset by the same 30px. */
-    padding-left: 30px;
-  }
-  /* Hairline top and bottom of the dish list, ~70% width, barely off the
-     background colour — just enough to show the list is a scrolling window.
-     Painted as background layers rather than borders so they stay pinned to
-     the panel edges while the content scrolls underneath, and sized off
-     currentColor so they work on all eight brand backgrounds. */
-  .menu-category.fit-screen .fit-screen-viewport {
-    background-image:
-      linear-gradient(rgba(128,128,128,0.3), rgba(128,128,128,0.3)),
-      linear-gradient(rgba(128,128,128,0.3), rgba(128,128,128,0.3));
-    background-image:
-      linear-gradient(color-mix(in srgb, currentColor 30%, transparent), color-mix(in srgb, currentColor 30%, transparent)),
-      linear-gradient(color-mix(in srgb, currentColor 30%, transparent), color-mix(in srgb, currentColor 30%, transparent));
-    background-repeat: no-repeat, no-repeat;
-    background-size: 70% 1px, 70% 1px;
-    background-position: center top, center bottom;
-    /* Breathing room so the dish list doesn't butt up against the keylines */
-    padding-block: 20px;
-  }
-}
-.fit-screen-head { margin-bottom: 28px; }
-
-/* Overflowing panels become a fixed-height scroll area — the content inside
-   is never restructured, only scrolled, so nothing can be clipped or lost.
-   Scrollbar is hidden because the arrows/dots are the affordance. */
-/* The scrolling box is a plain wrapper, never the grid itself — a grid given
-   a definite height divides that height between its rows, squashing cards and
-   cropping images. The wrapper scrolls; the grid inside keeps natural rows. */
-.fit-screen-viewport { width: 100%; }
-/* Text column beside a photo: the scroll panel takes the space, the controls
-   are pushed to the foot so they line up with the bottom of the image. */
-.fit-screen-col { display: flex; flex-direction: column; width: 100%; }
-.fit-screen-col .fit-carousel-controls { margin-top: auto; justify-content: center; }
-
-/* Chevron to the next screen: a bold bare glyph, no button chrome. It takes
-   the section's own text colour, so it's always a palette colour with proper
-   contrast whichever of the eight brand backgrounds it sits on. Every section
-   reserves a strip at its foot for this (see .fit-screen padding-bottom), so
-   it lands in the same spot every time and never collides with content. */
-.fit-next {
-  position: absolute;
-  left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
-  width: 52px;
-  height: 34px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-tomato);
-  opacity: 0.9;
-  transition: opacity 0.15s ease, transform 0.2s ease;
-}
-.fit-next svg { width: 100%; height: 100%; display: block; }
-.fit-next:hover { opacity: 1; transform: translateX(-50%) translateY(3px); }
-@media (max-width: 900px) { .fit-next { display: none; } }
-/* The opening hero carries the same chevron into the first panel */
-.has-hero-chevron { position: relative; padding-bottom: 92px; }
-/* The last panel's chevron targets the footer, so clear the sticky header */
-.site-footer { scroll-margin-top: var(--viewport-fit-offset, 81px); }
-
-/* An explicit palette colour per background — never black, and never the
-   colour it's sitting on. (Inheriting the section's text colour would have
-   made it black on the white sections.) */
-.bg-paper .fit-next,
-.bg-custard .fit-next        { color: var(--color-tomato); }
-.bg-fish .fit-next           { color: var(--color-blueberry); }
-.bg-strawberry .fit-next     { color: var(--color-chocolate); }
-.bg-kale .fit-next,
-.bg-olive .fit-next,
-.bg-tomato .fit-next,
-.bg-chocolate .fit-next,
-.bg-blueberry-white .fit-next,
-.bg-ink .fit-next            { color: var(--color-custard); }
-.fit-scroll {
-  overflow-y: auto;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior: contain;
-  /* Snap each row/group to the top so paging lands cleanly instead of stopping
-     mid-row. "proximity" rather than "mandatory" so an item taller than the
-     panel can still be scrolled through freely. */
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
-}
-.fit-scroll > * > * { scroll-snap-align: start; }
-@media (prefers-reduced-motion: reduce) {
-  .fit-scroll { scroll-behavior: auto; scroll-snap-type: none; }
-}
-.fit-scroll::-webkit-scrollbar { width: 0; height: 0; }
-/* A centring flex container clips its own overflow at the top once content is
-   taller than the box, so scrolling panels start at the top and take their
-   height from JS rather than flex-grow. */
-.menu-category.fit-screen .fit-screen-viewport.fit-scroll {
-  flex: none;
-  justify-content: flex-start;
-}
-.fit-carousel-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 18px;
-  margin-top: 20px;
-}
-.fit-carousel-arrow {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 2px solid currentColor;
-  background: transparent;
-  color: inherit;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-/* A solid currentColor fill would make the glyph the same colour as its own
-   background and vanish — and these panels sit on eight different brand
-   colours, so there's no single safe contrast colour. A translucent grey
-   fill reads correctly on all of them and keeps the arrow visible. */
-.fit-carousel-arrow:hover:not(:disabled) { background: rgba(128,128,128,0.28); }
-.fit-carousel-arrow:disabled { opacity: 0.3; cursor: default; }
-.fit-carousel-arrow:disabled:hover { background: transparent; }
-
 /* ==========================================================================
    BRAND COLOUR SYSTEM — style-guide roles (Aug 2026 client brief: tone the
    bold multi-colour treatment down and stop picking a colour per section on
@@ -1557,7 +1325,6 @@ footer.site-footer .colour-strip { margin-top: 40px; }
    Toned down, more corporate: content sits in a capped column with the page's
    own white showing either side on wide screens, rather than full-bleed
    colour bands. This is additive and scoped to new classnames only — every
-   other page keeps the original .band/.bg-*/.fit-screen system untouched
    until it's rebuilt in the same style during the site-wide roll-out.
    ========================================================================== */
 .wrap-narrow { max-width: 960px; margin: 0 auto; padding: 0 24px; }
