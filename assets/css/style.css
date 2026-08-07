@@ -332,6 +332,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
      with the bottom of the hero panel — with clear air above it. */
   .band-hero .hero > div:first-child { display: flex; flex-direction: column; align-items: flex-start; }
   .band-hero .hero > div:first-child > .hero-overflow { margin-top: auto; align-self: stretch; }
+  .band-hero .hero > div:first-child > a.hero-overflow { align-self: flex-start; }
   .band-hero .hero > div:first-child > *:has(+ .hero-overflow) { margin-bottom: 32px; }
   .band-hero .hero-figure { position: relative; }
   .band-hero .hero-figure img,

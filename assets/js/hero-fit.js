@@ -26,15 +26,26 @@
   band.appendChild(afterRow);
 
   function fit() {
-    // Start from the default layout, then move only what must move.
-    homes.forEach(function (h) { column.insertBefore(h.el, h.next); });
-    afterRow.hidden = true;
-
+    // Measure the true slice with the movables out — if they were measured
+    // in, their min-content can grow the wrap a few px and that growth is
+    // itself the cross-page drift we are preventing.
+    homes.forEach(function (h) { afterRow.appendChild(h.el); });
     var slice = wrap.getBoundingClientRect().height;
-    for (var i = homes.length - 1; i >= 0; i--) {
-      if (column.scrollHeight <= slice + 4) break;
-      afterRow.insertBefore(homes[i].el, afterRow.firstChild);
-      afterRow.hidden = false;
+
+    // Readmit from the top only while the column genuinely fits the slice.
+    afterRow.hidden = true;
+    for (var i = 0; i < homes.length; i++) {
+      var h = homes[i];
+      column.insertBefore(h.el, h.next);
+      // Small overshoot is absorbed in place (the wrap grows a few px,
+      // shifting centring imperceptibly); relocation is reserved for
+      // viewports where keeping the element would visibly distort the hero.
+      if (column.scrollHeight > slice + 24) {
+        afterRow.appendChild(h.el);
+        afterRow.hidden = false;
+        for (var j = i + 1; j < homes.length; j++) afterRow.appendChild(homes[j].el);
+        break;
+      }
     }
   }
 
