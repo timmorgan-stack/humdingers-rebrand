@@ -22,6 +22,16 @@
   window.addEventListener('resize', setStickyVar);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(setStickyVar);
 
+  // While a landing scroll animates, data-landing is set on <html>; images
+  // (img-preload.js) hold their reveals until the landing-done event, so the
+  // scroll finishes before imagery fades in.
+  var landingTimer = null;
+  function landingDone() {
+    landingTimer = null;
+    document.documentElement.removeAttribute('data-landing');
+    document.dispatchEvent(new Event('landing-done'));
+  }
+
   function land(target) {
     var panel = target.querySelector('details.menu-panel');
     if (panel) panel.open = true;
@@ -33,6 +43,17 @@
     if (rect.height < available - 8) {
       top -= (available - rect.height) / 2; // centre in the visible area
     }
+
+    document.documentElement.setAttribute('data-landing', '');
+    if (landingTimer) clearTimeout(landingTimer);
+    // 'scrollend' is the real signal; the timeout covers browsers without it
+    // and the no-movement case (already at the target position).
+    landingTimer = setTimeout(landingDone, 900);
+    window.addEventListener('scrollend', function onEnd() {
+      window.removeEventListener('scrollend', onEnd);
+      if (landingTimer) { clearTimeout(landingTimer); landingDone(); }
+    });
+
     window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
   }
 

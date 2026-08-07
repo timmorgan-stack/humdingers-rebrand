@@ -501,7 +501,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .service-item h4 { grid-row: 1; font-size: 1.15rem; margin: 0; }
 .service-item p {
   grid-column: 1 / -1;
-  margin-top: 12px;
+  margin-top: 18px;
   font-size: 0.95rem;
   opacity: 0.85;
   margin: 0;
@@ -1115,8 +1115,10 @@ blockquote.testimonial cite {
 footer.site-footer {
   background: var(--color-ink);
   color: var(--color-paper);
-  padding: 72px 0 32px;
+  /* no bottom padding: the colour strip closes the page flush at the edge */
+  padding: 72px 0 0;
 }
+footer.site-footer .colour-strip { margin-top: 40px; }
 .footer-grid {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 1fr;
@@ -1135,13 +1137,22 @@ footer.site-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 24px;
+  gap: 16px 32px;
+  flex-wrap: wrap;
+  padding: 20px 0 28px;
   border-top: 1px solid rgba(255,255,255,0.2);
   font-size: 0.8rem;
-  opacity: 0.7;
-  flex-wrap: wrap;
-  gap: 12px;
 }
+.footer-bottom > span { opacity: 0.7; }
+.footer-legal { display: flex; gap: 8px 22px; flex-wrap: wrap; }
+.footer-legal a { opacity: 0.7; }
+.footer-legal a:hover { opacity: 1; text-decoration: underline; }
+.footer-enquire {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-custard);
+}
+.footer-enquire:hover { text-decoration: underline; }
 .social-row { display: flex; gap: 16px; }
 
 /* ---------------- Cookie consent banner ---------------- */
