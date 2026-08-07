@@ -358,6 +358,12 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   /* The text column stacks as a flex column so anything marked hero-overflow
      (home's definition card) pins to the column's foot — its bottom lines up
      with the bottom of the hero panel — with clear air above it. */
+  /* The grid takes at least the wrap's slice height (so short columns still
+     stretch to it — CTA pinning, full-height media), but grows with a taller
+     column; the figure stretches with the row either way, so the media's
+     bottom always tracks the column's bottom — in CSS, with no script pin
+     to go stale mid-resize. */
+  .band-hero .hero { min-height: 100%; }
   .band-hero .hero > div:first-child { display: flex; flex-direction: column; align-items: flex-start; }
   .band-hero .hero > div:first-child > .hero-overflow { margin-top: auto; align-self: stretch; }
   /* Columns that end in a CTA (the service pages, and any top-level page
@@ -1581,10 +1587,15 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   width: 1px;
   background: rgba(0,0,0,0.14);
 }
-/* The strip stays on all tablet and desktop sizes — .wrap's 24px side
-   padding always clears the 20px ribbon. Only phone-width screens drop it,
-   where the layout runs genuinely full-bleed. */
+/* The strip stays on all tablet and desktop sizes. Only phone-width screens
+   drop it, where the layout runs genuinely full-bleed. */
 @media (max-width: 767px) { .dot-col { display: none; } }
+/* Below 1360px the page margins are gone and the ribbon overlaps the wrap's
+   edge — widen the wrap's side padding (symmetric, so content stays centred)
+   to keep clear air between the 20px ribbon and where content starts. */
+@media (min-width: 768px) and (max-width: 1360px) {
+  .wrap { padding-left: 52px; padding-right: 52px; }
+}
 
 .hero-figure video { width: 100%; height: 100%; object-fit: cover; display: block; }
 

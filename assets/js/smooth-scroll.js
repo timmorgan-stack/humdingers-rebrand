@@ -19,28 +19,11 @@
     document.documentElement.style.setProperty('--sticky-h', stickyOffset() + 'px');
   }
 
-  // Hard guarantee: the hero media is always exactly the height of the text
-  // column beside it. CSS stretch already does this; pinning the measured
-  // height as well means no future style change can silently break the
-  // alignment. Cleared on narrow viewports, where the hero stacks.
-  function syncHeroMedia() {
-    var hero = document.querySelector('.band-hero .hero');
-    if (!hero) return;
-    var figure = hero.querySelector('.hero-figure');
-    if (!figure) return;
-    if (window.innerWidth <= 900) {
-      figure.style.height = '';
-      return;
-    }
-    // One frame late, so hero-fit.js has finished any relocation first; the
-    // row (wrap) height is the slice both columns share.
-    requestAnimationFrame(function () {
-      figure.style.height = '';
-      figure.style.height = hero.getBoundingClientRect().height + 'px';
-    });
-  }
-
-  function relayout() { setStickyVar(); syncHeroMedia(); }
+  // Hero media height is pure CSS now: the .hero grid takes min-height 100%
+  // of the slice wrap and the figure stretches with the row, so the media
+  // always ranges exactly with the text column — no measured pin to go
+  // stale between resize frames.
+  function relayout() { setStickyVar(); }
   relayout();
   window.addEventListener('resize', relayout);
   window.addEventListener('load', relayout);
