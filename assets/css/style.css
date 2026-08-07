@@ -314,6 +314,8 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 @media (min-width: 901px) {
   .band-hero {
     box-sizing: border-box;
+    padding: 32px 0; /* flex centring supplies the air; big band padding
+                        would push the hero past the viewport */
     min-height: calc(100dvh - var(--sticky-h, 80px));
     display: flex;
     flex-direction: column;
@@ -487,8 +489,19 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
 }
-.service-item h4 { font-size: 1.15rem; margin-bottom: 0.3em; }
+/* Icon, heading and copy read as one group: icon sits beside the heading on
+   the top row, the copy spans beneath both. */
+.service-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 14px;
+  align-items: center;
+}
+.service-item .panel-icon { grid-row: 1; margin: 0; width: 30px; height: 30px; }
+.service-item h4 { grid-row: 1; font-size: 1.15rem; margin: 0; }
 .service-item p {
+  grid-column: 1 / -1;
+  margin-top: 12px;
   font-size: 0.95rem;
   opacity: 0.85;
   margin: 0;
