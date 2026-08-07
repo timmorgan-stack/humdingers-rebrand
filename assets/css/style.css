@@ -591,12 +591,12 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .band p:first-of-type:not(:where(
     .script, .placeholder-tag,
     .stat-card *, .press-card *, .newsletter-row *, .wedding-info *, .statement-card *,
-    .contact-intro *, .menu-category *, blockquote *, form *
+    .contact-intro *, .menu-category *, blockquote *, form *, .cmslayout_terms *
   )),
 .band-sm p:first-of-type:not(:where(
     .script, .placeholder-tag,
     .stat-card *, .press-card *, .newsletter-row *, .wedding-info *, .statement-card *,
-    .contact-intro *, .menu-category *, blockquote *, form *
+    .contact-intro *, .menu-category *, blockquote *, form *, .cmslayout_terms *
   )) {
   border-left: 4px solid var(--keyline-color, var(--color-ink));
   padding-left: 1em;
@@ -1720,6 +1720,10 @@ footer.site-footer .colour-strip { margin-top: 40px; }
      each icon wears its dealt brand colour by default. */
   .service-link-grid { grid-template-columns: 1fr; }
   .service-link-grid a .panel-icon { color: var(--tile-hover, var(--color-ink)); }
+  .service-link-grid a .service-thumb { box-shadow: inset 0 0 0 3px var(--tile-hover, var(--color-ink)); }
+  /* Menus page seasonal note: the desktop indent aligns it with the filter
+     input's text — pointless on mobile, so centre it instead. */
+  .menu-note { transform: none !important; text-align: center; }
   /* Venues become list rows: thumbnail beside venue name/location, ink text
      instead of the photo-overlay treatment. */
   .venue-grid { grid-template-columns: 1fr; gap: 10px; }
