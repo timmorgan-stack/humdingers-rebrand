@@ -1743,7 +1743,8 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    border-bottom: 1px solid rgba(0,0,0,0.12);
+    /* Brand keyline between items, dealt per load by palette.js */
+    border-bottom: 4px solid var(--nav-keyline, rgba(0,0,0,0.12));
   }
   .nav-item > a { flex: 1 1 0; min-width: 0; padding: 14px 0; font-size: 1.05rem; }
   .nav-dropdown {
@@ -1775,6 +1776,14 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     color: var(--color-ink);
     border-radius: 0;
   }
+  /* Keylines between the sub-nav rows too — slimmer than the 4px top-level
+     rules so the hierarchy still reads; the last row skips its line rather
+     than doubling up against the parent item's keyline. */
+  .nav-dropdown-inner > a,
+  .nav-dropdown-inner > .nav-subitem { border-bottom: 2px solid var(--nav-keyline, rgba(0,0,0,0.1)); }
+  .nav-dropdown-inner > :last-child { border-bottom: 0; }
+  .nav-flyout a { border-bottom: 2px solid var(--nav-keyline, rgba(0,0,0,0.1)); }
+  .nav-flyout a:last-child { border-bottom: 0; }
   .nav-dropdown a:hover { background: transparent; color: var(--color-ink); }
   /* Third level: a further-indented collapsible list.
      flex-direction: row overrides the desktop column stack — without it the

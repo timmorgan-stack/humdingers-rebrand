@@ -137,6 +137,19 @@
     logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
   })();
 
+  /* ---- Mobile nav keylines ------------------------------------------------
+     The rules between the hamburger menu's top-level items are brand
+     keylines, one colour per item per load, adjacent always distinct. */
+  (function navKeylines() {
+    var rows = document.querySelectorAll(
+      '.main-nav > .nav-item, .nav-dropdown-inner > a, .nav-dropdown-inner > .nav-subitem, .nav-flyout a'
+    );
+    if (!rows.length) return;
+    Array.prototype.forEach.call(rows, function (row, i) {
+      row.style.setProperty('--nav-keyline', v(Decks.draw('nav-keylines', ALL, i)));
+    });
+  })();
+
   /* ---- Paragraph keylines ------------------------------------------------
      Which paragraphs carry a keyline is the stylesheet's decision; anything
      the CSS gave a left border gets a colour here. Grouped per <section> so
