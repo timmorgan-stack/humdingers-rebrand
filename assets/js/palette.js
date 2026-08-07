@@ -316,7 +316,7 @@
     var foot = document.querySelector('footer.site-footer');
     if (!foot) return;
     var pick = Decks.draw('footer', ['fish', 'custard', 'strawberry'], 0);
-    foot.querySelectorAll('.eyebrow, h4').forEach(function (el) {
+    foot.querySelectorAll('.eyebrow, h3, h4').forEach(function (el) {
       el.style.color = 'var(--color-' + pick + ')';
     });
     var logo = foot.querySelector('img.logo-mark');

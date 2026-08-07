@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Caveat:wght@600;700&family=Lora:wght@600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/style.css?v=20260810c">
+<link rel="stylesheet" href="assets/css/style.css?v=20260810d">
 </head>
 <body>
 
@@ -18,7 +18,7 @@
 <header class="site-header cmsobject_header">
   <div class="wrap">
     <a href="index.html" class="logo"><img class="logo-mark logo-mark-lg" src="assets/logo/humdingers-logo-black.svg" alt="Humdingers"></a>
-    <nav class="main-nav">
+    <nav class="main-nav" aria-label="Main">
       <div class="nav-item">
         <a href="catering-events.html" class="current">Catering &amp; Events</a>
         <div class="nav-dropdown">
@@ -92,8 +92,8 @@
     </nav>
     <div style="display:flex; align-items:center; gap:20px;">
       <a class="header-phone" href="tel:02077296644">0207 729 6644</a>
-      <a class="btn btn-solid btn-sm cmsobject_button" href="contact.html">Enquire<span class="btn-now"> Now</span></a>
-      <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
+      <a class="btn btn-solid btn-sm cmsobject_button-catering-events" href="contact.html">Enquire<span class="btn-now"> Now</span></a>
+      <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false"><span></span></button>
     </div>
   </div>
 </header>
@@ -107,7 +107,7 @@
       <h1 style="color:var(--color-blueberry);">Catering &amp; Events</h1>
       <p class="hero-lede keyline-text">Weddings, corporate events, brand launches and private dining across London. Seasonal menus, made from scratch, with a team that starts every booking with an informal chat rather than a form.</p>
       <p class="hero-overflow" style="font-family:var(--font-display); font-weight:700; font-size:0.95rem; opacity:0.85;">This page covers full-service events — <strong>Served by Us</strong>. Just need food dropped off? <a href="menus.html" style="text-decoration:underline;">See our Delivered by Us menus</a>.</p>
-      <a class="btn btn-solid cmsobject_button" href="contact.html">Enquire now</a>
+      <a class="btn btn-solid cmsobject_button-what-we-cater" href="contact.html">Enquire now</a>
     </div>
     <div class="hero-figure cmsobject_hero-media">
       <img src="assets/img/premium/corporate-event.jpg" alt="Corporate event catering by Humdingers">
@@ -147,41 +147,42 @@
       <span class="eyebrow" style="color:var(--color-custard);">More ways we help</span>
     </div>
     <div class="-body service-grid">
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="11" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2.5v2M12 15.5V18M8.5 21l3.5-3 3.5 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 12l2.5-2.5 2 1.5 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Seminars &amp; Conferences</h4>
+      <div class="service-item cmsobject_service-item-seminars-conferences">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="11" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 2.5v2M12 15.5V18M8.5 21l3.5-3 3.5 3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 12l2.5-2.5 2 1.5 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Seminars &amp; Conferences</h3>
         <p>We help you find a venue, book staff, and provide the right catering and drinks for you and your attendees — coordinating the lot so you can focus on the agenda.</p>
       </div>
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 4.5h15L12 13v6.5M8 21h8M6.8 7.5h10.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Drinks &amp; Cocktails</h4>
+      <div class="service-item cmsobject_service-item-drinks-cocktails">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 4.5h15L12 13v6.5M8 21h8M6.8 7.5h10.4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Drinks &amp; Cocktails</h3>
         <p>An all-inclusive bar, alcoholic or not, plus premium hot drinks from friends like The London Tea Makers, and wine pairing advice from our own Wine Store.</p>
       </div>
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 3h3v3.2c1.4.7 2 1.9 2 3.3V20a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V9.5c0-1.4.6-2.6 2-3.3V3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 12.5h3.5l-1.2 6.3a1.4 1.4 0 0 1-2.7 0L17 12.5zM18.7 19.5V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Bar Hire</h4>
+      <div class="service-item cmsobject_service-item-bar-hire">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8.5 3h3v3.2c1.4.7 2 1.9 2 3.3V20a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V9.5c0-1.4.6-2.6 2-3.3V3z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 12.5h3.5l-1.2 6.3a1.4 1.4 0 0 1-2.7 0L17 12.5zM18.7 19.5V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Bar Hire</h3>
         <p>From a cash bar to pre-paid, quirky to classically corporate — we work with trusted suppliers to build the bar that suits your event.</p>
       </div>
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17.5 19c0-2.3-.9-4-2.3-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Staffing</h4>
+      <div class="service-item cmsobject_service-item-staffing">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="8" r="3.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17.5 19c0-2.3-.9-4-2.3-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Staffing</h3>
         <p>A reliable roster of brand ambassadors, mixologists, waiting staff, cloakroom and supervisors — so your event runs effortlessly from start to finish.</p>
       </div>
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="9" width="17" height="10.5" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.7 8.8l16.4-3.5-.6-2.4L3.2 6.4l.5 2.4zM8 8l2.5-3.6M13 7l2.5-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>Location &amp; Studio Catering</h4>
+      <div class="service-item cmsobject_service-item-location-studio-catering">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="9" width="17" height="10.5" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.7 8.8l16.4-3.5-.6-2.4L3.2 6.4l.5 2.4zM8 8l2.5-3.6M13 7l2.5-3.6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Location &amp; Studio Catering</h3>
         <p>Breakfast, lunch and individually packaged bento boxes for shoots and studios — built for hygiene and easy on-set logistics.</p>
       </div>
-      <div class="service-item cmsobject_service-item">
-        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5.5" y="3" width="13" height="18" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 7.5h6M9 11h6M9 14.5h3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h4>A La Carte</h4>
+      <div class="service-item cmsobject_service-item-a-la-carte">
+        <svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5.5" y="3" width="13" height="18" rx="1.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 7.5h6M9 11h6M9 14.5h3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>A La Carte</h3>
         <p>Traditional and popular dishes, freshly made with the finest seasonal ingredients, adapted to suit whatever occasion you're planning.</p>
       </div>
     </div>
       <div style="margin-top:44px;">
-      <div class="newsletter-row cmsobject_newsletter-subscribe-banner">
+      <div class="newsletter-row cmsobject_newsletter-subscribe-banner-seasonal-menus-and-event-ideas-straight">
       <div>
         <span class="eyebrow">Stay in the loop</span>
         <h3 style="margin:0; font-size:1.3rem;">Seasonal menus and event ideas, straight to your inbox.</h3>
       </div>
       <form onsubmit="return false;" class="newsletter-form">
-        <input type="email" placeholder="Your email address" required>
-        <button type="submit" class="btn btn-solid cmsobject_button">Subscribe</button>
+        <input type="email" placeholder="Your email address" aria-label="Email address" required>
+        <button type="submit" class="btn btn-solid cmsobject_button-all-our-best-weddings-start-with-a">Subscribe</button>
       </form>
+    </div>
     </div>
   </div>
 </section>
@@ -196,7 +197,7 @@
     </div>
     <div class="-body wedding-panels">
       <!-- Rowena & Sam -->
-      <div class="wedding-panel cmsobject_wedding-panel">
+      <div class="wedding-panel cmsobject_wedding-panel-rowena-sam">
         <div class="wedding-grid">
           <div><img src="assets/img/weddings/rowena-sam-1.jpg" alt="Rowena and Sam wedding"></div>
           <div><img src="assets/img/weddings/rowena-sam-2.jpg" alt="Rowena and Sam ceremony"></div>
@@ -212,7 +213,7 @@
       </div>
 
       <!-- Ellie & Andy -->
-      <div class="wedding-panel cmsobject_wedding-panel">
+      <div class="wedding-panel cmsobject_wedding-panel-ellie-andy">
         <div class="wedding-grid">
           <div><img src="assets/img/weddings/ellie-andy-1.jpg" alt="Ellie and Andy wedding"></div>
           <div><img src="assets/img/weddings/ellie-andy-2.jpg" alt="Ellie and Andy ceremony"></div>
@@ -228,7 +229,7 @@
       </div>
 
       <!-- Jack & James -->
-      <div class="wedding-panel cmsobject_wedding-panel">
+      <div class="wedding-panel cmsobject_wedding-panel-jack-james">
         <div class="wedding-grid">
           <div><img src="assets/img/weddings/jack-james-1.jpg" alt="Jack and James wedding"></div>
           <div><img src="assets/img/weddings/jack-james-2.jpg" alt="Jack and James ceremony"></div>
@@ -244,7 +245,7 @@
       </div>
 
       <!-- Fiona & Chris -->
-      <div class="wedding-panel cmsobject_wedding-panel">
+      <div class="wedding-panel cmsobject_wedding-panel-fiona-chris">
         <div class="wedding-grid">
           <div><img src="assets/img/weddings/fiona-chris-1.jpg" alt="Fiona and Chris wedding"></div>
           <div><img src="assets/img/weddings/fiona-chris-2.jpg" alt="Fiona and Chris ceremony"></div>
@@ -259,11 +260,9 @@
         </div>
       </div>
     </div>
-      </div>
-    </div>
-    </div>
-</div>
+  </div>
 </section>
+
 <section id="services" class="band">
   <div class="wrap -content">
     <div class="-head">
@@ -289,13 +288,13 @@
       <a href="buffet-catering-london.html"><span class="service-thumb"><svg class="panel-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 15.5h18M5 15.5a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 8.7c.6-.3 1.3-.4 2-.4s1.4.1 2 .4M7 18.5h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span>Buffet Catering</span></a>
     </div>
       <div style="margin-top:44px;">
-      <div class="newsletter-row cmsobject_newsletter-subscribe-banner">
+      <div class="newsletter-row cmsobject_newsletter-subscribe-banner-confit-duck-rosemary-glaze">
         <div>
           <span class="eyebrow">Stay in the loop</span>
           <h3 style="margin:0; font-size:1.4rem;">Seasonal menus, event ideas and Community Kitchen updates.</h3>
         </div>
         <form onsubmit="return false;" class="newsletter-form">
-          <input type="email" placeholder="Your email address" required>
+          <input type="email" placeholder="Your email address" aria-label="Email address" required>
           <button type="submit" class="btn btn-solid">Subscribe</button>
         </form>
       </div>
@@ -309,43 +308,43 @@
     <h2 style="font-size:clamp(1.8rem,3vw,2.4rem);">A taste of our menus</h2>
     <div class="menu-columns">
       <div>
-        <h4>Meat</h4>
-        <div class="dish cmsobject_dish">
+        <h3>Meat</h3>
+        <div class="dish cmsobject_dish-confit-duck-rosemary-glaze">
           <div class="name">Confit duck, rosemary glaze</div>
           <div class="desc">Braised haricot beans, baby carrots, courgettes</div>
           <div class="tags">gf</div>
         </div>
-        <div class="dish cmsobject_dish">
+        <div class="dish cmsobject_dish-scotch-beef-ragu-mac-n-cheese">
           <div class="name">Scotch beef ragu mac n cheese</div>
           <div class="desc">Aged parmesan, white truffle oil</div>
         </div>
       </div>
       <div>
-        <h4>Fish</h4>
-        <div class="dish cmsobject_dish">
+        <h3>Fish</h3>
+        <div class="dish cmsobject_dish-thai-spiced-salmon">
           <div class="name">Thai spiced salmon</div>
           <div class="desc">Pickled cucumber, edamame beans, vermicelli noodles</div>
           <div class="tags">gf</div>
         </div>
-        <div class="dish cmsobject_dish">
+        <div class="dish cmsobject_dish-sweet-sour-king-prawns">
           <div class="name">Sweet &amp; sour king prawns</div>
           <div class="desc">Coconut rice, crispy shallots</div>
         </div>
       </div>
       <div>
-        <h4>Veg &amp; Vegan</h4>
-        <div class="dish cmsobject_dish">
+        <h3>Veg &amp; Vegan</h3>
+        <div class="dish cmsobject_dish-gnocchi">
           <div class="name">Gnocchi</div>
           <div class="desc">Creamy gorgonzola, spinach, parmesan, walnut crumb</div>
         </div>
-        <div class="dish cmsobject_dish">
+        <div class="dish cmsobject_dish-wild-mushroom-risotto">
           <div class="name">Wild mushroom risotto</div>
           <div class="desc">Wild mushrooms, white truffle oil, rocket</div>
           <div class="tags">gf &middot; vg</div>
         </div>
       </div>
     </div>
-    <a class="btn btn-solid cmsobject_button" style="margin-top:24px;" href="menus.html">View all 14 menus</a>
+    <a class="btn btn-solid cmsobject_button-venues-we-work-in" style="margin-top:24px;" href="menus.html">View all 14 menus</a>
   </div>
 </section>
 
@@ -412,27 +411,27 @@
   <div class="wrap">
     <span class="eyebrow" style="color:var(--role-celebration); font-size:1.6rem; margin-bottom:1em;">A few kind words</span>
     <div class="testimonial-grid testimonial-grid-2">
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-esme-your-team-was-brilliant">
         “Esme, your team was brilliant and lovely. Could not have asked for more. 5 stars!”
         <cite>— Sarah, corporate client, July 2026</cite>
       </blockquote>
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-i-thought-the-food-and-service">
         “I thought the food and service were both brilliant — the client was really pleased with how the event went.”
         <cite>— Alasdair, Event Agency, February 2026</cite>
       </blockquote>
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-we-had-such-a-great-day-the">
         “We had such a great day — the food was absolutely fantastic and the table set up was perfect.”
         <cite>— Kate, Wedding, February 2026</cite>
       </blockquote>
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-the-catering-staff-were-amazing">
         “The catering staff were amazing — we've had very positive feedback regarding the canap&eacute;s and service. Amalia and her team were all so wonderful, super organised and efficient.”
         <cite>— Thirdspace, May 2025</cite>
       </blockquote>
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-seasonal-menus-event-ideas-and">
         “Everything was so well organised, from delivering the equipment the day before to the food arriving beautifully presented — completely stress-free. We will absolutely be using Humdingers again.”
         <cite>— Rachel, corporate client, July 2026</cite>
       </blockquote>
-      <blockquote class="testimonial testimonial-card cmsobject_testimonial">
+      <blockquote class="testimonial testimonial-card cmsobject_testimonial-seasonal-menus-event-ideas-and-venues">
         “Thanks so much for all you did to make our wedding day go without a hitch — you went above and beyond.”
         <cite>— Fiona &amp; Chris</cite>
       </blockquote>
@@ -444,14 +443,14 @@
 
 <section class="band-sm">
   <div class="wrap">
-    <div class="newsletter-row cmsobject_newsletter-subscribe-banner">
+    <div class="newsletter-row cmsobject_newsletter-subscribe-banner-seasonal-menus-event-ideas-and">
       <div>
         <span class="eyebrow">Stay in the loop</span>
         <h3 style="margin:0; font-size:1.4rem;">Seasonal menus, event ideas and Community Kitchen updates.</h3>
       </div>
       <form onsubmit="return false;" class="newsletter-form">
-        <input type="email" placeholder="Your email address" required>
-        <button type="submit" class="btn btn-solid cmsobject_button">Subscribe</button>
+        <input type="email" placeholder="Your email address" aria-label="Email address" required>
+        <button type="submit" class="btn btn-solid cmsobject_button-explore">Subscribe</button>
       </form>
     </div>
   </div>
@@ -467,7 +466,7 @@
         <p style="margin-top:16px; max-width:32ch;"><span class="eyebrow" style="display:block; font-size:1.5rem; color:var(--color-custard); margin-bottom:4px;">The collective table</span>Premium catering that proves quality and community care aren't a trade-off.</p>
       </div>
       <div>
-        <h4>Explore</h4>
+        <h3>Explore</h3>
         <div class="footer-nav">
           <a href="catering-events.html">Catering &amp; Events</a>
           <a href="menus.html">Menus</a>
@@ -476,13 +475,13 @@
         </div>
       </div>
       <div>
-        <h4>Find us</h4>
+        <h3>Find us</h3>
         <p>234&ndash;236 Hoxton St,<br>London N1 5LX</p>
         <p><a href="tel:02077296644">0207 729 6644</a></p>
         <p><a href="mailto:info@humdingers.org.uk">info@humdingers.org.uk</a></p>
       </div>
       <div>
-        <h4>Follow</h4>
+        <h3>Follow</h3>
         <div class="footer-nav">
           <a href="https://www.instagram.com/humdingerscatering/" target="_blank" rel="noopener" class="social-link"><svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/></svg>Instagram</a>
           <a href="https://www.facebook.com/humdingerscatering/" target="_blank" rel="noopener" class="social-link"><svg class="social-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/><path d="M13.5 8.5h1.5V6h-1.8c-1.7 0-2.7 1-2.7 2.8V11H9v2.5h1.5V18h2.5v-4.5H15l.3-2.5h-2.3V9.1c0-.4.2-.6.6-.6z" fill="currentColor"/></svg>Facebook</a>
@@ -514,7 +513,7 @@
     <span style="background:var(--color-fish)"></span>
   </div>
 </footer>
-<script src="assets/js/palette.js?v=20260810g"></script>
+<script src="assets/js/palette.js?v=20260810h"></script>
 <script src="assets/js/nav.js?v=20260810a"></script>
 <script src="assets/js/img-preload.js?v=20260810a"></script>
 <script src="assets/js/scroll-reveal.js?v=20260807z"></script>
@@ -525,8 +524,8 @@
 <div id="cookie-banner" class="cookie-banner cmsobject_cookie-banner">
   <p>We use cookies to keep the site working well and to understand how it's used. <a href="https://www.humdingers.org.uk/privacy-policy/" target="_blank" rel="noopener">Learn more</a>.</p>
   <div class="cookie-actions">
-    <button type="button" id="cookie-decline" class="btn btn-sm cmsobject_button">Decline</button>
-    <button type="button" id="cookie-accept" class="btn btn-sm cmsobject_button">Accept</button>
+    <button type="button" id="cookie-decline" class="btn btn-sm cmsobject_button-cookie-decline">Decline</button>
+    <button type="button" id="cookie-accept" class="btn btn-sm cmsobject_button-cookie-accept">Accept</button>
   </div>
 </div>
 <script src="assets/js/cookie-consent.js?v=20260807z"></script>
