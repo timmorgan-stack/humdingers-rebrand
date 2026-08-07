@@ -128,6 +128,9 @@
     function next() { if (!deck.length) deck = shuffled(READABLE); return deck.pop(); }
     document.querySelectorAll('.eyebrow, h1').forEach(function (el) {
       if (el.closest('.newsletter-row')) return;
+      // Footer sits on ink — the readable-on-paper deck would go invisible
+      // there; its custard stays fixed.
+      if (el.closest('footer')) return;
       if (!PALETTE_RGB[getComputedStyle(el).color]) return;
       el.style.color = 'var(' + next() + ')';
     });
