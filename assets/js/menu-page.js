@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
     categories.forEach(function (c) {
       if (!c.picked) return;
       var pill = document.createElement('span');
-      pill.className = 'menu-pill';
+      pill.className = 'menu-pill menu-pill-' + (categories.indexOf(c) % 8);
       pill.textContent = c.label;
       var x = document.createElement('button');
       x.type = 'button';
@@ -72,6 +72,20 @@ document.addEventListener('DOMContentLoaded', function () {
       pill.appendChild(x);
       pillsBox.appendChild(pill);
     });
+    if (categories.some(function (c) { return c.picked; })) {
+      var reset = document.createElement('button');
+      reset.type = 'button';
+      reset.className = 'menu-pills-clear';
+      reset.textContent = 'Clear all';
+      reset.addEventListener('click', function () {
+        categories.forEach(function (c) { c.picked = false; });
+        input.value = '';
+        closeDrop();
+        renderPills();
+        apply();
+      });
+      pillsBox.appendChild(reset);
+    }
   }
 
   function renderDrop() {

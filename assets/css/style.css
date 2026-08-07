@@ -998,6 +998,33 @@ section:has(.menu-filter) { position: relative; z-index: 45; }
   justify-content: center;
 }
 .menu-pill-remove:hover { background: rgba(0,0,0,0.28); }
+.menu-pill .menu-pill-remove { color: inherit; }
+
+/* One palette colourway per menu, text picked for contrast on each */
+.menu-pill-0 { background: var(--color-custard);    color: var(--color-chocolate); }
+.menu-pill-1 { background: var(--color-strawberry); color: var(--color-chocolate); }
+.menu-pill-2 { background: var(--color-fish);       color: var(--color-blueberry); }
+.menu-pill-3 { background: var(--color-kale);       color: var(--color-paper); }
+.menu-pill-4 { background: var(--color-tomato);     color: var(--color-ink); }
+.menu-pill-5 { background: var(--color-blueberry);  color: var(--color-paper); }
+.menu-pill-6 { background: var(--color-olive);      color: var(--color-paper); }
+.menu-pill-7 { background: var(--color-chocolate);  color: var(--color-custard); }
+.menu-pill-3 .menu-pill-remove,
+.menu-pill-5 .menu-pill-remove,
+.menu-pill-6 .menu-pill-remove,
+.menu-pill-7 .menu-pill-remove { background: rgba(255,255,255,0.28); }
+
+.menu-pills-clear {
+  padding: 7px 16px;
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  background: var(--color-paper);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.menu-pills-clear:hover { background: var(--color-ink); color: var(--color-paper); }
 
 /* Each category is a collapsible panel: the closed face shows the thumbnail,
    the menu name and its brief note; opening reveals the dishes. Native
