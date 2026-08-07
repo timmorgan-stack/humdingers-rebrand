@@ -1021,6 +1021,26 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
   flex-shrink: 0;
   border: 3px solid currentColor;
 }
+/* While a thumbnail downloads, the universal spinner would centre on the
+   whole summary bar — pin it over the thumbnail instead (head padding +
+   half the thumb width), with a soft grey plate behind it for shape. */
+.menu-category-head:has(> img.img-loading)::before { left: 84px; }
+.menu-category-head:has(> img.img-loading)::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 120px;
+  height: 120px;
+  border-radius: var(--radius-md);
+  background: #f1f1ef;
+}
+@media (max-width: 700px) {
+  .menu-category-head:has(> img.img-loading)::before { left: 52px; }
+  .menu-category-head:has(> img.img-loading)::after { left: 16px; width: 72px; height: 72px; }
+}
+
 /* Caret at the right-hand end of the closed face; flips when open */
 .menu-chevron {
   margin-left: auto;
