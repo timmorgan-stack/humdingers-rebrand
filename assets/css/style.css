@@ -237,6 +237,9 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .nav-subitem { position: relative; display: flex; flex-direction: column; }
 .nav-subitem > a { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .nav-more { font-size: 1.1em; line-height: 1; opacity: 0.7; }
+/* Chevron buttons injected by nav.js for the mobile accordion — desktop
+   navigates these levels by hover, so the buttons only exist under 901px. */
+.nav-sub-toggle { display: none; }
 .nav-flyout {
   position: absolute;
   left: 100%;
@@ -1072,25 +1075,26 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
   object-fit: cover;
   flex-shrink: 0;
   border: 3px solid currentColor;
+  /* Top-aligned against the heading, however tall the summary text runs */
+  align-self: flex-start;
 }
 /* While a thumbnail downloads, the universal spinner would centre on the
    whole summary bar — pin it over the thumbnail instead (head padding +
    half the thumb width), with a soft grey plate behind it for shape. */
-.menu-category-head:has(> img.img-loading)::before { left: 84px; }
+.menu-category-head:has(> img.img-loading)::before { left: 84px; top: 78px; }
 .menu-category-head:has(> img.img-loading)::after {
   content: "";
   position: absolute;
   left: 24px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 18px;
   width: 120px;
   height: 120px;
   border-radius: var(--radius-md);
   background: #f1f1ef;
 }
 @media (max-width: 700px) {
-  .menu-category-head:has(> img.img-loading)::before { left: 52px; }
-  .menu-category-head:has(> img.img-loading)::after { left: 16px; width: 72px; height: 72px; }
+  .menu-category-head:has(> img.img-loading)::before { left: 52px; top: 50px; }
+  .menu-category-head:has(> img.img-loading)::after { left: 16px; top: 14px; width: 72px; height: 72px; }
 }
 
 /* Caret at the right-hand end of the closed face; flips when open */
@@ -1698,7 +1702,12 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     transition: transform 0.25s ease;
   }
   nav.main-nav.open { transform: translateX(0); }
-  .nav-item { position: static; }
+  /* The hamburger menu is an accordion: each level's links sit collapsed
+     behind a chevron (injected by nav.js); the link itself still navigates.
+     Rows are flex so link and chevron share the line, and the panel wraps
+     to a full-width row beneath them. */
+  .nav-item { position: static; display: flex; flex-wrap: wrap; align-items: center; }
+  .nav-item > a { flex: 1; }
   .nav-dropdown {
     position: static;
     opacity: 1;
@@ -1706,7 +1715,10 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     pointer-events: auto;
     transform: none;
     padding-top: 4px;
+    flex-basis: 100%;
+    display: none;
   }
+  .nav-item.sub-open > .nav-dropdown { display: block; }
   .nav-dropdown-inner {
     border: none;
     box-shadow: none;
@@ -1716,12 +1728,13 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     color: inherit;
   }
   .nav-dropdown a { font-size: 0.85rem; font-weight: 500; opacity: 0.7; padding: 7px 0; white-space: normal; color: var(--color-ink); }
-  /* Third level renders inline as a further-indented list */
-  .nav-subitem { position: static; }
+  /* Third level: a further-indented collapsible list */
+  .nav-subitem { position: static; display: flex; flex-wrap: wrap; align-items: center; }
+  .nav-subitem > a { flex: 1; }
   .nav-flyout,
   .nav-flyout-cols {
     position: static;
-    display: flex;
+    display: none;
     flex-direction: column;
     opacity: 1;
     visibility: visible;
@@ -1731,9 +1744,31 @@ footer.site-footer .colour-strip { margin-top: 40px; }
     background: transparent;
     border: none;
     box-shadow: none;
+    flex-basis: 100%;
   }
+  .nav-subitem.sub-open > .nav-flyout { display: flex; }
   .nav-flyout a { font-size: 0.8rem; opacity: 0.6; padding: 5px 0; }
   .nav-more { display: none; }
+  .nav-sub-toggle {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+  .nav-sub-toggle::before {
+    content: "";
+    width: 9px;
+    height: 9px;
+    border-right: 2px solid var(--color-ink);
+    border-bottom: 2px solid var(--color-ink);
+    transform: rotate(45deg) translate(-2px, -2px);
+    transition: transform 0.2s ease;
+  }
+  .sub-open > .nav-sub-toggle::before { transform: rotate(225deg) translate(-2px, -2px); }
   .nav-toggle { display: block; }
   .header-phone { display: none; }
   .btn-now { display: none; }
