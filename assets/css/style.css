@@ -646,7 +646,9 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   border-radius: var(--radius-md);
   transition: background 0.15s ease;
 }
-.service-link-grid a:hover { background: rgba(255,255,255,0.1); }
+.service-link-grid a:hover > span:last-child { text-decoration: underline; }
+.service-link-grid a:hover .service-thumb { background: #e7e7e4; }
+.service-link-grid a:hover .panel-icon { color: var(--color-ink); }
 .service-link-grid a > span:last-child {
   font-family: var(--font-display);
   font-weight: 700;
