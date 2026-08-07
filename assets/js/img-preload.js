@@ -24,9 +24,30 @@ document.addEventListener('DOMContentLoaded', function () {
     var shimmer = frame && frame.children.length === 1 && frame !== document.body;
     if (shimmer) frame.classList.add('img-shimmer');
 
+    // Spinner overlay pinned to the image's own layout box — dead centre of
+    // where the pixels will appear, not of whatever frame surrounds it.
+    // Images whose height collapses before load (no aspect ratio yet) fall
+    // back to covering the frame.
+    var spinner = null;
+    if (frame && frame !== document.body) {
+      spinner = document.createElement('span');
+      spinner.className = 'img-spinner';
+      spinner.setAttribute('aria-hidden', 'true');
+      if (img.offsetHeight >= 40 && img.offsetWidth >= 40) {
+        spinner.style.left = img.offsetLeft + 'px';
+        spinner.style.top = img.offsetTop + 'px';
+        spinner.style.width = img.offsetWidth + 'px';
+        spinner.style.height = img.offsetHeight + 'px';
+      } else {
+        spinner.style.inset = '0';
+      }
+      frame.appendChild(spinner);
+    }
+
     function reveal() {
       img.classList.remove('img-loading');
       if (shimmer) frame.classList.remove('img-shimmer');
+      if (spinner && spinner.parentElement) spinner.parentElement.removeChild(spinner);
     }
     function onDone() {
       if (landing()) pendingReveals.push(reveal);

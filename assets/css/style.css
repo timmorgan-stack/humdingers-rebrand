@@ -82,27 +82,30 @@ img.img-loading, img.img-refade { opacity: 0; }
 video { transition: opacity 0.25s ease; }
 video.img-loading, video.img-refade { opacity: 0; }
 
-/* Any frame whose image is still downloading carries a small spinner.
-   (Refades during landings use .img-refade — no spinner: the pixels are
-   already there, the fade is choreography.) */
+/* While an image downloads, img-preload.js pins a spinner overlay to the
+   image's own layout box, so the ring sits dead centre of where the pixels
+   will appear. (Refades during landings use .img-refade — no spinner: the
+   pixels are already there, the fade is choreography.) */
 :where(a, div, figure, summary, span):has(> img.img-loading) { position: relative; }
-:where(a, div, figure, summary, span):has(> img.img-loading)::before {
-  content: "";
+.img-spinner {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  z-index: 1;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+.img-spinner::before {
+  content: "";
   width: 24px;
   height: 24px;
-  margin: -12px 0 0 -12px;
   border-radius: 50%;
   border: 3px solid rgba(0,0,0,0.15);
   border-top-color: rgba(0,0,0,0.5);
   animation: load-spin 0.8s linear infinite;
-  z-index: 1;
 }
 @keyframes load-spin { to { transform: rotate(360deg); } }
 @media (prefers-reduced-motion: reduce) {
-  :where(a, div, figure, summary, span):has(> img.img-loading)::before { animation: none; }
+  .img-spinner::before { animation: none; }
 }
 a { color: inherit; text-decoration: none; }
 /* In-copy links (mailto/tel/inline references) show their nature on hover;
@@ -639,7 +642,6 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .venue-card { position: relative; }
 .venue-card:has(img.img-loading) { background: #f1f1ef; }
 /* the caption sits below the photo, so the spinner centres on the image */
-.venue-card:has(> img.img-loading)::before { top: 30%; }
 .venue-card:nth-child(1) img { transition-delay: 0s, 0.05s; }
 .venue-card:nth-child(2) img { transition-delay: 0s, 0.11s; }
 .venue-card:nth-child(3) img { transition-delay: 0s, 0.16s; }
@@ -1081,7 +1083,6 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
 /* While a thumbnail downloads, the universal spinner would centre on the
    whole summary bar — pin it over the thumbnail instead (head padding +
    half the thumb width), with a soft grey plate behind it for shape. */
-.menu-category-head:has(> img.img-loading)::before { left: 84px; top: 78px; }
 .menu-category-head:has(> img.img-loading)::after {
   content: "";
   position: absolute;
@@ -1093,7 +1094,6 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
   background: #f1f1ef;
 }
 @media (max-width: 700px) {
-  .menu-category-head:has(> img.img-loading)::before { left: 52px; top: 50px; }
   .menu-category-head:has(> img.img-loading)::after { left: 16px; top: 14px; width: 72px; height: 72px; }
 }
 
@@ -1494,6 +1494,21 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   color: var(--color-paper);
 }
 
+/* ---------------- Legal pages (T&Cs, privacy policy) ---------------- */
+.terms-clauses p { max-width: 75ch; margin-bottom: 12px; }
+.terms-clauses .clause-sub { padding-left: 28px; }
+.terms-clauses ul { margin: 0 0 var(--stack-gap); padding-left: 22px; }
+.terms-clauses li { margin-bottom: 6px; }
+
+/* Small statutory line under the copyright notice */
+.footer-company {
+  display: block;
+  font-size: 0.72rem;
+  opacity: 0.55;
+  margin-top: 6px;
+  max-width: 64ch;
+}
+
 /* ---------------- Contact page ---------------- */
 /* The enquiry form sits in a bordered card on the shared white page. */
 .enquiry-card {
@@ -1711,7 +1726,7 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .venue-card { display: flex; align-items: center; gap: 14px; overflow: visible; }
   .venue-card img { width: 104px; flex-shrink: 0; border-radius: var(--radius-md); }
   .venue-card::after { display: none; }
-  .venue-card > span {
+  .venue-card > span:not(.img-spinner) {
     position: static;
     color: var(--color-ink);
     font-size: 1.05rem;
