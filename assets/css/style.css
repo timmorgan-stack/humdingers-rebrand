@@ -882,6 +882,51 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .enquiry-form legend { font-family: var(--font-display); font-weight: 700; padding: 0 6px; }
 
 /* ---------------- Menu page (menus.html) ---------------- */
+/* Live filter above the menu list */
+.menu-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 520px;
+  margin-top: 12px;
+}
+.menu-filter-icon {
+  position: absolute;
+  left: 18px;
+  width: 20px;
+  height: 20px;
+  color: rgba(0,0,0,0.45);
+  pointer-events: none;
+}
+.menu-filter input {
+  width: 100%;
+  padding: 14px 52px 14px 50px;
+  border-radius: 999px;
+  border: 2px solid var(--color-ink);
+  background: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 1rem;
+}
+/* We draw our own clear control */
+.menu-filter input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.menu-filter-clear {
+  position: absolute;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.08);
+  font-size: 1.15rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.menu-filter-clear:hover { background: rgba(0,0,0,0.16); }
+.menu-filter-empty { margin-top: 16px; opacity: 0.7; }
+
 /* Each category is a collapsible panel: the closed face shows the thumbnail,
    the menu name and its brief note; opening reveals the dishes. Native
    <details>/<summary>, so it works with no JS and stays keyboard-accessible. */
