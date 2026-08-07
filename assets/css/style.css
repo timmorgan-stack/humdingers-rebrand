@@ -489,7 +489,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .service-item h4 { grid-row: 1; font-size: 1.15rem; margin: 0; }
 .service-item p {
   grid-column: 1 / -1;
-  margin-top: 18px;
+  margin-top: 28px;
   font-size: 0.95rem;
   opacity: 0.85;
   margin: 0;
