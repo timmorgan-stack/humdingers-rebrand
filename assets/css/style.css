@@ -874,6 +874,11 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 .enquiry-form legend { font-family: var(--font-display); font-weight: 700; padding: 0 6px; }
 
 /* ---------------- Menu page (menus.html) ---------------- */
+/* Live filter above the menu list. The section holding it must stack above
+   the later menu sections — scroll-reveal's transform puts each .wrap in its
+   own stacking context, and later DOM contexts otherwise paint on top of the
+   open dropdown. */
+section:has(.menu-filter) { position: relative; z-index: 45; }
 /* Live filter above the menu list */
 .menu-filter {
   position: relative;
@@ -917,6 +922,11 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   justify-content: center;
 }
 .menu-filter-clear:hover { background: rgba(0,0,0,0.16); }
+/* An author display: value beats the hidden attribute's UA display:none —
+   restore hidden's meaning for the filter's flex/grid parts */
+.menu-filter-clear[hidden],
+.menu-filter-drop[hidden],
+.menu-filter-empty[hidden] { display: none; }
 .menu-filter-empty { margin-top: 16px; opacity: 0.7; }
 
 /* Dropdown of pickable menus (thumbnail + name), opens under the input */
