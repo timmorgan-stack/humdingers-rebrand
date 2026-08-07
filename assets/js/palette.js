@@ -128,6 +128,9 @@
     function next() { if (!deck.length) deck = shuffled(READABLE); return deck.pop(); }
     document.querySelectorAll('.eyebrow, h1').forEach(function (el) {
       if (el.closest('.newsletter-row')) return;
+      // Statement cards set their own coherent ink; the paper-readable deck
+      // would clash with the wash behind it.
+      if (el.closest('.statement-card')) return;
       // Footer sits on ink — the readable-on-paper deck would go invisible
       // there; its custard stays fixed.
       if (el.closest('footer')) return;
