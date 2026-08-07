@@ -57,7 +57,8 @@
   function landingDone() {
     landingTimer = null;
     document.documentElement.removeAttribute('data-landing');
-    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-loading'); });
+    document.documentElement.style.scrollSnapType = '';
+    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-refade'); });
     document.dispatchEvent(new Event('landing-done'));
   }
 
@@ -70,12 +71,12 @@
     // first loads. Media still loading stays with img-preload.js, which
     // already reveals on landing-done; unloaded images are skipped here so
     // they are never unveiled before their pixels exist.
-    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-loading'); });
+    refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-refade'); });
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       Array.prototype.forEach.call(target.querySelectorAll('img, video'), function (m) {
         if (m.tagName === 'IMG' && !m.complete) return;
-        if (m.classList.contains('img-loading')) return;
-        m.classList.add('img-loading');
+        if (m.classList.contains('img-loading') || m.classList.contains('img-refade')) return;
+        m.classList.add('img-refade');
         refadeMedia.push(m);
       });
     }
@@ -89,6 +90,10 @@
     }
 
     document.documentElement.setAttribute('data-landing', '');
+    // Snap must not wrestle the landing animation mid-flight; it comes back
+    // once the scroll settles (the landing position is itself on-boundary
+    // for full panels, so nothing jumps on restore).
+    document.documentElement.style.scrollSnapType = 'none';
     if (landingTimer) clearTimeout(landingTimer);
     // 'scrollend' is the real signal; the timeout covers browsers without it
     // and the no-movement case (already at the target position).

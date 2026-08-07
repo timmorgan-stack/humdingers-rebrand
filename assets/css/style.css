@@ -54,6 +54,21 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+/* Panels advance naturally: scrolling settles on the next/previous section
+   boundary (proximity, not mandatory — near a boundary the page glides into
+   place; mid-panel reading is never hijacked, and sections taller than the
+   viewport still scroll through freely). Desktop-scoped to match the
+   viewport-panel architecture; small screens read as one flowing page. */
+@media (min-width: 901px) {
+  html { scroll-snap-type: y proximity; }
+  .band-hero,
+  .band[id],
+  .band-sm[id] {
+    scroll-snap-align: start;
+    scroll-margin-top: var(--sticky-h, 80px);
+  }
+  footer.site-footer { scroll-snap-align: end; }
+}
 body {
   margin: 0;
   font-family: var(--font-body);
@@ -63,9 +78,32 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; display: block; transition: opacity 0.4s ease; }
-img.img-loading { opacity: 0; }
+img.img-loading, img.img-refade { opacity: 0; }
 video { transition: opacity 0.4s ease; }
-video.img-loading { opacity: 0; }
+video.img-loading, video.img-refade { opacity: 0; }
+
+/* Any frame whose image is still downloading carries a small spinner.
+   (Refades during landings use .img-refade — no spinner: the pixels are
+   already there, the fade is choreography.) */
+:where(a, div, figure, summary, span):has(> img.img-loading) { position: relative; }
+:where(a, div, figure, summary, span):has(> img.img-loading)::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  margin: -12px 0 0 -12px;
+  border-radius: 50%;
+  border: 3px solid rgba(0,0,0,0.15);
+  border-top-color: rgba(0,0,0,0.5);
+  animation: load-spin 0.8s linear infinite;
+  z-index: 1;
+}
+@keyframes load-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  :where(a, div, figure, summary, span):has(> img.img-loading)::before { animation: none; }
+}
 a { color: inherit; text-decoration: none; }
 /* In-copy links (mailto/tel/inline references) show their nature on hover;
    buttons keep their own hover treatment. */
@@ -519,9 +557,40 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   aspect-ratio: 4/3;
   height: auto;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  /* transform for the hover zoom; opacity for the cascade/refade fades */
+  transition: transform 0.3s ease, opacity 0.35s ease;
 }
 .venue-card:hover img { transform: scale(1.06); }
+
+/* Venue photos cascade in quickly, one after the other, when the section
+   reveals (or a landing refades them). Delays sit on the images themselves,
+   so every opacity transition — first reveal, per-click refade — staggers.
+   Gated on .reveal (JS-added): without JS nothing is ever hidden. */
+.reveal .venue-card img { opacity: 0; }
+.reveal-visible .venue-card img { opacity: 1; }
+.venue-card { position: relative; }
+.venue-card:has(img.img-loading) { background: #f1f1ef; }
+/* the caption sits below the photo, so the spinner centres on the image */
+.venue-card:has(> img.img-loading)::before { top: 30%; }
+.venue-card:nth-child(1) img { transition-delay: 0s, 0.05s; }
+.venue-card:nth-child(2) img { transition-delay: 0s, 0.11s; }
+.venue-card:nth-child(3) img { transition-delay: 0s, 0.16s; }
+.venue-card:nth-child(4) img { transition-delay: 0s, 0.22s; }
+.venue-card:nth-child(5) img { transition-delay: 0s, 0.27s; }
+.venue-card:nth-child(6) img { transition-delay: 0s, 0.33s; }
+.venue-card:nth-child(7) img { transition-delay: 0s, 0.38s; }
+.venue-card:nth-child(8) img { transition-delay: 0s, 0.43s; }
+.venue-card:nth-child(9) img { transition-delay: 0s, 0.49s; }
+.venue-card:nth-child(10) img { transition-delay: 0s, 0.55s; }
+.venue-card:nth-child(11) img { transition-delay: 0s, 0.60s; }
+.venue-card:nth-child(12) img { transition-delay: 0s, 0.66s; }
+.venue-card:nth-child(13) img { transition-delay: 0s, 0.71s; }
+.venue-card:nth-child(14) img { transition-delay: 0s, 0.77s; }
+.venue-card:nth-child(15) img { transition-delay: 0s, 0.82s; }
+.venue-card:nth-child(16) img { transition-delay: 0s, 0.88s; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal .venue-card img { opacity: 1; transition: none; }
+}
 .venue-card::after {
   content: "";
   position: absolute;
@@ -1101,6 +1170,40 @@ blockquote.testimonial cite {
 @media (prefers-reduced-motion: reduce) {
   .img-shimmer { animation: none; background: #efefed; }
 }
+
+/* ---------------- Lightbox ---------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.88);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vh 4vw;
+}
+.lightbox[hidden] { display: none; }
+.lightbox img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-md);
+}
+.lightbox-close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--color-paper);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.lightbox-close:hover { background: rgba(255, 255, 255, 0.3); }
+.wedding-grid img, .hero-figure img { cursor: zoom-in; }
 
 /* ---------------- Footer ---------------- */
 footer.site-footer {
