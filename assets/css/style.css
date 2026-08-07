@@ -305,9 +305,10 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
     box-sizing: border-box;
     padding: 32px 0; /* flex centring supplies the air; big band padding
                         would push the hero past the viewport */
-    /* The splash sits shorter than the full viewport — the same 80dvh slice
-       on every page — so the next panel's edge peeks above the fold. */
-    min-height: calc(80dvh - var(--sticky-h, 80px));
+    /* The band fills the viewport below the header; the fixed 80dvh content
+       slice centres inside it, equal air above and below, identical on
+       every page. */
+    min-height: calc(100dvh - var(--sticky-h, 80px));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -319,7 +320,14 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
      anchored at the same distance from the header on every page (it no
      longer drifts with how much copy a page has) and the figure ranges the
      panel's full height. */
-  .band-hero > .wrap { width: 100%; flex: 1; }
+  .band-hero > .wrap {
+    width: 100%;
+    /* The content slice: fixed height, centred by the band's flex. min-height
+       lets it grow rather than clip if a page's copy outruns the slice. */
+    flex: none;
+    height: calc(80dvh - var(--sticky-h, 80px) - 64px);
+    min-height: min-content;
+  }
   /* If a page's content column outgrows the viewport (home, with its
      definition card, on shorter windows), the panel grows with it — cap the
      media at the visible height so the video's bottom edge never falls past
