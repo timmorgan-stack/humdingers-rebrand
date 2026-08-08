@@ -266,6 +266,13 @@
   (function tileHovers() {
     var tiles = document.querySelectorAll('.service-link-grid a');
     if (!tiles.length) return;
+    // Tablet layouts split these grids with a vertical keyline — deal those too
+    document.querySelectorAll('.service-link-grid').forEach(function (grid, i) {
+      grid.style.setProperty('--tile-divider', v(Decks.draw('tile-divider', ALL, i)));
+    });
+    document.querySelectorAll('.venue-grid').forEach(function (grid, i) {
+      grid.style.setProperty('--venue-divider', v(Decks.draw('venue-divider', ALL, i)));
+    });
     Array.prototype.forEach.call(tiles, function (tile, i) {
       tile.style.setProperty('--tile-hover', v(Decks.draw('tile-hovers', ALL, i)));
     });

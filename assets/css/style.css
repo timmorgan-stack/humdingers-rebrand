@@ -110,7 +110,20 @@ video.img-loading, video.img-refade { opacity: 0; }
 a { color: inherit; text-decoration: none; }
 /* In-copy links (mailto/tel/inline references) show their nature on hover;
    buttons keep their own hover treatment. */
-p a:not(.btn):hover { text-decoration: underline; }
+/* Standard text-link treatment, site-wide: links in running copy and list
+   copy are always underlined; hover shifts them to the tomato CTA role.
+   Component chrome (buttons, nav, link-cards, tiles) keeps its own rules. */
+p a:not(.btn), li a, cite a,
+.footer-nav a, .footer-legal a, .dish a, blockquote a {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+p a:not(.btn):hover, li a:hover, cite a:hover,
+.footer-nav a:hover, .footer-legal a:hover, .dish a:hover, blockquote a:hover {
+  color: var(--role-cta, var(--color-tomato));
+}
 h1, h2, h3, h4 {
   font-family: var(--font-display);
   font-weight: 700;
@@ -1088,7 +1101,7 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
 .menu-category-head > .menu-category-img { grid-column: 1; grid-row: 1 / span 2; }
 .menu-category-head > h2 { grid-column: 2; grid-row: 1; align-self: end; }
 .menu-category-head > .note { grid-column: 2; grid-row: 2; align-self: start; }
-.menu-category-head > .menu-chevron { grid-column: 3; grid-row: 1 / span 2; }
+.menu-category-head > .menu-chevron { grid-column: 3; grid-row: 1 / span 2; align-self: start; margin-top: 14px; }
 .menu-category-img {
   width: 120px;
   height: 120px;
@@ -1115,6 +1128,21 @@ section:has(.menu-filter) { position: relative; z-index: 45; padding-bottom: 4px
 @media (max-width: 700px) {
   .menu-category-head:has(> img.img-loading)::after { left: 16px; top: 14px; width: 72px; height: 72px; }
 }
+
+/* Back-to-top link at the foot of each open menu panel — wears the standard
+   text-link treatment. */
+.menu-back-top {
+  display: inline-block;
+  margin: 4px 0 20px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  transition: color 0.15s ease;
+}
+.menu-back-top:hover { color: var(--role-cta, var(--color-tomato)); }
 
 /* Caret at the right-hand end of the closed face; flips when open */
 .menu-chevron {
@@ -1260,6 +1288,7 @@ blockquote.testimonial {
 .testimonial .quote-text {
   margin: 0 0 14px;
   background: #f4f4f2;
+  border: 1px solid #e0e0db;
   border-left: 10px solid var(--keyline-color, var(--role-celebration));
   border-radius: var(--radius-lg);
   padding: 24px 28px;
@@ -1290,12 +1319,25 @@ blockquote.testimonial cite {
 /* Callout pointer: a triangle in the balloon grey, hanging off the balloon's
    foot above the attribution — drawn on the cite so it tracks the gap
    between balloon and name exactly. */
+/* The pointer is two stacked triangles: the grey one behind draws the
+   outline, the fill one in front sits 1px inside it and also paints over
+   the balloon's bottom border where the tail joins, so the outline runs
+   continuously around bubble and pointer. */
 blockquote.testimonial cite::before {
   content: "";
   position: absolute;
   /* The balloon's and cite's margins collapse to a 14px gap; -15px
      overlaps the balloon by 1px so there's no seam. */
   top: -15px;
+  left: 41px;
+  border: 17px solid transparent;
+  border-top: 22px solid #e0e0db;
+  border-bottom: 0;
+}
+blockquote.testimonial cite::after {
+  content: "";
+  position: absolute;
+  top: -16px;
   left: 42px;
   border: 16px solid transparent;
   border-top: 20px solid #f4f4f2;
@@ -1411,7 +1453,6 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 }
 .footer-grid a, .footer-grid p { font-size: 0.95rem; opacity: 0.85; }
 .footer-nav { display: flex; flex-direction: column; gap: 10px; }
-.footer-nav a:hover { text-decoration: underline; }
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -1425,7 +1466,7 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 .footer-bottom > span { opacity: 0.7; }
 .footer-legal { display: flex; gap: 8px 22px; flex-wrap: wrap; }
 .footer-legal a { opacity: 0.7; }
-.footer-legal a:hover { opacity: 1; text-decoration: underline; }
+.footer-legal a:hover { opacity: 1; }
 .footer-enquire {
   font-family: var(--font-display);
   font-weight: 700;
@@ -1918,4 +1959,50 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   main > section.band:first-child { padding-top: 41px; }
   main > section.band-sm:first-child { padding-top: 16px; }
   .hero { min-height: auto; }
+}
+
+/* ---------------- Browse by Service: tablet two-up ----------------
+   Between phone (single column) and desktop (four-up), the tile list runs
+   as two columns split by a vertical brand keyline, dealt per load. */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .service-link-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
+    position: relative;
+  }
+  .service-link-grid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    margin-left: -2px;
+    background: var(--tile-divider, var(--color-ink));
+  }
+}
+
+/* Venues we work in: same tablet two-up with a dealt dividing keyline */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .venue-grid {
+    grid-template-columns: 1fr 1fr;
+    column-gap: 56px;
+    position: relative;
+  }
+  .venue-grid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 4px;
+    margin-left: -2px;
+    background: var(--venue-divider, var(--color-ink));
+  }
+  /* In the two-up band the cards read as list rows, like mobile */
+  .venue-card { display: flex; align-items: center; gap: 14px; overflow: visible; }
+  .venue-card img { width: 104px; flex-shrink: 0; border-radius: var(--radius-md); }
+  .venue-card::after { display: none; }
+  .venue-card > span:not(.img-spinner) { position: static; color: var(--color-ink); }
+  .venue-card .sub { opacity: 0.65; }
 }
