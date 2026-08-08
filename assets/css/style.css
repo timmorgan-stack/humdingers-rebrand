@@ -59,7 +59,7 @@ html { scroll-behavior: smooth; }
    place; mid-panel reading is never hijacked, and sections taller than the
    viewport still scroll through freely). Desktop-scoped to match the
    viewport-panel architecture; small screens read as one flowing page. */
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
   html { scroll-snap-type: y proximity; }
   .band-hero,
   .band[id],
@@ -325,7 +325,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
    margins, so the panel above or below never bleeds into view. --sticky-h is
    measured by smooth-scroll.js; the fallback matches the usual header height.
    Narrow viewports flow normally — there's no height to spare there. */
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
   .band[id] {
     box-sizing: border-box;
     min-height: calc(100dvh - var(--sticky-h, 80px));
@@ -343,8 +343,9 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 /* Narrow viewports flow naturally, so the desktop panel paddings would read
    as long dead scrolls of white. Close them up, and mark each panel break
    with the footer's horizontal swatch strip (same fixed colour order)
-   instead of empty space. */
-@media (max-width: 900px) {
+   instead of empty space. Tablet keeps the same treatment — the viewport-
+   panel system only starts at true desktop widths (1025px+). */
+@media (max-width: 1024px) {
   .band { padding: 44px 0; }
   .band-sm { padding: 32px 0; }
   main > section.band:not(:first-child),
@@ -378,7 +379,7 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
    the hero image, the figure ranges top AND bottom with the content column,
    and the band fills the viewport below the header (desktop) so the whole
    hero — image included — scales to fit the space. */
-@media (min-width: 901px) {
+@media (min-width: 1025px) {
   .band-hero {
     box-sizing: border-box;
     /* Same 16px upward float as .band[id], same total as 32/32 */
@@ -1287,11 +1288,13 @@ blockquote.testimonial {
    the card's rolled keyline colour as a thick rounded left edge. */
 .testimonial .quote-text {
   margin: 0 0 14px;
-  background: #f4f4f2;
-  border: 1px solid #e0e0db;
-  border-left: 10px solid var(--keyline-color, var(--role-celebration));
+  /* The coloured edge is a gradient stripe inside the bubble, not a thick
+     border — so the uniform 1px outline wraps the rounded corners cleanly
+     and the colour runs the full height, clipped by the radius. */
+  background: linear-gradient(to right, var(--keyline-color, var(--role-celebration)) 0 10px, #f4f4f2 10px);
+  border: 1px solid #c9c9c2;
   border-radius: var(--radius-lg);
-  padding: 24px 28px;
+  padding: 24px 28px 24px 38px;
   font-style: italic;
 }
 .testimonial .quote-text::before,
@@ -1331,7 +1334,7 @@ blockquote.testimonial cite::before {
   top: -15px;
   left: 41px;
   border: 17px solid transparent;
-  border-top: 22px solid #e0e0db;
+  border-top: 22px solid #c9c9c2;
   border-bottom: 0;
 }
 blockquote.testimonial cite::after {
