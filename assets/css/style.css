@@ -1251,15 +1251,55 @@ blockquote.testimonial {
   font-family: var(--font-display);
   font-size: 1.3rem;
   max-width: 60ch;
-  padding-left: 20px;
-  border-left: 4px solid var(--keyline-color, var(--color-fish));
 }
+/* Decorative open/close quote marks replace the literal “ ” characters —
+   oversized serif glyphs in the card's rolled keyline colour, reading as
+   icons around the quote. */
+/* The quote sits in a discrete speech balloon: soft grey rounded panel with
+   the card's rolled keyline colour as a thick rounded left edge. */
+.testimonial .quote-text {
+  margin: 0 0 14px;
+  background: #f4f4f2;
+  border-left: 10px solid var(--keyline-color, var(--role-celebration));
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  font-style: italic;
+}
+.testimonial .quote-text::before,
+.testimonial .quote-text::after {
+  font-family: var(--font-logo);
+  font-weight: 700;
+  font-size: 1.7em;
+  line-height: 0;
+  vertical-align: -0.32em;
+  color: var(--keyline-color, var(--role-celebration));
+}
+.testimonial .quote-text::before { content: "\201C"; margin-right: 10px; }
+.testimonial .quote-text::after { content: "\201D"; margin-left: 4px; }
+
 blockquote.testimonial cite {
   display: block;
-  margin-top: 1em;
+  margin-top: 14px;
   font-family: var(--font-script);
   font-style: italic;
   font-size: 1rem;
+  /* Anchor for the balloon's callout tail */
+  position: relative;
+  padding-top: 16px;
+}
+/* Callout pointer: a triangle in the balloon grey, hanging off the balloon's
+   foot above the attribution — drawn on the cite so it tracks the gap
+   between balloon and name exactly. */
+blockquote.testimonial cite::before {
+  content: "";
+  position: absolute;
+  /* The balloon's and cite's margins collapse to a 14px gap; -15px
+     overlaps the balloon by 1px so there's no seam. */
+  top: -15px;
+  left: 42px;
+  border: 16px solid transparent;
+  border-top: 20px solid #f4f4f2;
+  border-bottom: 0;
 }
 .testimonial-grid {
   display: grid;
@@ -1674,13 +1714,12 @@ footer.site-footer .colour-strip { margin-top: 40px; }
    rather than an unrelated accent. */
 .path-mark { height: 44px; width: auto; opacity: 0.92; margin-bottom: 18px; }
 
-/* Quote cards for testimonials — a role-coloured rule rather than a full
-   strawberry-filled band, so the colour still reads as "celebration" without
-   another full-bleed panel. */
+/* Quote cards for testimonials — the balloon itself carries the rolled
+   colour (left edge), so the card wrapper stays plain. */
 .testimonial-card {
-  border-left: 4px solid var(--role-celebration);
-  padding: 2px 0 2px 22px;
+  padding: 2px 0;
 }
+.testimonial-card cite { padding-left: 28px; }
 /* Two columns instead of the default three — reads better in the narrower
    premium content column. min-width query so it still yields to the
    existing @media(max-width:900px) single-column collapse further down. */

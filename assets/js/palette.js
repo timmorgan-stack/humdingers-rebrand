@@ -161,6 +161,9 @@
     var groups = new Map();
     Array.prototype.forEach.call(els, function (el) {
       if (parseFloat(getComputedStyle(el).borderLeftWidth) === 0) return;
+      // Testimonial balloons carry their own per-card roll — the left edge
+      // that makes them look keyline-eligible belongs to the balloon.
+      if (el.closest('blockquote')) return;
       var section = el.closest('section') || el.parentElement;
       if (!groups.has(section)) groups.set(section, []);
       groups.get(section).push(el);
