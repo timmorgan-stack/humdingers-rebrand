@@ -2009,3 +2009,18 @@ footer.site-footer .colour-strip { margin-top: 40px; }
   .venue-card > span:not(.img-spinner) { position: static; color: var(--color-ink); }
   .venue-card .sub { opacity: 0.65; }
 }
+
+/* Tablet: the definition card runs the full content width */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .definition { max-width: none; }
+}
+
+/* The page never scrolls sideways — anything that pokes past the viewport
+   is clipped rather than creating a horizontal scrollbar. */
+html, body { overflow-x: clip; }
+
+/* Phones: 16px form fields stop the browser's auto-zoom on focus (the
+   accessible alternative to disabling pinch-zoom). */
+@media (max-width: 767px) {
+  input, select, textarea { font-size: 16px; }
+}
