@@ -1288,13 +1288,17 @@ blockquote.testimonial {
    the card's rolled keyline colour as a thick rounded left edge. */
 .testimonial .quote-text {
   margin: 0 0 14px;
-  /* The coloured edge is a gradient stripe inside the bubble, not a thick
-     border — so the uniform 1px outline wraps the rounded corners cleanly
-     and the colour runs the full height, clipped by the radius. */
-  background: linear-gradient(to right, var(--keyline-color, var(--role-celebration)) 0 10px, #f4f4f2 10px);
+  /* The coloured edge is painted in the border-box layer and shows through
+     a transparent thick left border — so it curves around the rounded
+     corners exactly like a border would, with the outer 1px of the same
+     layer continuing the grey outline down the left side. */
+  background:
+    linear-gradient(#f4f4f2 0 0) padding-box,
+    linear-gradient(to right, #c9c9c2 0 1px, var(--keyline-color, var(--role-celebration)) 1px 100%) border-box;
   border: 1px solid #c9c9c2;
+  border-left: 10px solid transparent;
   border-radius: var(--radius-lg);
-  padding: 24px 28px 24px 38px;
+  padding: 24px 28px;
   font-style: italic;
 }
 .testimonial .quote-text::before,
@@ -2023,4 +2027,17 @@ html, body { overflow-x: clip; }
    accessible alternative to disabling pinch-zoom). */
 @media (max-width: 767px) {
   input, select, textarea { font-size: 16px; }
+}
+
+/* Focus rings: the browser's default blue outline never shows for pointer
+   interactions; keyboard navigation (and assistive tech that drives it)
+   gets a brand-ink ring instead. */
+input:focus:not(:focus-visible),
+textarea:focus:not(:focus-visible),
+select:focus:not(:focus-visible) { outline: none; }
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 3px solid var(--color-ink);
+  outline-offset: 2px;
 }
