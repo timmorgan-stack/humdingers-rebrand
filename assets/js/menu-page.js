@@ -148,6 +148,17 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+/* Back to top also folds the panel it lives in shut, so the list is compact
+   again when you land back at the filter. */
+document.addEventListener('DOMContentLoaded', function () {
+  document.querySelectorAll('.menu-back-top').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var panel = link.closest('details');
+      if (panel) panel.open = false;
+    });
+  });
+});
+
 /* Opening a menu panel scrolls that menu's top to the top of the viewport
    (just under the sticky header), so the newly revealed content starts from
    its heading rather than wherever the click happened to land. */

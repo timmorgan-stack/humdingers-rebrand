@@ -46,7 +46,11 @@
   }
 
   function land(target) {
-    var panel = target.querySelector('details.menu-panel');
+    // Landing on a menu category unfolds it — but only when the target IS
+    // that category; landing on a broader container (e.g. #menus-top) must
+    // not re-open the first panel it happens to contain.
+    var panel = target.matches && target.matches('section.menu-category')
+      ? target.querySelector('details.menu-panel') : null;
     if (panel) panel.open = true;
 
     // Every landing replays the choreography: the target's media hides now
