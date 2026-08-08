@@ -2032,15 +2032,13 @@ html, body { overflow-x: clip; }
   input, select, textarea { font-size: 16px; }
 }
 
-/* Focus rings: the browser's default blue outline never shows for pointer
-   interactions; keyboard navigation (and assistive tech that drives it)
-   gets a brand-ink ring instead. */
-input:focus:not(:focus-visible),
-textarea:focus:not(:focus-visible),
-select:focus:not(:focus-visible) { outline: none; }
-input:focus-visible,
-textarea:focus-visible,
-select:focus-visible {
+/* Focus rings on form fields: replace each browser's default blue ring
+   (Safari draws its own regardless of :focus-visible heuristics) with a
+   brand-ink ring on plain :focus — text fields are keyboard controls, so
+   an always-visible indicator is both accessible and consistent. */
+input:focus,
+textarea:focus,
+select:focus {
   outline: 3px solid var(--color-ink);
   outline-offset: 2px;
 }
