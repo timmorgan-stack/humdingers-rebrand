@@ -127,6 +127,29 @@
         } else if (!section.id && window.location.hash) {
           history.replaceState(null, '', window.location.pathname + window.location.search);
         }
+
+        // Settle assist: proximity snap sometimes leaves the viewport parked
+        // between two panels (its engage threshold is narrow). If rest lands
+        // within 40% of a viewport of a panel's ideal position, glide the
+        // remaining distance so a half-panel screen never sticks. Desktop
+        // only — below 1025px the panels flow naturally.
+        if (window.innerWidth >= 1025) {
+          // Reading inside a panel taller than the viewport is a legitimate
+          // rest anywhere — never drag the reader back to its top.
+          if (section.getBoundingClientRect().height > (window.innerHeight - offset) + 40) return;
+          var best = null;
+          document.querySelectorAll('section.band[id], .band-hero').forEach(function (p) {
+            var ideal = p.getBoundingClientRect().top + window.scrollY - offset;
+            var dist = Math.abs(window.scrollY - ideal);
+            if (best === null || dist < best.dist) best = { ideal: Math.max(ideal, 0), dist: dist };
+          });
+          if (best && best.dist > 4 && best.dist < (window.innerHeight - offset) * 0.4) {
+            var root = document.documentElement;
+            root.style.scrollSnapType = 'none';
+            window.scrollTo({ top: best.ideal, behavior: 'smooth' });
+            setTimeout(function () { root.style.scrollSnapType = ''; }, 700);
+          }
+        }
       }, 180);
     }, { passive: true });
   }

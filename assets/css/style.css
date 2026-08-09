@@ -1477,6 +1477,10 @@ footer.site-footer .colour-strip { margin-top: 40px; }
 .footer-legal { display: flex; gap: 8px 22px; flex-wrap: wrap; }
 .footer-legal a { opacity: 0.7; }
 .footer-legal a:hover { opacity: 1; }
+/* Footer link hovers take a per-load light brand colour (dealt by
+   palette.js) — overrides the site-wide tomato hover, which would sit too
+   dark on the ink background. */
+.site-footer a:hover { color: var(--fl-hover, var(--color-custard)); }
 .footer-enquire {
   font-family: var(--font-display);
   font-weight: 700;

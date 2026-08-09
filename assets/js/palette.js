@@ -331,6 +331,12 @@
     });
     var logo = foot.querySelector('img.logo-mark');
     if (logo) logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
+    // Each footer link deals its own hover colour per load — light colours
+    // only, so the hover stays legible on the ink background.
+    var LINK_LIGHT = ['--color-fish', '--color-custard', '--color-strawberry'];
+    foot.querySelectorAll('a').forEach(function (a, i) {
+      a.style.setProperty('--fl-hover', v(Decks.draw('footer-link-hovers', LINK_LIGHT, i)));
+    });
   })();
 
   /* ---- Enquire-now CTA banner ---------------------------------------------
