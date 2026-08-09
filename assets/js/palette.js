@@ -58,7 +58,9 @@
     function draw(name, pool, slot) {
       var st = store[name];
       var valid = st && Array.isArray(st.deck) && st.deck.every(function (c) { return pool.indexOf(c) !== -1; });
-      if (!valid) st = store[name] = { deck: [], last: null, slots: {} };
+      // A changed pool resets the deck but keeps the memory of what was
+      // dealt before — rule 1 must survive across pool changes.
+      if (!valid) st = store[name] = { deck: [], last: (st && st.last) || null, slots: (st && st.slots) || {} };
       if (!st.slots) st.slots = {};
       if (!st.deck.length) {
         var d = shuffled(pool);
@@ -331,12 +333,13 @@
     });
     var logo = foot.querySelector('img.logo-mark');
     if (logo) logo.src = logo.getAttribute('src').replace(/humdingers-logo-[a-z]+\.svg/, 'humdingers-logo-' + pick + '.svg');
-    // Each footer link deals its own hover colour per load — light colours
-    // only, so the hover stays legible on the ink background.
-    var LINK_LIGHT = ['--color-fish', '--color-custard', '--color-strawberry'];
-    foot.querySelectorAll('a').forEach(function (a, i) {
-      a.style.setProperty('--fl-hover', v(Decks.draw('footer-link-hovers', LINK_LIGHT, i)));
+    // One shared hover colour for every footer link, re-dealt per load —
+    // light colours only (legible on ink), and never the colour the
+    // footer's own colourway/logo drew this load.
+    var LINK_LIGHT = ['--color-fish', '--color-custard', '--color-strawberry'].filter(function (c) {
+      return c !== '--color-' + pick;
     });
+    foot.style.setProperty('--fl-hover', v(Decks.draw('footer-link-hovers', LINK_LIGHT, 0)));
   })();
 
   /* ---- Enquire-now CTA banner ---------------------------------------------
