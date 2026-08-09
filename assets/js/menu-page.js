@@ -169,6 +169,12 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('section.menu-category details').forEach(function (panel) {
     panel.addEventListener('toggle', function () {
       if (!panel.open) return;
+      // One menu at a time: opening a panel folds every other one shut —
+      // before measuring the scroll target, so collapsing panels above
+      // can't shift it after the glide starts.
+      document.querySelectorAll('section.menu-category details[open]').forEach(function (other) {
+        if (other !== panel) other.open = false;
+      });
       var sec = panel.closest('section.menu-category');
       if (!sec) return;
       var sticky = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--sticky-h')) || 80;
