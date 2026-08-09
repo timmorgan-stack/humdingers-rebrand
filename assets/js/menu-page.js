@@ -44,8 +44,11 @@ document.addEventListener('DOMContentLoaded', function () {
       c.sec.style.display = hit ? '' : 'none';
       if (hit) any = true;
       if (c.panel) {
-        if (q && hit && !inName) c.panel.open = true;
-        if (!q && !anyPicked) c.panel.open = false;
+        // Every filter change presents a fresh list: only panels whose body
+        // text matched the query stay open; anything opened earlier folds
+        // shut. Assigned once so unchanged panels fire no toggle events.
+        var shouldOpen = !!q && hit && !inName;
+        if (c.panel.open !== shouldOpen) c.panel.open = shouldOpen;
       }
     });
     emptyNote.hidden = any;
