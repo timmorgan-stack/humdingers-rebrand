@@ -66,9 +66,44 @@
     document.documentElement.style.scrollSnapType = '';
     refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-refade'); });
     document.dispatchEvent(new Event('landing-done'));
+    setTimeout(function () { settle(landingTarget, 8); }, 150);
+  }
+
+  /* Where a target should come to rest: a panel that fills the viewport sits
+     flush under the sticky header, anything shorter is centred in the space
+     below it. Clamped to the document so the check below can compare against
+     a position the browser can actually reach. */
+  function desiredTop(target) {
+    var offset = stickyOffset();
+    var rect = target.getBoundingClientRect();
+    var available = window.innerHeight - offset;
+    var top = rect.top + window.pageYOffset - offset;
+    if (rect.height < available - 8) {
+      top -= (available - rect.height) / 2; // centre in the visible area
+    }
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    return Math.max(0, Math.min(top, max));
+  }
+
+  /* A landing is computed against the layout as it stands, but the layout
+     keeps moving afterwards — web fonts swap, --sticky-h is remeasured (and
+     it sizes every panel, so a few pixels there move the foot of the page a
+     long way), images settle, sections reveal. Rather than enumerate those
+     causes, verify the result and correct it: nudge instantly, recheck, and
+     stop as soon as the target is where it belongs, the reader takes over,
+     or we run out of attempts. */
+  var landingTarget = null;
+
+  function settle(target, tries) {
+    if (!target || readerMoved || tries <= 0) return;
+    var want = desiredTop(target);
+    if (Math.abs(window.pageYOffset - want) <= 2) return;
+    window.scrollTo({ top: want, behavior: 'auto' });
+    setTimeout(function () { settle(target, tries - 1); }, 250);
   }
 
   function land(target) {
+    landingTarget = target;
     // Landing on a menu category unfolds it — but only when the target IS
     // that category; landing on a broader container (e.g. #menus-top) must
     // not re-open the first panel it happens to contain.
@@ -91,13 +126,7 @@
       });
     }
 
-    var offset = stickyOffset();
-    var rect = target.getBoundingClientRect();
-    var available = window.innerHeight - offset;
-    var top = rect.top + window.pageYOffset - offset;
-    if (rect.height < available - 8) {
-      top -= (available - rect.height) / 2; // centre in the visible area
-    }
+    var top = desiredTop(target);
 
     document.documentElement.setAttribute('data-landing', '');
     // Snap must not wrestle the landing animation mid-flight; it comes back
