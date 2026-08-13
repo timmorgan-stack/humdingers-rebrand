@@ -2191,13 +2191,37 @@ nav.main-nav a { font-size: 1.05rem; }
 }
 .service-feature-icon { color: var(--svc); display: block; }
 .service-feature-icon svg { width: 34px; height: 34px; }
+.service-feature { position: relative; }
 .service-feature-name {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.05rem;
   line-height: 1.2;
 }
+/* The service name stretches over the whole card, so anywhere on the card
+   opens the service page — except the menu link, which sits above it. */
+/* Flex items paint like inline-blocks, so later siblings would sit over a
+   z-index:auto overlay — lift it above them, with the menu link above it. */
+.service-feature-name a::after { content: ""; position: absolute; inset: 0; z-index: 1; }
+.service-feature:hover .service-feature-name a { text-decoration: underline; text-underline-offset: 5px; }
 .service-feature-blurb { font-size: 0.9rem; opacity: 0.75; line-height: 1.4; }
+.service-feature-menu {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  padding-top: 12px;
+  align-self: flex-start;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  color: var(--svc-ink, var(--color-ink));
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 5px;
+  text-decoration-skip-ink: none;
+  transition: color 0.15s ease;
+}
+.service-feature-menu:hover { color: var(--role-cta, var(--color-tomato)); }
 
 /* Owned colour per service. --svc-wash is the same hue at low alpha, so the
    hover tint stays well clear of the text contrast threshold. */
@@ -2214,3 +2238,5 @@ nav.main-nav a { font-size: 1.05rem; }
 @media (max-width: 640px)  { .service-feature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 /* .panel-icon carries its own ink colour — the owned service colour wins here */
 .service-feature .panel-icon { color: var(--svc); }
+/* .band sets display:flex on wide screens, which would defeat [hidden] */
+#instagram[hidden] { display: none; }

@@ -154,6 +154,14 @@
     }, { passive: true });
   }
 
+  // Content that arrives after load (the Instagram grid) changes the page
+  // height and invalidates the landing already performed — re-land the hash.
+  document.addEventListener('hd:relayout', function () {
+    if (!window.location.hash) return;
+    var target = document.getElementById(window.location.hash.slice(1));
+    if (target) land(target);
+  });
+
   // Arriving from another page with a hash: land it once layout has settled.
   window.addEventListener('load', function () {
     if (!window.location.hash) return;

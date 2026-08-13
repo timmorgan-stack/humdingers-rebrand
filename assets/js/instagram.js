@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
   var grid = section.querySelector('.instagram-grid');
   if (!grid) return;
 
+  // Already hidden in markup: leaving it hidden costs no layout space,
+  // so nothing below it can shift once the page has settled.
   function drop() { section.remove(); }
 
   fetch('assets/data/instagram.json', { cache: 'no-cache' })
@@ -40,6 +42,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         grid.appendChild(link);
       });
+
+      // Revealing the grid changes the page height. If we arrived on a hash
+      // further down the page, that landing is now stale — ask for a re-land.
+      section.hidden = false;
+      document.dispatchEvent(new CustomEvent('hd:relayout'));
     })
     .catch(drop);
 });
