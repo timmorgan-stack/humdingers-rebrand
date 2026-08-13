@@ -2262,3 +2262,51 @@ nav.main-nav a { font-size: 1.05rem; }
     height: clamp(120px, calc((100dvh - var(--sticky-h, 80px) - 400px) / 2), 320px);
   }
 }
+
+/* ---------------- Food galleries ----------------
+   A rotator is a plain image frame; food-gallery.js cross-fades the set
+   through it. The wrapper keeps the frame's shape so swapping shots never
+   changes layout. */
+img[data-gallery] { transition: opacity 0.32s ease; cursor: zoom-in; }
+img[data-gallery].is-fading { opacity: 0; }
+
+/* Lightbox stepping controls, shown only for a set */
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid var(--color-paper);
+  background: rgba(0,0,0,0.45);
+  color: var(--color-paper);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.15s ease;
+}
+.lightbox-nav:hover { background: var(--color-ink); }
+.lightbox-prev { left: 16px; }
+.lightbox-next { right: 16px; }
+.lightbox-nav[hidden] { display: none; }
+.lightbox-count {
+  position: absolute;
+  bottom: 18px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: var(--color-paper);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  margin: 0;
+  opacity: 0.85;
+}
+@media (max-width: 640px) {
+  .lightbox-nav { width: 42px; height: 42px; font-size: 1.5rem; }
+  .lightbox-prev { left: 6px; }
+  .lightbox-next { right: 6px; }
+}
