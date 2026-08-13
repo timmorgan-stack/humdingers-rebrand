@@ -43,6 +43,19 @@ document.addEventListener('DOMContentLoaded', function () {
         grid.appendChild(link);
       });
 
+      // A preview feed says so on the page: staging must never look like it
+      // is pulling live posts. The flag is absent from real API data, so
+      // this notice removes itself the moment the feed is connected.
+      if (data.preview) {
+        var lede = section.querySelector('.script');
+        if (lede) lede.textContent = 'A preview of how the feed will look.';
+        var note = document.createElement('p');
+        note.className = 'placeholder-tag';
+        note.style.marginTop = '18px';
+        note.textContent = 'Design preview \u2014 sample imagery from the site library, not yet connected to the live Instagram feed.';
+        grid.insertAdjacentElement('afterend', note);
+      }
+
       // Revealing the grid changes the page height. If we arrived on a hash
       // further down the page, that landing is now stale — ask for a re-land.
       section.hidden = false;
