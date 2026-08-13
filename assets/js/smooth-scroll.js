@@ -55,9 +55,9 @@
 
   function mayReland() { return !readerMoved; }
 
-  function landFromNavigation(target) {
+  function landFromNavigation(target, instant) {
     readerMoved = false;
-    land(target);
+    land(target, instant);
   }
 
   function landingDone() {
@@ -102,7 +102,7 @@
     setTimeout(function () { settle(target, tries - 1); }, 250);
   }
 
-  function land(target) {
+  function land(target, instant) {
     landingTarget = target;
     // Landing on a menu category unfolds it — but only when the target IS
     // that category; landing on a broader container (e.g. #menus-top) must
@@ -142,7 +142,7 @@
       if (landingTimer) { clearTimeout(landingTimer); landingDone(); }
     });
 
-    window.scrollTo({ top: Math.max(top, 0), behavior: 'smooth' });
+    window.scrollTo({ top: Math.max(top, 0), behavior: instant ? 'auto' : 'smooth' });
   }
 
   document.addEventListener('click', function (e) {
@@ -211,7 +211,7 @@
   document.addEventListener('hd:relayout', function () {
     if (!window.location.hash || !mayReland()) return;
     var target = document.getElementById(window.location.hash.slice(1));
-    if (target) land(target);
+    if (target) land(target, true);
   });
 
   /* Back/Forward. Clicks push a history entry and the scroll-spy keeps the
@@ -231,16 +231,21 @@
     if (target) landFromNavigation(target);
   });
 
-  // Arriving from another page with a hash: land it once layout has settled.
+  /* Arriving on a hash — a reload, or a pasted/shared link — places the
+     content straight away: animating a scroll the reader did not ask for
+     just looks like the page is hunting for its position. In-page and nav
+     clicks keep the animation, because there the movement shows where you
+     have been taken. */
   window.addEventListener('load', function () {
     if (!window.location.hash) return;
     var target = document.getElementById(window.location.hash.slice(1));
     if (!target) return;
-    setTimeout(function () { landFromNavigation(target); }, 60);
+    setTimeout(function () { landFromNavigation(target, true); }, 60);
     /* Web fonts swap in after load on a cold cache, changing text metrics and
-       moving every panel below — re-land once they have settled. */
+       moving every panel below — re-land once they have settled. Instant, so
+       the correction is invisible rather than a second animation. */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () { if (mayReland()) land(target); });
+      document.fonts.ready.then(function () { if (mayReland()) land(target, true); });
     }
   });
 })();

@@ -1,0 +1,183 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Humdingers — photo library</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;margin:0;padding:32px;color:#1a1a1a;background:#fff}
+h1{font-size:1.7rem;margin:0 0 6px}h2{font-size:1.15rem;margin:34px 0 12px;padding-top:18px;border-top:2px solid #eee}
+.lede{color:#555;max-width:74ch;line-height:1.55}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+.card{border:1px solid #ddd;border-radius:10px;overflow:hidden}
+.card img{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:#f4f4f2}
+.meta{padding:8px 10px}
+.id{font-family:ui-monospace,Menlo,monospace;font-size:.74rem;font-weight:700;word-break:break-all}
+.alt{font-size:.72rem;color:#666;margin-top:3px;line-height:1.35}
+.pill{display:inline-block;background:#f1f1ef;border-radius:99px;padding:2px 9px;font-size:.72rem}
+.use{display:grid;grid-template-columns:132px 1fr;gap:16px;border:1px solid #ddd;border-radius:10px;padding:14px;margin-bottom:12px;position:relative}
+.use img.cur{width:132px;aspect-ratio:1;object-fit:cover;border-radius:6px;display:block;background:#f4f4f2}
+.where{font-weight:700}.sub{color:#666;font-size:.82rem;margin:3px 0 8px}
+.picker{position:relative;max-width:460px}
+.picker input{width:100%;padding:9px 12px;border:2px solid #1a1a1a;border-radius:99px;font-size:.85rem;font-family:inherit}
+.drop{position:absolute;top:calc(100% + 6px);left:0;right:0;z-index:30;max-height:290px;overflow:auto;background:#fff;
+ border:2px solid #1a1a1a;border-radius:10px;padding:6px;box-shadow:0 12px 30px rgba(0,0,0,.18)}
+.drop[hidden]{display:none}
+.opt{display:flex;align-items:center;gap:10px;width:100%;padding:6px;border:0;background:none;cursor:pointer;text-align:left;border-radius:6px}
+.opt:hover{background:#f1f1ef}
+.opt img{width:44px;height:44px;object-fit:cover;border-radius:4px;flex:none}
+.opt .t{font-size:.78rem}.opt .t b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.72rem}
+.chosen{margin-top:9px;font-size:.82rem;display:none;align-items:center;gap:10px;background:#eef7ee;border:1px solid #b9dcb9;border-radius:8px;padding:7px 10px}
+.chosen img{width:38px;height:38px;object-fit:cover;border-radius:4px}
+.chosen button{margin-left:auto;border:0;background:none;color:#a00;cursor:pointer;font-size:.8rem;text-decoration:underline}
+#summary{position:sticky;bottom:0;background:#fffbe8;border:2px solid #e9c94a;border-radius:10px;padding:14px 16px;margin-top:26px}
+#summary h3{margin:0 0 8px;font-size:1rem}
+#summary pre{white-space:pre-wrap;font-size:.78rem;background:#fff;border:1px solid #e2e2e2;border-radius:6px;padding:10px;max-height:200px;overflow:auto}
+.btn{border:2px solid #1a1a1a;background:#1a1a1a;color:#fff;border-radius:99px;padding:7px 16px;font-size:.82rem;cursor:pointer;font-family:inherit}
+.btn.ghost{background:none;color:#1a1a1a}
+@media print{.picker,#summary{display:none}.use{break-inside:avoid}}
+</style></head><body>
+<h1>Photo library — all 71 images</h1>
+<p class="lede">Every photograph available to the site. To change a picture, go to the
+<a href="_photo-usage.html">where each photo is used</a> sheet and pick a replacement from the dropdown there —
+no need to note anything down from this page.</p>
+<div class="grid"><div class="card"><img src="assets/img/food/thumb/yogurt-greek-honey-001.jpg" alt="Greek yoghurt with honey" loading="lazy">
+<div class="meta"><div class="id">yogurt-greek-honey-001</div><div class="alt">Greek yoghurt with honey</div>
+<div class="alt"><span class="pill">breakfast-pots</span></div></div></div><div class="card"><img src="assets/img/food/thumb/yogurt-banana-oats-001.jpg" alt="Yoghurt with banana and oats" loading="lazy">
+<div class="meta"><div class="id">yogurt-banana-oats-001</div><div class="alt">Yoghurt with banana and oats</div>
+<div class="alt"><span class="pill">breakfast-pots</span></div></div></div><div class="card"><img src="assets/img/food/thumb/yogurt-coconut-almond-002.jpg" alt="Coconut and almond yoghurt pot" loading="lazy">
+<div class="meta"><div class="id">yogurt-coconut-almond-002</div><div class="alt">Coconut and almond yoghurt pot</div>
+<div class="alt"><span class="pill">breakfast-pots</span></div></div></div><div class="card"><img src="assets/img/food/thumb/yogurt-vegan-compot-008.jpg" alt="Vegan yoghurt with fruit compote" loading="lazy">
+<div class="meta"><div class="id">yogurt-vegan-compot-008</div><div class="alt">Vegan yoghurt with fruit compote</div>
+<div class="alt"><span class="pill">breakfast-pots</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-011.jpg" alt="Assorted canapés on a white platter" loading="lazy">
+<div class="meta"><div class="id">canapes-011</div><div class="alt">Assorted canapés on a white platter</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-013.jpg" alt="Filled choux and tartlet canapés" loading="lazy">
+<div class="meta"><div class="id">canapes-013</div><div class="alt">Filled choux and tartlet canapés</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-018.jpg" alt="Canapé selection with micro herbs" loading="lazy">
+<div class="meta"><div class="id">canapes-018</div><div class="alt">Canapé selection with micro herbs</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-021.jpg" alt="Bite-sized canapés on a long platter" loading="lazy">
+<div class="meta"><div class="id">canapes-021</div><div class="alt">Bite-sized canapés on a long platter</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-024.jpg" alt="Skewered canapés on a pale blue platter" loading="lazy">
+<div class="meta"><div class="id">canapes-024</div><div class="alt">Skewered canapés on a pale blue platter</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-030.jpg" alt="Sushi-style canapés on a navy platter" loading="lazy">
+<div class="meta"><div class="id">canapes-030</div><div class="alt">Sushi-style canapés on a navy platter</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-034.jpg" alt="Rolled canapés with garnish" loading="lazy">
+<div class="meta"><div class="id">canapes-034</div><div class="alt">Rolled canapés with garnish</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-035.jpg" alt="Tomato-topped canapés on a dark platter" loading="lazy">
+<div class="meta"><div class="id">canapes-035</div><div class="alt">Tomato-topped canapés on a dark platter</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-039.jpg" alt="Open canapés dressed with herbs" loading="lazy">
+<div class="meta"><div class="id">canapes-039</div><div class="alt">Open canapés dressed with herbs</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/canapes-045.jpg" alt="Canapés arranged on a slate board" loading="lazy">
+<div class="meta"><div class="id">canapes-045</div><div class="alt">Canapés arranged on a slate board</div>
+<div class="alt"><span class="pill">canapes</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-005.jpg" alt="Brownies, cookies and muffins on a platter" loading="lazy">
+<div class="meta"><div class="id">desserts-005</div><div class="alt">Brownies, cookies and muffins on a platter</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-007.jpg" alt="Chocolate muffins and cookies" loading="lazy">
+<div class="meta"><div class="id">desserts-007</div><div class="alt">Chocolate muffins and cookies</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-011.jpg" alt="Traybakes and cookies on a platter" loading="lazy">
+<div class="meta"><div class="id">desserts-011</div><div class="alt">Traybakes and cookies on a platter</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-portions-006.jpg" alt="Individual dessert portions plated" loading="lazy">
+<div class="meta"><div class="id">desserts-portions-006</div><div class="alt">Individual dessert portions plated</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-portions-008.jpg" alt="Tart and cookie dessert portions" loading="lazy">
+<div class="meta"><div class="id">desserts-portions-008</div><div class="alt">Tart and cookie dessert portions</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-portions-009.jpg" alt="Cookie dessert portion plated" loading="lazy">
+<div class="meta"><div class="id">desserts-portions-009</div><div class="alt">Cookie dessert portion plated</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-portions-010.jpg" alt="Individual tart plated" loading="lazy">
+<div class="meta"><div class="id">desserts-portions-010</div><div class="alt">Individual tart plated</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/desserts-portions-012.jpg" alt="Chocolate dessert portion plated" loading="lazy">
+<div class="meta"><div class="id">desserts-portions-012</div><div class="alt">Chocolate dessert portion plated</div>
+<div class="alt"><span class="pill">desserts</span></div></div></div><div class="card"><img src="assets/img/food/thumb/box-fruit-005.jpg" alt="A box of fresh sliced fruit" loading="lazy">
+<div class="meta"><div class="id">box-fruit-005</div><div class="alt">A box of fresh sliced fruit</div>
+<div class="alt"><span class="pill">fruit</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-lightbite-aranchini-002.jpg" alt="Arancini with dipping sauce" loading="lazy">
+<div class="meta"><div class="id">platter-lightbite-aranchini-002</div><div class="alt">Arancini with dipping sauce</div>
+<div class="alt"><span class="pill">light-bites</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-lightbite-prawns-006.jpg" alt="Prawn skewers with dip" loading="lazy">
+<div class="meta"><div class="id">platter-lightbite-prawns-006</div><div class="alt">Prawn skewers with dip</div>
+<div class="alt"><span class="pill">light-bites</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-lightbite-sausage-roll-005.jpg" alt="Sausage rolls on a platter" loading="lazy">
+<div class="meta"><div class="id">platter-lightbite-sausage-roll-005</div><div class="alt">Sausage rolls on a platter</div>
+<div class="alt"><span class="pill">light-bites</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-lightbite-tarts-003.jpg" alt="Savoury tartlets on a platter" loading="lazy">
+<div class="meta"><div class="id">platter-lightbite-tarts-003</div><div class="alt">Savoury tartlets on a platter</div>
+<div class="alt"><span class="pill">light-bites</span></div></div></div><div class="card"><img src="assets/img/food/thumb/box-lightbite-tart-004.jpg" alt="A box of savoury tarts for delivery" loading="lazy">
+<div class="meta"><div class="id">box-lightbite-tart-004</div><div class="alt">A box of savoury tarts for delivery</div>
+<div class="alt"><span class="pill">light-bites</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-chicken-005.jpg" alt="Hot chicken main with roasted vegetables" loading="lazy">
+<div class="meta"><div class="id">mains-chicken-005</div><div class="alt">Hot chicken main with roasted vegetables</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-meatballs-007.jpg" alt="Meatballs in sauce with rice" loading="lazy">
+<div class="meta"><div class="id">mains-meatballs-007</div><div class="alt">Meatballs in sauce with rice</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-salmon-020.jpg" alt="Salmon main with greens" loading="lazy">
+<div class="meta"><div class="id">mains-salmon-020</div><div class="alt">Salmon main with greens</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-seabass-003.jpg" alt="Sea bass main with salad" loading="lazy">
+<div class="meta"><div class="id">mains-seabass-003</div><div class="alt">Sea bass main with salad</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-portions-005.jpg" alt="Individually portioned hot mains" loading="lazy">
+<div class="meta"><div class="id">mains-portions-005</div><div class="alt">Individually portioned hot mains</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-portions-007.jpg" alt="Portioned mains with roasted vegetables" loading="lazy">
+<div class="meta"><div class="id">mains-portions-007</div><div class="alt">Portioned mains with roasted vegetables</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-portions-009.jpg" alt="Portioned mains with greens and tomatoes" loading="lazy">
+<div class="meta"><div class="id">mains-portions-009</div><div class="alt">Portioned mains with greens and tomatoes</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/mains-portions-012.jpg" alt="Portioned hot mains ready to serve" loading="lazy">
+<div class="meta"><div class="id">mains-portions-012</div><div class="alt">Portioned hot mains ready to serve</div>
+<div class="alt"><span class="pill">mains</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-solo-croissant-003.jpg" alt="Butter croissant with fresh berries" loading="lazy">
+<div class="meta"><div class="id">pastry-solo-croissant-003</div><div class="alt">Butter croissant with fresh berries</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-solo-pain-au-choc-002.jpg" alt="Pain au chocolat with fresh berries" loading="lazy">
+<div class="meta"><div class="id">pastry-solo-pain-au-choc-002</div><div class="alt">Pain au chocolat with fresh berries</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-solo-raisin-004.jpg" alt="Pain aux raisins with fresh berries" loading="lazy">
+<div class="meta"><div class="id">pastry-solo-raisin-004</div><div class="alt">Pain aux raisins with fresh berries</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-solo-raspberry-004.jpg" alt="Raspberry pastry with fresh berries" loading="lazy">
+<div class="meta"><div class="id">pastry-solo-raspberry-004</div><div class="alt">Raspberry pastry with fresh berries</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-hand-003.jpg" alt="A raspberry pastry served with fruit" loading="lazy">
+<div class="meta"><div class="id">pastry-hand-003</div><div class="alt">A raspberry pastry served with fruit</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-hand-008.jpg" alt="Pastry and berries being served" loading="lazy">
+<div class="meta"><div class="id">pastry-hand-008</div><div class="alt">Pastry and berries being served</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-hand-011.jpg" alt="Croissants and berries on the table" loading="lazy">
+<div class="meta"><div class="id">pastry-hand-011</div><div class="alt">Croissants and berries on the table</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-hand-013.jpg" alt="A pastry lifted from the plate" loading="lazy">
+<div class="meta"><div class="id">pastry-hand-013</div><div class="alt">A pastry lifted from the plate</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/pastry-hand-015.jpg" alt="Croissant served with strawberries and blueberries" loading="lazy">
+<div class="meta"><div class="id">pastry-hand-015</div><div class="alt">Croissant served with strawberries and blueberries</div>
+<div class="alt"><span class="pill">pastries</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-meat-005.jpg" alt="Charcuterie and cheese sharing box" loading="lazy">
+<div class="meta"><div class="id">platter-meat-005</div><div class="alt">Charcuterie and cheese sharing box</div>
+<div class="alt"><span class="pill">platters</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-meat-silver-003.jpg" alt="Meat and cheese platter with dips" loading="lazy">
+<div class="meta"><div class="id">platter-meat-silver-003</div><div class="alt">Meat and cheese platter with dips</div>
+<div class="alt"><span class="pill">platters</span></div></div></div><div class="card"><img src="assets/img/food/thumb/platter-vegan-010.jpg" alt="Vegan sharing platter with dips and crudités" loading="lazy">
+<div class="meta"><div class="id">platter-vegan-010</div><div class="alt">Vegan sharing platter with dips and crudités</div>
+<div class="alt"><span class="pill">platters</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-chicken-003.jpg" alt="Chicken salad with tomatoes and egg" loading="lazy">
+<div class="meta"><div class="id">salad-chicken-003</div><div class="alt">Chicken salad with tomatoes and egg</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-falaffel-002.jpg" alt="Falafel salad with dressing" loading="lazy">
+<div class="meta"><div class="id">salad-falaffel-002</div><div class="alt">Falafel salad with dressing</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-salmon-006.jpg" alt="Salmon salad with egg and grains" loading="lazy">
+<div class="meta"><div class="id">salad-salmon-006</div><div class="alt">Salmon salad with egg and grains</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-tofu-002.jpg" alt="Tofu salad with fresh vegetables" loading="lazy">
+<div class="meta"><div class="id">salad-tofu-002</div><div class="alt">Tofu salad with fresh vegetables</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-bowl-chicken-003.jpg" alt="Chicken salad bowl" loading="lazy">
+<div class="meta"><div class="id">salad-bowl-chicken-003</div><div class="alt">Chicken salad bowl</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-bowl-falaffel-002.jpg" alt="Falafel salad bowl" loading="lazy">
+<div class="meta"><div class="id">salad-bowl-falaffel-002</div><div class="alt">Falafel salad bowl</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-bowl-salmon-003.jpg" alt="Salmon salad bowl" loading="lazy">
+<div class="meta"><div class="id">salad-bowl-salmon-003</div><div class="alt">Salmon salad bowl</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-bowl-tofu-006.jpg" alt="Tofu salad bowl" loading="lazy">
+<div class="meta"><div class="id">salad-bowl-tofu-006</div><div class="alt">Tofu salad bowl</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/salad-box-group-004.jpg" alt="Salad boxes ready for delivery" loading="lazy">
+<div class="meta"><div class="id">salad-box-group-004</div><div class="alt">Salad boxes ready for delivery</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/group-salad-002.jpg" alt="A spread of salads for sharing" loading="lazy">
+<div class="meta"><div class="id">group-salad-002</div><div class="alt">A spread of salads for sharing</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/group-salad-bowls-002.jpg" alt="Salad bowls and sides for a group" loading="lazy">
+<div class="meta"><div class="id">group-salad-bowls-002</div><div class="alt">Salad bowls and sides for a group</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/side-salad-002.jpg" alt="Side salad" loading="lazy">
+<div class="meta"><div class="id">side-salad-002</div><div class="alt">Side salad</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/side-salad-004.jpg" alt="Side salad with fresh vegetables" loading="lazy">
+<div class="meta"><div class="id">side-salad-004</div><div class="alt">Side salad with fresh vegetables</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/side-salad-005.jpg" alt="Dressed side salad" loading="lazy">
+<div class="meta"><div class="id">side-salad-005</div><div class="alt">Dressed side salad</div>
+<div class="alt"><span class="pill">salads</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-hands-031.jpg" alt="A filled sandwich cut and served" loading="lazy">
+<div class="meta"><div class="id">sandwich-hands-031</div><div class="alt">A filled sandwich cut and served</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-box-chicken-katsu-wrap-005.jpg" alt="Katsu chicken wraps boxed for delivery" loading="lazy">
+<div class="meta"><div class="id">sandwich-box-chicken-katsu-wrap-005</div><div class="alt">Katsu chicken wraps boxed for delivery</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-solo-ham-cheese-006.jpg" alt="Ham and cheese sandwich" loading="lazy">
+<div class="meta"><div class="id">sandwich-solo-ham-cheese-006</div><div class="alt">Ham and cheese sandwich</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-solo-reuben-010.jpg" alt="Reuben sandwich" loading="lazy">
+<div class="meta"><div class="id">sandwich-solo-reuben-010</div><div class="alt">Reuben sandwich</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-solo-tomato-mozzarella-015.jpg" alt="Tomato and mozzarella sandwich" loading="lazy">
+<div class="meta"><div class="id">sandwich-solo-tomato-mozzarella-015</div><div class="alt">Tomato and mozzarella sandwich</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-platter-ham-cheese-005.jpg" alt="Ham and cheese sandwich platter" loading="lazy">
+<div class="meta"><div class="id">sandwich-platter-ham-cheese-005</div><div class="alt">Ham and cheese sandwich platter</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-platter-reuben-002.jpg" alt="Reuben sandwiches on a platter" loading="lazy">
+<div class="meta"><div class="id">sandwich-platter-reuben-002</div><div class="alt">Reuben sandwiches on a platter</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-platter-fallafel-wrap-004.jpg" alt="Falafel wraps on a platter" loading="lazy">
+<div class="meta"><div class="id">sandwich-platter-fallafel-wrap-004</div><div class="alt">Falafel wraps on a platter</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div><div class="card"><img src="assets/img/food/thumb/sandwich-platter-savory-criossant-003.jpg" alt="Savoury croissants on a platter" loading="lazy">
+<div class="meta"><div class="id">sandwich-platter-savory-criossant-003</div><div class="alt">Savoury croissants on a platter</div>
+<div class="alt"><span class="pill">sandwiches</span></div></div></div></div></body></html>

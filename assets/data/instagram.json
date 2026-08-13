@@ -3,9 +3,9 @@
   "updated": null,
   "posts": [
     {
-      "img": "assets/img/premium/canapes-lobster.jpg",
+      "img": "assets/img/food/canapes-024.jpg",
       "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Canap\u00e9s plated for a launch event",
+      "caption": "Skewered canap\u00e9s on a pale blue platter",
       "timestamp": null,
       "isVideo": false
     },
@@ -17,6 +17,27 @@
       "isVideo": false
     },
     {
+      "img": "assets/img/food/platter-meat-silver-003.jpg",
+      "permalink": "https://www.instagram.com/humdingerscatering/",
+      "caption": "Meat and cheese platter with dips",
+      "timestamp": null,
+      "isVideo": false
+    },
+    {
+      "img": "assets/img/food/mains-portions-009.jpg",
+      "permalink": "https://www.instagram.com/humdingerscatering/",
+      "caption": "Portioned mains with greens and tomatoes",
+      "timestamp": null,
+      "isVideo": false
+    },
+    {
+      "img": "assets/img/food/pastry-hand-015.jpg",
+      "permalink": "https://www.instagram.com/humdingerscatering/",
+      "caption": "Croissant served with strawberries and blueberries",
+      "timestamp": null,
+      "isVideo": false
+    },
+    {
       "img": "assets/img/premium/tablescape.jpg",
       "permalink": "https://www.instagram.com/humdingerscatering/",
       "caption": "Tablescape styled for a private dinner",
@@ -24,37 +45,16 @@
       "isVideo": false
     },
     {
-      "img": "assets/img/premium/corporate-event.jpg",
+      "img": "assets/img/food/salad-box-group-004.jpg",
       "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Corporate event catering in the City",
+      "caption": "Salad boxes ready for delivery",
       "timestamp": null,
       "isVideo": false
     },
     {
-      "img": "assets/img/premium/hot-meals-plated.jpg",
+      "img": "assets/img/food/desserts-005.jpg",
       "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Hot mains plated up in the kitchen",
-      "timestamp": null,
-      "isVideo": false
-    },
-    {
-      "img": "assets/img/premium/canapes-trays.jpg",
-      "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Trays ready to leave for a drop-off",
-      "timestamp": null,
-      "isVideo": false
-    },
-    {
-      "img": "assets/img/premium/wedding-clissold.jpg",
-      "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Wedding service at Clissold House",
-      "timestamp": null,
-      "isVideo": false
-    },
-    {
-      "img": "assets/img/cocktails.jpg",
-      "permalink": "https://www.instagram.com/humdingerscatering/",
-      "caption": "Cocktails poured at an evening reception",
+      "caption": "Brownies, cookies and muffins on a platter",
       "timestamp": null,
       "isVideo": false
     }
