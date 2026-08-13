@@ -21,11 +21,19 @@ document.addEventListener('DOMContentLoaded', function () {
        fade from a standing start, with no shimmer or spinner since there is
        nothing to wait for. */
     if (img.complete) {
-      img.classList.add('img-loading');
-      setTimeout(function () { img.classList.remove('img-loading'); }, 20);
+      img.classList.add('img-loading', 'img-first-fade');
+      /* Reading a layout property commits the transparent state. Without it
+         the browser coalesces the add and the remove into one paint and no
+         transition runs — which is why the fade was barely perceptible on a
+         cached load. */
+      void img.offsetWidth;
+      setTimeout(function () {
+        img.classList.remove('img-loading');
+        setTimeout(function () { img.classList.remove('img-first-fade'); }, 1000);
+      }, 30);
       return;
     }
-    img.classList.add('img-loading');
+    img.classList.add('img-loading', 'img-first-fade');
 
     // A wrapper that exists only to hold this image can wear the shimmer.
     var frame = img.parentElement;
@@ -55,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
     function reveal() {
       img.classList.remove('img-loading');
       if (shimmer) frame.classList.remove('img-shimmer');
+      // The slower first-load fade is a one-off; later refades stay brisk.
+      setTimeout(function () { img.classList.remove('img-first-fade'); }, 1000);
       if (spinner && spinner.parentElement) spinner.parentElement.removeChild(spinner);
     }
     function onDone() {

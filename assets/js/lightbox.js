@@ -75,7 +75,7 @@
     var frame = img.parentElement;
     if (!frame || frame === document.body) return;
     if (frame.querySelector(':scope > .zoom-badge[data-for="' + img.src + '"]')) return;
-    if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+    frame.classList.add('has-overlay');
 
     var badge = document.createElement('span');
     badge.className = 'zoom-badge';
@@ -85,19 +85,19 @@
       '<path d="M15.8 15.8 20 20M8.6 11h4.8M11 8.6v4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
     frame.appendChild(badge);
 
-    /* Rect-based for the same reason as the gallery dots: offsetLeft/offsetTop
-       are relative to the nearest positioned ancestor, which is not always
-       this frame. */
+    /* Absolute coordinates resolve against the badge's offsetParent — the
+       nearest positioned ancestor. Measuring against whatever the browser
+       actually uses keeps the badge on the picture wherever it sits in the
+       page, and has-overlay keeps that ancestor being this frame. */
     function place() {
-      // Same reason as the gallery dots: these coordinates only mean anything
-      // if the frame is the positioning context.
-      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+      frame.classList.add('has-overlay');
+      var host = badge.offsetParent || frame;
       var ir = img.getBoundingClientRect();
-      var fr = frame.getBoundingClientRect();
+      var hr = host.getBoundingClientRect();
       if (!ir.width) { badge.hidden = true; return; }
       badge.hidden = false;
-      badge.style.left = (ir.left - fr.left + ir.width) + 'px';
-      badge.style.top = (ir.top - fr.top + ir.height) + 'px';
+      badge.style.left = (ir.left - hr.left + ir.width) + 'px';
+      badge.style.top = (ir.top - hr.top + ir.height) + 'px';
     }
     /* The badge arrives with the photograph rather than ahead of it, in step
        with the image's own fade. */

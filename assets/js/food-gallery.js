@@ -104,9 +104,10 @@
     if (shown.getAttribute('src') !== images[current].img) {
       // Join the site's normal loading choreography so the chosen shot fades
       // in like any other image rather than appearing abruptly.
-      shown.classList.add('img-loading');
+      shown.classList.add('img-loading', 'img-first-fade');
       shown.addEventListener('load', function () {
         shown.classList.remove('img-loading');
+        setTimeout(function () { shown.classList.remove('img-first-fade'); }, 1000);
       }, { once: true });
       shown.src = images[current].img;
       shown.alt = images[current].alt;
@@ -185,24 +186,21 @@
       wrap.appendChild(dot);
     });
 
-    if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+    frame.classList.add('has-overlay');
     frame.appendChild(wrap);
 
-    /* Measured from rectangles rather than offsetLeft/offsetTop: those are
-       relative to the nearest positioned ancestor, which is not always the
-       frame we are positioning inside, and the difference put the dots a long
-       way from the picture on some panels. */
+    /* Measured against the dots' offsetParent — the element the browser
+       actually resolves these coordinates against — rather than assuming the
+       frame is the positioning context. */
     function place() {
-      // Re-assert on every placement: the coordinates below are relative to
-      // the frame, so if anything leaves it unpositioned the browser resolves
-      // them against an ancestor instead and the nav lands far from the image.
-      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+      frame.classList.add('has-overlay');
+      var host = wrap.offsetParent || frame;
       var ir = shown.getBoundingClientRect();
-      var fr = frame.getBoundingClientRect();
+      var hr = host.getBoundingClientRect();
       if (!ir.width) { wrap.hidden = true; return; }
       wrap.hidden = ir.width < 260;
-      wrap.style.left = (ir.left - fr.left + ir.width / 2) + 'px';
-      wrap.style.top = (ir.top - fr.top + ir.height) + 'px';
+      wrap.style.left = (ir.left - hr.left + ir.width / 2) + 'px';
+      wrap.style.top = (ir.top - hr.top + ir.height) + 'px';
     }
     place();
     /* The image's box keeps changing after first layout — the photograph
@@ -262,7 +260,7 @@
       if (stale()) return;
       var frame = shown.parentElement;
       if (!frame || !shown.offsetWidth) { commit(); return; }
-      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+      frame.classList.add('has-overlay');
 
       var cs = getComputedStyle(shown);
       var layer = document.createElement('img');
