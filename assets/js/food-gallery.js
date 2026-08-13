@@ -188,14 +188,30 @@
     if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
     frame.appendChild(wrap);
 
+    /* Measured from rectangles rather than offsetLeft/offsetTop: those are
+       relative to the nearest positioned ancestor, which is not always the
+       frame we are positioning inside, and the difference put the dots a long
+       way from the picture on some panels. */
     function place() {
-      if (!shown.offsetWidth) { wrap.hidden = true; return; }
-      wrap.hidden = shown.offsetWidth < 260;
-      wrap.style.left = (shown.offsetLeft + shown.offsetWidth / 2) + 'px';
-      wrap.style.top = (shown.offsetTop + shown.offsetHeight) + 'px';
+      // Re-assert on every placement: the coordinates below are relative to
+      // the frame, so if anything leaves it unpositioned the browser resolves
+      // them against an ancestor instead and the nav lands far from the image.
+      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+      var ir = shown.getBoundingClientRect();
+      var fr = frame.getBoundingClientRect();
+      if (!ir.width) { wrap.hidden = true; return; }
+      wrap.hidden = ir.width < 260;
+      wrap.style.left = (ir.left - fr.left + ir.width / 2) + 'px';
+      wrap.style.top = (ir.top - fr.top + ir.height) + 'px';
     }
     place();
+    /* The image's box keeps changing after first layout — the photograph
+       loads, fonts swap, a neighbouring column reflows and a stretched image
+       grows with its row. Watching the box itself catches all of that; the
+       load and resize hooks remain for browsers without ResizeObserver. */
+    shown.addEventListener('load', place);
     window.addEventListener('resize', place);
+    if ('ResizeObserver' in window) new ResizeObserver(place).observe(shown);
 
     /* The dots arrive with the opening photograph rather than ahead of it —
        a nav floating over an empty frame looks broken. Once shown they stay

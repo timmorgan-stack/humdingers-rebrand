@@ -85,15 +85,30 @@
       '<path d="M15.8 15.8 20 20M8.6 11h4.8M11 8.6v4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
     frame.appendChild(badge);
 
+    /* Rect-based for the same reason as the gallery dots: offsetLeft/offsetTop
+       are relative to the nearest positioned ancestor, which is not always
+       this frame. */
     function place() {
-      if (!img.offsetWidth) { badge.hidden = true; return; }
+      // Same reason as the gallery dots: these coordinates only mean anything
+      // if the frame is the positioning context.
+      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+      var ir = img.getBoundingClientRect();
+      var fr = frame.getBoundingClientRect();
+      if (!ir.width) { badge.hidden = true; return; }
       badge.hidden = false;
-      badge.style.left = (img.offsetLeft + img.offsetWidth) + 'px';
-      badge.style.top = (img.offsetTop + img.offsetHeight) + 'px';
+      badge.style.left = (ir.left - fr.left + ir.width) + 'px';
+      badge.style.top = (ir.top - fr.top + ir.height) + 'px';
     }
+    /* The badge arrives with the photograph rather than ahead of it, in step
+       with the image's own fade. */
+    function reveal() { place(); badge.classList.add('is-visible'); }
     place();
-    if (img.complete) place(); else img.addEventListener('load', place, { once: true });
+    if (img.complete && img.naturalWidth) reveal();
+    else img.addEventListener('load', reveal, { once: true });
     window.addEventListener('resize', place);
+    // Same reason as the gallery dots: the image's box moves after first
+    // layout, so follow the box rather than a handful of events.
+    if ('ResizeObserver' in window) new ResizeObserver(place).observe(img);
   }
 
   function addBadges() {

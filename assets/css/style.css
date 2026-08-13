@@ -2342,13 +2342,14 @@ html.gallery-js img[data-gallery].gallery-ready { visibility: visible; }
   background: rgba(0, 0, 0, 0.45);
   color: var(--color-paper);
   pointer-events: none;   /* the image underneath still takes the click */
-  opacity: 0.75;
-  transition: opacity 0.15s ease, background 0.15s ease;
+  opacity: 0;
+  transition: opacity 0.3s ease, background 0.15s ease;
 }
+.zoom-badge.is-visible { opacity: 0.75; }
 .zoom-badge svg { width: 18px; height: 18px; }
 .zoom-badge[hidden] { display: none; }
 /* Firms up when the reader is over the picture */
-:where(a, div, figure, span, summary):hover > .zoom-badge {
+:where(a, div, figure, span, summary):hover > .zoom-badge.is-visible {
   opacity: 1;
   background: var(--color-ink);
 }
@@ -2366,7 +2367,7 @@ html.gallery-js img[data-gallery].gallery-ready { visibility: visible; }
   transition: opacity 0.35s ease;
   z-index: 2;
   transform: translate(-50%, -100%);
-  margin-top: -14px;
+  margin-top: -12px;   /* matches the magnifier, so both sit on one line */
   display: flex;
   gap: 7px;
   padding: 7px 10px;
