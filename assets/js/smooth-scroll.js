@@ -42,20 +42,26 @@
   // Media hidden for the current landing's post-scroll reveal.
   var refadeMedia = [];
 
-  /* Where the last landing left the viewport. Re-landing is only ever meant
-     to correct for content that moved UNDER a stationary reader — if the
-     reader has scrolled since, they own the position and we leave it alone.
-     Comparing scroll positions distinguishes the two: a layout shift leaves
-     scrollY untouched, a reader does not. */
-  var landedAt = null;
+  /* Re-landing exists to correct for content that moved under a stationary
+     reader; it must never drag a reader who has taken over. Comparing scroll
+     positions cannot tell those apart — the browser's scroll anchoring moves
+     scrollY itself when content is inserted above the viewport — so we key
+     off actual input instead. A fresh navigation (click, popstate, load)
+     hands control back. */
+  var readerMoved = false;
+  ['wheel', 'touchmove', 'keydown', 'mousedown'].forEach(function (evt) {
+    window.addEventListener(evt, function () { readerMoved = true; }, { passive: true });
+  });
 
-  function mayReland() {
-    return landedAt === null || Math.abs(window.scrollY - landedAt) <= 8;
+  function mayReland() { return !readerMoved; }
+
+  function landFromNavigation(target) {
+    readerMoved = false;
+    land(target);
   }
 
   function landingDone() {
     landingTimer = null;
-    landedAt = Math.round(window.scrollY);
     document.documentElement.removeAttribute('data-landing');
     document.documentElement.style.scrollSnapType = '';
     refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-refade'); });
@@ -119,7 +125,7 @@
     if (!target) return;
     e.preventDefault();
     if (history.pushState) history.pushState(null, '', url.hash);
-    land(target);
+    landFromNavigation(target);
   });
 
   // Scroll-spy: when scrolling comes to rest, the URL's hash follows the
@@ -193,7 +199,7 @@
       return;
     }
     var target = document.getElementById(hash.slice(1));
-    if (target) land(target);
+    if (target) landFromNavigation(target);
   });
 
   // Arriving from another page with a hash: land it once layout has settled.
@@ -201,7 +207,7 @@
     if (!window.location.hash) return;
     var target = document.getElementById(window.location.hash.slice(1));
     if (!target) return;
-    setTimeout(function () { land(target); }, 60);
+    setTimeout(function () { landFromNavigation(target); }, 60);
     /* Web fonts swap in after load on a cold cache, changing text metrics and
        moving every panel below — re-land once they have settled. */
     if (document.fonts && document.fonts.ready) {
