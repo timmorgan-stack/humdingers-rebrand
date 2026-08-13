@@ -102,6 +102,12 @@
     var current = offset % images.length;
     shown.dataset.index = current;
     if (shown.getAttribute('src') !== images[current].img) {
+      // Join the site's normal loading choreography so the chosen shot fades
+      // in like any other image rather than appearing abruptly.
+      shown.classList.add('img-loading');
+      shown.addEventListener('load', function () {
+        shown.classList.remove('img-loading');
+      }, { once: true });
       shown.src = images[current].img;
       shown.alt = images[current].alt;
     }
@@ -110,8 +116,27 @@
     if (images.length < 2) return;   // nothing to rotate between
 
     var idle = null;
+    var dots = buildDots(shown, images, function (i) {
+      // A deliberate choice takes over from the timer: show it, then let the
+      // rotation carry on from there.
+      stop();
+      mark(i);
+      show(shown, images[i], i);
+      start();
+    });
+    mark(current);
+
+    function mark(i) {
+      if (!dots) return;
+      Array.prototype.forEach.call(dots.children, function (dot, n) {
+        dot.classList.toggle('is-current', n === i);
+        dot.setAttribute('aria-current', n === i ? 'true' : 'false');
+      });
+    }
+
     function advance() {
       var next = (Number(shown.dataset.index) + 1) % images.length;
+      mark(next);
       show(shown, images[next], next);
     }
 
@@ -134,6 +159,56 @@
     }
   }
 
+  /* Dots: one per photograph, the current one filled, any of them clickable
+     to jump straight to that shot. Positioned against the image's own box
+     like the magnifier badge, since these images sit in all sorts of
+     containers. Skipped on small frames (the menu thumbnails), where a row
+     of dots would be wider than the picture. */
+  function buildDots(shown, images, jump) {
+    var frame = shown.parentElement;
+    if (!frame || shown.offsetWidth < 260) return null;
+
+    var wrap = document.createElement('div');
+    wrap.className = 'gallery-dots';
+    wrap.setAttribute('role', 'group');
+    wrap.setAttribute('aria-label', 'Choose a photograph');
+
+    images.forEach(function (item, i) {
+      var dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'gallery-dot';
+      dot.setAttribute('aria-label', 'Show photograph ' + (i + 1) + ' of ' + images.length);
+      dot.addEventListener('click', function (e) {
+        e.stopPropagation();   // don't also open the lightbox
+        jump(i);
+      });
+      wrap.appendChild(dot);
+    });
+
+    if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+    frame.appendChild(wrap);
+
+    function place() {
+      if (!shown.offsetWidth) { wrap.hidden = true; return; }
+      wrap.hidden = shown.offsetWidth < 260;
+      wrap.style.left = (shown.offsetLeft + shown.offsetWidth / 2) + 'px';
+      wrap.style.top = (shown.offsetTop + shown.offsetHeight) + 'px';
+    }
+    place();
+    window.addEventListener('resize', place);
+
+    /* The dots arrive with the opening photograph rather than ahead of it —
+       a nav floating over an empty frame looks broken. Once shown they stay
+       put; later changes are the image's business, not theirs. */
+    function reveal() { wrap.classList.add('is-visible'); wrap.style.opacity = '1'; }
+    if (shown.complete && shown.naturalWidth) reveal();
+    else {
+      shown.addEventListener('load', reveal, { once: true });
+      shown.addEventListener('error', reveal, { once: true });
+    }
+    return wrap;
+  }
+
   /* True cross-fade: the incoming shot is drawn as a second layer directly
      over the current one and faded up, so the two dissolve into each other
      rather than the panel dipping to its background in between. The layer is
@@ -144,13 +219,31 @@
     var pre = new Image();
     pre.src = item.img;
 
+    /* Transitions can overlap — a dot clicked while a fade is still running,
+       or clicks in quick succession. Each one claims a ticket; a fade that
+       has been superseded abandons its commit, otherwise the older one lands
+       last and the panel ends up on the wrong photograph. */
+    var ticket = (Number(shown.dataset.fade) || 0) + 1;
+    shown.dataset.fade = ticket;
+    var stale = function () { return Number(shown.dataset.fade) !== ticket; };
+
+    // Drop any layer still fading from a superseded transition.
+    var frameNow = shown.parentElement;
+    if (frameNow) {
+      Array.prototype.forEach.call(frameNow.querySelectorAll(':scope > .food-crossfade'), function (old) {
+        old.remove();
+      });
+    }
+
     function commit() {
+      if (stale()) return;
       shown.src = item.img;
       shown.alt = item.alt;
       shown.dataset.index = index;
     }
 
     function swap() {
+      if (stale()) return;
       var frame = shown.parentElement;
       if (!frame || !shown.offsetWidth) { commit(); return; }
       if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
@@ -170,17 +263,37 @@
       layer.style.objectPosition = cs.objectPosition;
       frame.appendChild(layer);
 
-      requestAnimationFrame(function () { layer.style.opacity = '1'; });
+      // rAF is suspended in background tabs, which would strand the layer
+      // at opacity 0; a timer still fires, so the fade always starts.
+      setTimeout(function () { layer.style.opacity = '1'; }, 20);
       // Commit underneath once the layer is fully opaque, then drop it: the
       // new file is already decoded, so the handover is invisible.
       setTimeout(function () {
+        if (stale()) { layer.remove(); return; }
         commit();
-        requestAnimationFrame(function () { layer.remove(); });
+        setTimeout(function () { layer.remove(); }, 20);
       }, 480);
     }
 
-    if (pre.decode) pre.decode().then(swap).catch(swap);
-    else if (pre.complete) swap();
-    else pre.onload = swap;
+    whenReady(pre, swap);
+  }
+
+  /* Decoding first keeps a fade from starting on a half-drawn frame, but
+     decode() is only ever an optimisation: it can sit unsettled, and a
+     gallery that waits on it stalls for good. Load is the real signal, and a
+     timeout guarantees the sequence always moves on. */
+  function whenReady(pre, done) {
+    var fired = false;
+    function go() { if (!fired) { fired = true; done(); } }
+    function decodeThenGo() {
+      if (pre.decode) pre.decode().then(go).catch(go);
+      else go();
+    }
+    if (pre.complete && pre.naturalWidth) decodeThenGo();
+    else {
+      pre.onload = decodeThenGo;
+      pre.onerror = go;
+    }
+    setTimeout(go, 300);
   }
 })();

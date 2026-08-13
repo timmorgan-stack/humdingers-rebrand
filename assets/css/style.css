@@ -2356,3 +2356,42 @@ html.gallery-js img[data-gallery].gallery-ready { visibility: visible; }
   .zoom-badge { width: 28px; height: 28px; margin: -8px 0 0 -8px; }
   .zoom-badge svg { width: 15px; height: 15px; }
 }
+
+/* Gallery dots — one per photograph, sitting just inside the foot of the
+   image. Positioned by food-gallery.js against the image's own box (left/top
+   set inline), then pulled up and centred. */
+.gallery-dots {
+  position: absolute;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  z-index: 2;
+  transform: translate(-50%, -100%);
+  margin-top: -14px;
+  display: flex;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.38);
+  max-width: 92%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.gallery-dots.is-visible { opacity: 1; }
+.gallery-dots[hidden] { display: none; }
+.gallery-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.gallery-dot:hover { background: rgba(255, 255, 255, 0.85); transform: scale(1.2); }
+.gallery-dot.is-current { background: var(--color-paper); transform: scale(1.25); }
+.gallery-dot:focus-visible { outline: 2px solid var(--color-paper); outline-offset: 2px; }
+@media (max-width: 640px) {
+  .gallery-dots { gap: 5px; padding: 6px 8px; }
+  .gallery-dot { width: 7px; height: 7px; }
+}

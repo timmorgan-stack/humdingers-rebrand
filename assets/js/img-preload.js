@@ -16,7 +16,15 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   document.querySelectorAll('img').forEach(function (img) {
-    if (img.complete) return;
+    /* An image already in cache is complete before this runs and would
+       otherwise appear abruptly while its neighbours fade — give it the same
+       fade from a standing start, with no shimmer or spinner since there is
+       nothing to wait for. */
+    if (img.complete) {
+      img.classList.add('img-loading');
+      setTimeout(function () { img.classList.remove('img-loading'); }, 20);
+      return;
+    }
     img.classList.add('img-loading');
 
     // A wrapper that exists only to hold this image can wear the shimmer.
