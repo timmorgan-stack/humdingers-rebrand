@@ -69,20 +69,51 @@
     }
   }
 
-  /* Cross-fade: the incoming shot is decoded first so the swap never lands on
-     a half-drawn frame. */
+  /* True cross-fade: the incoming shot is drawn as a second layer directly
+     over the current one and faded up, so the two dissolve into each other
+     rather than the panel dipping to its background in between. The layer is
+     positioned against the image's own box (offsets, not a wrapper) so no
+     markup or layout changes are needed. It is decoded first, so the fade
+     never begins on a half-drawn frame. */
   function show(shown, item, index) {
     var pre = new Image();
     pre.src = item.img;
-    var swap = function () {
+
+    function commit() {
+      shown.src = item.img;
+      shown.alt = item.alt;
       shown.dataset.index = index;
-      shown.classList.add('is-fading');
+    }
+
+    function swap() {
+      var frame = shown.parentElement;
+      if (!frame || !shown.offsetWidth) { commit(); return; }
+      if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+
+      var cs = getComputedStyle(shown);
+      var layer = document.createElement('img');
+      layer.className = 'food-crossfade';
+      layer.src = item.img;
+      layer.alt = '';
+      layer.setAttribute('aria-hidden', 'true');
+      layer.style.left = shown.offsetLeft + 'px';
+      layer.style.top = shown.offsetTop + 'px';
+      layer.style.width = shown.offsetWidth + 'px';
+      layer.style.height = shown.offsetHeight + 'px';
+      layer.style.borderRadius = cs.borderRadius;
+      layer.style.objectFit = cs.objectFit;
+      layer.style.objectPosition = cs.objectPosition;
+      frame.appendChild(layer);
+
+      requestAnimationFrame(function () { layer.style.opacity = '1'; });
+      // Commit underneath once the layer is fully opaque, then drop it: the
+      // new file is already decoded, so the handover is invisible.
       setTimeout(function () {
-        shown.src = item.img;
-        shown.alt = item.alt;
-        shown.classList.remove('is-fading');
-      }, 320);
-    };
+        commit();
+        requestAnimationFrame(function () { layer.remove(); });
+      }, 480);
+    }
+
     if (pre.decode) pre.decode().then(swap).catch(swap);
     else if (pre.complete) swap();
     else pre.onload = swap;

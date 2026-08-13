@@ -2267,8 +2267,16 @@ nav.main-nav a { font-size: 1.05rem; }
    A rotator is a plain image frame; food-gallery.js cross-fades the set
    through it. The wrapper keeps the frame's shape so swapping shots never
    changes layout. */
-img[data-gallery] { transition: opacity 0.32s ease; cursor: zoom-in; }
-img[data-gallery].is-fading { opacity: 0; }
+img[data-gallery] { cursor: zoom-in; }
+/* The incoming shot of a cross-fade, stacked over the current one */
+.food-crossfade {
+  position: absolute;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) { .food-crossfade { transition: none; } }
 
 /* Lightbox stepping controls, shown only for a set */
 .lightbox-nav {
@@ -2309,4 +2317,35 @@ img[data-gallery].is-fading { opacity: 0; }
   .lightbox-nav { width: 42px; height: 42px; font-size: 1.5rem; }
   .lightbox-prev { left: 6px; }
   .lightbox-next { right: 6px; }
+}
+
+/* Magnifier badge marking an image as enlargeable. Positioned by lightbox.js
+   against the image's own box (left/top are set inline), then pulled back
+   inside its bottom-right corner. */
+.zoom-badge {
+  position: absolute;
+  z-index: 2;
+  transform: translate(-100%, -100%);
+  margin: -12px 0 0 -12px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.45);
+  color: var(--color-paper);
+  pointer-events: none;   /* the image underneath still takes the click */
+  opacity: 0.75;
+  transition: opacity 0.15s ease, background 0.15s ease;
+}
+.zoom-badge svg { width: 18px; height: 18px; }
+.zoom-badge[hidden] { display: none; }
+/* Firms up when the reader is over the picture */
+:where(a, div, figure, span, summary):hover > .zoom-badge {
+  opacity: 1;
+  background: var(--color-ink);
+}
+@media (max-width: 640px) {
+  .zoom-badge { width: 28px; height: 28px; margin: -8px 0 0 -8px; }
+  .zoom-badge svg { width: 15px; height: 15px; }
 }

@@ -66,6 +66,44 @@
     if (lastFocus) lastFocus.focus();
   }
 
+  /* Discrete affordance: a small magnifier pinned to each enlargeable image.
+     These images sit in all sorts of containers — grid cells, <summary> rows,
+     figures — so a corner badge on the parent would often land away from the
+     picture. Position it against the image's own box instead, the same
+     approach the loading spinner uses. */
+  function badgeFor(img) {
+    var frame = img.parentElement;
+    if (!frame || frame === document.body) return;
+    if (frame.querySelector(':scope > .zoom-badge[data-for="' + img.src + '"]')) return;
+    if (getComputedStyle(frame).position === 'static') frame.style.position = 'relative';
+
+    var badge = document.createElement('span');
+    badge.className = 'zoom-badge';
+    badge.setAttribute('aria-hidden', 'true');
+    badge.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="6.5" stroke="currentColor" stroke-width="2"/>' +
+      '<path d="M15.8 15.8 20 20M8.6 11h4.8M11 8.6v4.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>';
+    frame.appendChild(badge);
+
+    function place() {
+      if (!img.offsetWidth) { badge.hidden = true; return; }
+      badge.hidden = false;
+      badge.style.left = (img.offsetLeft + img.offsetWidth) + 'px';
+      badge.style.top = (img.offsetTop + img.offsetHeight) + 'px';
+    }
+    place();
+    if (img.complete) place(); else img.addEventListener('load', place, { once: true });
+    window.addEventListener('resize', place);
+  }
+
+  function addBadges() {
+    Array.prototype.forEach.call(document.querySelectorAll(SOURCES), badgeFor);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addBadges);
+  else addBadges();
+  // Late-arriving imagery (the Instagram grid, rotated venues) gets one too.
+  document.addEventListener('hd:relayout', addBadges);
+
   document.addEventListener('click', function (e) {
     if (!overlay.hidden) {
       if (e.target === prevBtn) return step(-1);
