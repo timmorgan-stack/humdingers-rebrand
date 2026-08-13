@@ -19,7 +19,13 @@
     '<button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#8249;</button>' +
     '<img alt="">' +
     '<button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">&#8250;</button>' +
-    '<p class="lightbox-count" aria-live="polite"></p>';
+    '<div class="lightbox-count" aria-hidden="true">' +
+      '<span class="lb-count-now">1</span>' +
+      '<span class="lb-count-rule"></span>' +
+      '<span class="lb-count-total">1</span>' +
+      '<span class="lb-count-bar"><i></i></span>' +
+    '</div>' +
+    '<p class="lightbox-status" role="status" aria-live="polite"></p>';
   document.body.appendChild(overlay);
 
   var big = overlay.querySelector('img');
@@ -27,6 +33,10 @@
   var prevBtn = overlay.querySelector('.lightbox-prev');
   var nextBtn = overlay.querySelector('.lightbox-next');
   var count = overlay.querySelector('.lightbox-count');
+  var countNow = overlay.querySelector('.lb-count-now');
+  var countTotal = overlay.querySelector('.lb-count-total');
+  var countFill = overlay.querySelector('.lb-count-bar i');
+  var status = overlay.querySelector('.lightbox-status');
   var lastFocus = null;
 
   var set = [];      // the gallery currently open ([] when a single image)
@@ -36,7 +46,15 @@
     var item = set[at];
     big.src = item.img || item.src;
     big.alt = item.alt || '';
-    count.textContent = set.length > 1 ? (at + 1) + ' / ' + set.length : '';
+    /* The visible counter is decorative — assistive tech reads the live
+       region instead, so the numerals never get announced as bare digits. */
+    var many = set.length > 1;
+    count.hidden = !many;
+    if (!many) { status.textContent = ''; return; }
+    countNow.textContent = at + 1;
+    countTotal.textContent = set.length;
+    countFill.style.width = ((at + 1) / set.length * 100) + '%';
+    status.textContent = 'Image ' + (at + 1) + ' of ' + set.length;
   }
 
   function openSet(images, index) {

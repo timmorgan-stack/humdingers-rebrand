@@ -342,6 +342,15 @@
     foot.style.setProperty('--fl-hover', v(Decks.draw('footer-link-hovers', LINK_LIGHT, 0)));
   })();
 
+  /* ---- Lightbox counter ---------------------------------------------------
+     One accent per load for the gallery counter, drawn from the light end of
+     the palette only — the capsule sits on near-black, where the dark
+     colours disappear. */
+  (function lightboxAccent() {
+    document.documentElement.style.setProperty(
+      '--lb-accent', v(Decks.draw('lightbox-accent', ['--color-fish', '--color-custard', '--color-strawberry'], 0)));
+  })();
+
   /* ---- Enquire-now CTA banner ---------------------------------------------
      The reusable banner draws a light wash + AA dark ink pair per load. */
   (function ctaBanner() {
