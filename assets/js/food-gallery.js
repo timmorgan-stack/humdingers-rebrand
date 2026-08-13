@@ -15,14 +15,53 @@
   if (!rotators.length) return;
 
   var INTERVAL = 5000;   // time each shot is held
+  var FIRST_KEY = 'hd-gallery-first';
   var galleries = null;
+
+  function shuffled(arr) {
+    var d = arr.slice();
+    for (var i = d.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = d[i]; d[i] = d[j]; d[j] = t;
+    }
+    return d;
+  }
+
+  /* Every visit sees the set in a fresh order, and never opens on the same
+     photograph as last time — the same rule the brand colours follow. The
+     opening shot per gallery is remembered between visits. */
+  function order(key, images, lastFirst) {
+    var out = shuffled(images);
+    if (out.length > 1 && out[0].img === lastFirst) {
+      var j = 1 + Math.floor(Math.random() * (out.length - 1));
+      var t = out[0]; out[0] = out[j]; out[j] = t;
+    }
+    return out;
+  }
 
   fetch('assets/data/food-galleries.json', { cache: 'no-cache' })
     .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); })
     .then(function (data) {
+      var seen = {};
+      try { seen = JSON.parse(localStorage.getItem(FIRST_KEY)) || {}; } catch (e) {}
+
+      Object.keys(data).forEach(function (key) {
+        data[key].images = order(key, data[key].images, seen[key]);
+        seen[key] = data[key].images[0].img;
+      });
+      try { localStorage.setItem(FIRST_KEY, JSON.stringify(seen)); } catch (e) {}
+
       galleries = data;
-      Array.prototype.forEach.call(rotators, setup);
-      window.HumdingersGalleries = data; // lightbox reads the sets from here
+      window.HumdingersGalleries = data; // lightbox steps in this same order
+
+      // Several panels can share a gallery: offset each so they never open on
+      // the same photograph as one another.
+      var used = {};
+      Array.prototype.forEach.call(rotators, function (img) {
+        var key = img.getAttribute('data-gallery');
+        used[key] = (used[key] || 0);
+        setup(img, used[key]++);
+      });
     })
     .catch(function () { /* the static first frame stays put */ });
 
@@ -30,19 +69,30 @@
     return (galleries && galleries[key] && galleries[key].images) || [];
   }
 
-  function setup(shown) {
+  function setup(shown, offset) {
     var key = shown.getAttribute('data-gallery');
     var images = imagesFor(key);
-    if (images.length < 2) return;   // nothing to rotate between
+    if (!images.length) return;
 
-    /* Start from whichever shot the markup shipped with, so the first frame
-       never jumps, and offset each rotator on the page so several panels
-       don't change in lockstep. */
-    var current = 0;
-    images.forEach(function (item, i) {
-      if (shown.getAttribute('src') === item.img) current = i;
-    });
+    /* Open on this load's shot for the gallery (offset per panel). The
+       markup ships a real photograph so the panel is never empty and works
+       with JS off; the swap here is instant rather than a cross-fade, since
+       a dissolve the moment the page settles reads as a glitch. */
+    var current = offset % images.length;
     shown.dataset.index = current;
+    if (shown.getAttribute('src') !== images[current].img) {
+      var pre = new Image();
+      pre.src = images[current].img;
+      var place = function () {
+        shown.src = images[current].img;
+        shown.alt = images[current].alt;
+      };
+      if (pre.decode) pre.decode().then(place).catch(place);
+      else if (pre.complete) place();
+      else pre.onload = place;
+    }
+
+    if (images.length < 2) return;   // nothing to rotate between
 
     var idle = null;
     function advance() {
