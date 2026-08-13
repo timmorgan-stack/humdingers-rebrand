@@ -19,7 +19,8 @@
   var MAX_MS = 14000;   // safety restore if frames stop arriving
   var THRESHOLD = 0.6;  // most of the panel visible before it starts
 
-  var targets = document.querySelectorAll('.stat-card .num');
+  // .num-static opts out: years read as dates, not quantities to count to.
+  var targets = document.querySelectorAll('.stat-card .num:not(.num-static)');
   if (!targets.length) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (!('IntersectionObserver' in window) || !window.requestAnimationFrame) return;

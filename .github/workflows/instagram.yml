@@ -1,0 +1,40 @@
+name: Refresh Instagram feed
+
+# Pulls the latest posts into the repo so the site can render them without
+# putting an access token in page source. Runs itself each morning, and can
+# be kicked off by hand from the Actions tab.
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch latest posts
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_POST_COUNT: '8'
+        run: node tools/fetch-instagram.mjs
+
+      - name: Commit if the feed changed
+        run: |
+          if [ -n "$(git status --porcelain assets/data/instagram.json assets/img/instagram)" ]; then
+            git config user.name  'github-actions[bot]'
+            git config user.email 'github-actions[bot]@users.noreply.github.com'
+            git add assets/data/instagram.json assets/img/instagram
+            git commit -m 'Refresh Instagram feed [skip ci]'
+            git push
+          else
+            echo 'Feed unchanged — nothing to commit.'
+          fi
