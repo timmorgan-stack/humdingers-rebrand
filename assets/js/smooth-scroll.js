@@ -10,6 +10,11 @@
  * viewport panels.
  */
 (function () {
+  /* The browser restores the previous scroll position on reload, and does it
+     asynchronously — so it races the landing below and sometimes wins, which
+     is why refreshing on a hash could settle on the wrong panel. Landings are
+     this file's job, so opt out of the browser's restoration entirely. */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
   function stickyOffset() {
     var header = document.querySelector('.site-header');
     return header ? header.getBoundingClientRect().height : 0;
@@ -166,6 +171,12 @@
   window.addEventListener('load', function () {
     if (!window.location.hash) return;
     var target = document.getElementById(window.location.hash.slice(1));
-    if (target) setTimeout(function () { land(target); }, 60);
+    if (!target) return;
+    setTimeout(function () { land(target); }, 60);
+    /* Web fonts swap in after load on a cold cache, changing text metrics and
+       moving every panel below — re-land once they have settled. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { land(target); });
+    }
   });
 })();

@@ -2251,3 +2251,14 @@ nav.main-nav a { font-size: 1.05rem; }
 @media (min-width: 1500px) {
   .logo-strip img { max-height: 62px; }
 }
+
+/* Homepage Partner Venues sits in a viewport-height panel, so the two rows
+   size against the height left after the heading, lede and button (~400px of
+   chrome plus the sticky header) rather than a fixed ratio — the whole panel
+   then fits the screen without scrolling. */
+@media (min-width: 1025px) {
+  .venue-grid-lg .venue-card img {
+    aspect-ratio: auto;
+    height: clamp(120px, calc((100dvh - var(--sticky-h, 80px) - 400px) / 2), 320px);
+  }
+}
