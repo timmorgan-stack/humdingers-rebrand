@@ -42,8 +42,20 @@
   // Media hidden for the current landing's post-scroll reveal.
   var refadeMedia = [];
 
+  /* Where the last landing left the viewport. Re-landing is only ever meant
+     to correct for content that moved UNDER a stationary reader — if the
+     reader has scrolled since, they own the position and we leave it alone.
+     Comparing scroll positions distinguishes the two: a layout shift leaves
+     scrollY untouched, a reader does not. */
+  var landedAt = null;
+
+  function mayReland() {
+    return landedAt === null || Math.abs(window.scrollY - landedAt) <= 8;
+  }
+
   function landingDone() {
     landingTimer = null;
+    landedAt = Math.round(window.scrollY);
     document.documentElement.removeAttribute('data-landing');
     document.documentElement.style.scrollSnapType = '';
     refadeMedia.splice(0).forEach(function (m) { m.classList.remove('img-refade'); });
@@ -162,8 +174,25 @@
   // Content that arrives after load (the Instagram grid) changes the page
   // height and invalidates the landing already performed — re-land the hash.
   document.addEventListener('hd:relayout', function () {
-    if (!window.location.hash) return;
+    if (!window.location.hash || !mayReland()) return;
     var target = document.getElementById(window.location.hash.slice(1));
+    if (target) land(target);
+  });
+
+  /* Back/Forward. Clicks push a history entry and the scroll-spy keeps the
+     current entry's URL pointing at the panel in view, so each entry already
+     describes a place on the page — but nothing was acting on those entries.
+     The browser would once have restored the scroll itself; now that we own
+     restoration (see scrollRestoration above), we have to honour popstate
+     ourselves or Back changes the URL and moves nothing.
+     This is an explicit navigation, so it overrides the reader-scroll guard. */
+  window.addEventListener('popstate', function () {
+    var hash = window.location.hash;
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    var target = document.getElementById(hash.slice(1));
     if (target) land(target);
   });
 
@@ -176,7 +205,7 @@
     /* Web fonts swap in after load on a cold cache, changing text metrics and
        moving every panel below — re-land once they have settled. */
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(function () { land(target); });
+      document.fonts.ready.then(function () { if (mayReland()) land(target); });
     }
   });
 })();
