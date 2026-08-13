@@ -39,31 +39,51 @@
     return out;
   }
 
-  fetch('assets/data/food-galleries.json', { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); })
-    .then(function (data) {
-      var seen = {};
-      try { seen = JSON.parse(localStorage.getItem(FIRST_KEY)) || {}; } catch (e) {}
+  /* The sets are inlined in the page head, so this visit's choice is made
+     without waiting on a network round trip — the reason the default frame
+     used to show first. Falls back to the shared file if the inline block
+     is ever missing. */
+  function begin(data) {
+    var seen = {};
+    try { seen = JSON.parse(localStorage.getItem(FIRST_KEY)) || {}; } catch (e) {}
 
-      Object.keys(data).forEach(function (key) {
-        data[key].images = order(key, data[key].images, seen[key]);
-        seen[key] = data[key].images[0].img;
-      });
-      try { localStorage.setItem(FIRST_KEY, JSON.stringify(seen)); } catch (e) {}
+    Object.keys(data).forEach(function (key) {
+      data[key].images = order(key, data[key].images, seen[key]);
+      seen[key] = data[key].images[0].img;
+    });
+    try { localStorage.setItem(FIRST_KEY, JSON.stringify(seen)); } catch (e) {}
 
-      galleries = data;
-      window.HumdingersGalleries = data; // lightbox steps in this same order
+    galleries = data;
+    window.HumdingersGalleries = data; // lightbox steps in this same order
 
-      // Several panels can share a gallery: offset each so they never open on
-      // the same photograph as one another.
-      var used = {};
-      Array.prototype.forEach.call(rotators, function (img) {
-        var key = img.getAttribute('data-gallery');
-        used[key] = (used[key] || 0);
-        setup(img, used[key]++);
-      });
-    })
-    .catch(function () { /* the static first frame stays put */ });
+    // Several panels can share a gallery: offset each so they never open on
+    // the same photograph as one another.
+    var used = {};
+    Array.prototype.forEach.call(rotators, function (img) {
+      var key = img.getAttribute('data-gallery');
+      used[key] = (used[key] || 0);
+      setup(img, used[key]++);
+    });
+  }
+
+  function reveal() {
+    Array.prototype.forEach.call(rotators, function (img) {
+      img.classList.add('gallery-ready');
+    });
+  }
+
+  var inline = document.getElementById('gallery-data');
+  if (inline) {
+    try { begin(JSON.parse(inline.textContent)); }
+    catch (e) { reveal(); }
+  } else {
+    fetch('assets/data/food-galleries.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error(r.status)); })
+      .then(begin)
+      .catch(reveal);   // show the markup frame rather than nothing
+  }
+  // Belt and braces: never leave a gallery image hidden.
+  setTimeout(reveal, 2000);
 
   function imagesFor(key) {
     return (galleries && galleries[key] && galleries[key].images) || [];
@@ -74,23 +94,18 @@
     var images = imagesFor(key);
     if (!images.length) return;
 
-    /* Open on this load's shot for the gallery (offset per panel). The
-       markup ships a real photograph so the panel is never empty and works
-       with JS off; the swap here is instant rather than a cross-fade, since
-       a dissolve the moment the page settles reads as a glitch. */
+    /* Open on this load's shot for the gallery (offset per panel). The image
+       is still hidden at this point, so setting src now means the visitor
+       only ever sees the chosen photograph — never the markup default
+       followed by a swap. Revealed immediately: img-preload's shimmer and
+       spinner cover the download, exactly as for any other image. */
     var current = offset % images.length;
     shown.dataset.index = current;
     if (shown.getAttribute('src') !== images[current].img) {
-      var pre = new Image();
-      pre.src = images[current].img;
-      var place = function () {
-        shown.src = images[current].img;
-        shown.alt = images[current].alt;
-      };
-      if (pre.decode) pre.decode().then(place).catch(place);
-      else if (pre.complete) place();
-      else pre.onload = place;
+      shown.src = images[current].img;
+      shown.alt = images[current].alt;
     }
+    shown.classList.add('gallery-ready');
 
     if (images.length < 2) return;   // nothing to rotate between
 

@@ -2268,6 +2268,13 @@ nav.main-nav a { font-size: 1.05rem; }
    through it. The wrapper keeps the frame's shape so swapping shots never
    changes layout. */
 img[data-gallery] { cursor: zoom-in; }
+/* Gallery images are held back until the script has chosen this visit's shot,
+   otherwise the browser paints the one baked into the markup first and the
+   change reads as a swap. The gating class is added by an inline script in
+   <head>, so with JS off the rule never applies and the markup image shows
+   normally. The frame keeps its space either way, so nothing shifts. */
+html.gallery-js img[data-gallery] { visibility: hidden; }
+html.gallery-js img[data-gallery].gallery-ready { visibility: visible; }
 /* The incoming shot of a cross-fade, stacked over the current one */
 .food-crossfade {
   position: absolute;
