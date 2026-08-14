@@ -82,6 +82,11 @@ img { max-width: 100%; display: block; transition: opacity 0.25s ease; }
    refades during in-page landings stay brisk. */
 img.img-first-fade { transition: opacity 0.7s ease; }
 img.img-loading, img.img-refade { opacity: 0; }
+/* The magnifier and gallery nav follow their image through every hold: while
+   it is loading or refading for a landing, they are hidden with it, and they
+   return on the image's own ramp — never floating over an empty frame. */
+.zoom-badge.img-refade.is-visible,
+.gallery-dots.img-refade.is-visible { opacity: 0; }
 video { transition: opacity 0.25s ease; }
 video.img-loading, video.img-refade { opacity: 0; }
 

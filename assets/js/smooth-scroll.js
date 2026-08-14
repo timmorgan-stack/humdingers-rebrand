@@ -123,6 +123,16 @@
         if (m.classList.contains('img-loading') || m.classList.contains('img-refade')) return;
         m.classList.add('img-refade');
         refadeMedia.push(m);
+        // The magnifier and gallery nav ride along: hidden with their image
+        // now, restored with it on landing-done, so they never sit over an
+        // empty frame while the image is held back.
+        Array.prototype.forEach.call(
+          (m.parentElement || m).querySelectorAll(':scope > .zoom-badge, :scope > .gallery-dots'),
+          function (o) {
+            if (o.classList.contains('img-refade')) return;
+            o.classList.add('img-refade');
+            refadeMedia.push(o);
+          });
       });
     }
 
