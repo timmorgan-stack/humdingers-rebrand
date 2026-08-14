@@ -95,21 +95,34 @@
      precede it (cached images fade 30ms after DOMContentLoaded; landings
      hold reveals until the scroll settles). Overlays that should arrive
      with the photograph watch for that moment. */
+  /* img-preload marks every image img-loading in its DOMContentLoaded pass —
+     including cached ones, whose fade it starts 30ms later. Code here runs at
+     parse, BEFORE that pass, so checking straight away would find a cached
+     image "showing" and reveal the overlay ahead of the fade. Hold the first
+     check until DOMContentLoaded; script order guarantees img-preload's
+     handler has classed the images by the time ours runs. */
+  var domReady = document.readyState === 'complete';
+  document.addEventListener('DOMContentLoaded', function () { domReady = true; });
+
   function whenFadesIn(img, cb) {
     var fired = false;
+    var mo = null;
     function go() { if (!fired) { fired = true; if (mo) mo.disconnect(); cb(); } }
     function showing() {
       return img.complete && img.naturalWidth > 0 && !img.classList.contains('img-loading');
     }
-    var mo = null;
-    if (showing()) return go();
-    if ('MutationObserver' in window) {
-      mo = new MutationObserver(function () { if (showing()) go(); });
-      mo.observe(img, { attributes: true, attributeFilter: ['class'] });
+    function begin() {
+      if (showing()) return go();
+      if ('MutationObserver' in window) {
+        mo = new MutationObserver(function () { if (showing()) go(); });
+        mo.observe(img, { attributes: true, attributeFilter: ['class'] });
+      }
+      img.addEventListener('load', function () { if (showing()) go(); });
+      img.addEventListener('error', go, { once: true });
+      setTimeout(go, 4000);   // never leave the controls stranded invisible
     }
-    img.addEventListener('load', function () { if (showing()) go(); });
-    img.addEventListener('error', go, { once: true });
-    setTimeout(go, 4000);   // never leave the controls stranded invisible
+    if (domReady) begin();
+    else document.addEventListener('DOMContentLoaded', begin);
   }
 
   function badgeFor(img) {
