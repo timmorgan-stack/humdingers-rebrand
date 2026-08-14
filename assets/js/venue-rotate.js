@@ -1,7 +1,7 @@
 /*
- * Homepage Partner Venues — a different four on every visit.
+ * Homepage Partner Venues — a fresh selection on every visit.
  *
- * The four venues in the markup are the no-JS fallback (and what crawlers
+ * The venues in the markup are the no-JS fallback (and what crawlers
  * see); this swaps in a fresh selection on load. Selection follows the same
  * rules as the brand colours: a persistent deck deals every venue once
  * before any repeats, and no venue carries over from the previous load.

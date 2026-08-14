@@ -2143,7 +2143,7 @@ nav.main-nav a { font-size: 1.05rem; }
 .venue-card img { aspect-ratio: 3/2; }
 @media (min-width: 1025px) {
   .venue-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; }
-  .venue-grid-lg { grid-template-columns: repeat(2, 1fr); gap: 28px; }
+  .venue-grid-lg { grid-template-columns: repeat(3, 1fr); gap: 24px; }
   .venue-card > span { font-size: 1.1rem; left: 16px; right: 16px; bottom: 14px; }
 }
 /* The wordmark IS the homepage h1 — the heading carries no type of its own */

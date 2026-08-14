@@ -154,7 +154,7 @@
     if (!target) return;
     e.preventDefault();
     if (history.pushState) history.pushState(null, '', url.hash);
-    landFromNavigation(target);
+    landFromNavigation(target, true);
   });
 
   // Scroll-spy: when scrolling comes to rest, the URL's hash follows the
@@ -224,18 +224,17 @@
   window.addEventListener('popstate', function () {
     var hash = window.location.hash;
     if (!hash) {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'auto' });
       return;
     }
     var target = document.getElementById(hash.slice(1));
-    if (target) landFromNavigation(target);
+    if (target) landFromNavigation(target, true);
   });
 
   /* Arriving on a hash — a reload, or a pasted/shared link — places the
-     content straight away: animating a scroll the reader did not ask for
-     just looks like the page is hunting for its position. In-page and nav
-     clicks keep the animation, because there the movement shows where you
-     have been taken. */
+     content straight away. Clicks and Back/Forward land the same way: every
+     anchor navigation cuts directly to the target panel, no animated
+     scroll (the target's media re-fading in is the arrival cue instead). */
   window.addEventListener('load', function () {
     if (!window.location.hash) return;
     var target = document.getElementById(window.location.hash.slice(1));
