@@ -247,11 +247,24 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
   white-space: nowrap;
 }
 .nav-dropdown a:hover { background: var(--color-custard); color: var(--color-chocolate); }
+/* Open on hover, or on *keyboard* focus. Plain :focus-within was the wrong
+   test: clicking a dropdown link focuses that anchor, so the panel stayed
+   open after the pointer left — and hovering a second top-level item then
+   put two panels on screen at once. Worst on same-page hash links, where
+   nothing navigates away to clear the focus. :focus-visible tracks the
+   keyboard only, so tab-through still opens the panel. */
 .nav-item:hover .nav-dropdown,
-.nav-item:focus-within .nav-dropdown {
+.nav-item:has(:focus-visible) .nav-dropdown {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+@supports not selector(:has(*)) {
+  .nav-item:focus-within .nav-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
 /* ---- Third level: flyouts on Delivered by Us / Served by Us / Menus ---- */
@@ -283,10 +296,17 @@ nav.main-nav a.current { text-decoration: underline; text-decoration-thickness: 
 }
 .nav-flyout-cols { display: grid; grid-template-columns: 1fr 1fr; min-width: 320px; }
 .nav-subitem:hover > .nav-flyout,
-.nav-subitem:focus-within > .nav-flyout {
+.nav-subitem:has(:focus-visible) > .nav-flyout {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+@supports not selector(:has(*)) {
+  .nav-subitem:focus-within > .nav-flyout {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
 }
 
 /* Each dropdown echoes its section's hero colour (desktop only — mobile keeps
