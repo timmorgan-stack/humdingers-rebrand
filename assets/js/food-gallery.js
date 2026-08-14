@@ -89,6 +89,29 @@
     return (galleries && galleries[key] && galleries[key].images) || [];
   }
 
+
+  /* The moment an image visually fades in is when img-preload (or the
+     gallery) removes its img-loading class — not the load event, which can
+     precede it (cached images fade 30ms after DOMContentLoaded; landings
+     hold reveals until the scroll settles). Overlays that should arrive
+     with the photograph watch for that moment. */
+  function whenFadesIn(img, cb) {
+    var fired = false;
+    function go() { if (!fired) { fired = true; if (mo) mo.disconnect(); cb(); } }
+    function showing() {
+      return img.complete && img.naturalWidth > 0 && !img.classList.contains('img-loading');
+    }
+    var mo = null;
+    if (showing()) return go();
+    if ('MutationObserver' in window) {
+      mo = new MutationObserver(function () { if (showing()) go(); });
+      mo.observe(img, { attributes: true, attributeFilter: ['class'] });
+    }
+    img.addEventListener('load', function () { if (showing()) go(); });
+    img.addEventListener('error', go, { once: true });
+    setTimeout(go, 4000);   // never leave the controls stranded invisible
+  }
+
   function setup(shown, offset) {
     var key = shown.getAttribute('data-gallery');
     var images = imagesFor(key);
@@ -212,14 +235,16 @@
     if ('ResizeObserver' in window) new ResizeObserver(place).observe(shown);
 
     /* The dots arrive with the opening photograph rather than ahead of it —
-       a nav floating over an empty frame looks broken. Once shown they stay
-       put; later changes are the image's business, not theirs. */
-    function reveal() { wrap.classList.add('is-visible'); wrap.style.opacity = '1'; }
-    if (shown.complete && shown.naturalWidth) reveal();
-    else {
-      shown.addEventListener('load', reveal, { once: true });
-      shown.addEventListener('error', reveal, { once: true });
+       a nav floating over an empty frame looks broken. Their first fade
+       borrows the image's 0.7s ramp so the two move as one; once shown they
+       stay put. */
+    function reveal() {
+      wrap.style.transition = 'opacity 0.7s ease';
+      wrap.classList.add('is-visible');
+      wrap.style.opacity = '1';
+      setTimeout(function () { wrap.style.transition = ''; }, 800);
     }
+    whenFadesIn(shown, reveal);
     return wrap;
   }
 

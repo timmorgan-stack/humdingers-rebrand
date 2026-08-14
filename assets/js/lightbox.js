@@ -89,6 +89,29 @@
      figures — so a corner badge on the parent would often land away from the
      picture. Position it against the image's own box instead, the same
      approach the loading spinner uses. */
+
+  /* The moment an image visually fades in is when img-preload (or the
+     gallery) removes its img-loading class — not the load event, which can
+     precede it (cached images fade 30ms after DOMContentLoaded; landings
+     hold reveals until the scroll settles). Overlays that should arrive
+     with the photograph watch for that moment. */
+  function whenFadesIn(img, cb) {
+    var fired = false;
+    function go() { if (!fired) { fired = true; if (mo) mo.disconnect(); cb(); } }
+    function showing() {
+      return img.complete && img.naturalWidth > 0 && !img.classList.contains('img-loading');
+    }
+    var mo = null;
+    if (showing()) return go();
+    if ('MutationObserver' in window) {
+      mo = new MutationObserver(function () { if (showing()) go(); });
+      mo.observe(img, { attributes: true, attributeFilter: ['class'] });
+    }
+    img.addEventListener('load', function () { if (showing()) go(); });
+    img.addEventListener('error', go, { once: true });
+    setTimeout(go, 4000);   // never leave the controls stranded invisible
+  }
+
   function badgeFor(img) {
     var frame = img.parentElement;
     if (!frame || frame === document.body) return;
@@ -117,12 +140,16 @@
       badge.style.left = (ir.left - hr.left + ir.width) + 'px';
       badge.style.top = (ir.top - hr.top + ir.height) + 'px';
     }
-    /* The badge arrives with the photograph rather than ahead of it, in step
-       with the image's own fade. */
-    function reveal() { place(); badge.classList.add('is-visible'); }
+    /* The badge arrives with the photograph rather than ahead of it — its
+       first fade borrows the image's own 0.7s ramp so the two move as one. */
+    function reveal() {
+      place();
+      badge.style.transition = 'opacity 0.7s ease';
+      badge.classList.add('is-visible');
+      setTimeout(function () { badge.style.transition = ''; }, 800);
+    }
     place();
-    if (img.complete && img.naturalWidth) reveal();
-    else img.addEventListener('load', reveal, { once: true });
+    whenFadesIn(img, reveal);
     window.addEventListener('resize', place);
     // Same reason as the gallery dots: the image's box moves after first
     // layout, so follow the box rather than a handful of events.
