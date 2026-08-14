@@ -98,7 +98,7 @@
     if (!target || readerMoved || tries <= 0) return;
     var want = desiredTop(target);
     if (Math.abs(window.pageYOffset - want) <= 2) return;
-    window.scrollTo({ top: want, behavior: 'auto' });
+    window.scrollTo({ top: want, behavior: 'instant' });
     setTimeout(function () { settle(target, tries - 1); }, 250);
   }
 
@@ -152,7 +152,7 @@
       if (landingTimer) { clearTimeout(landingTimer); landingDone(); }
     });
 
-    window.scrollTo({ top: Math.max(top, 0), behavior: instant ? 'auto' : 'smooth' });
+    window.scrollTo({ top: Math.max(top, 0), behavior: instant ? 'instant' : 'smooth' });
   }
 
   document.addEventListener('click', function (e) {
@@ -195,7 +195,7 @@
         // within 40% of a viewport of a panel's ideal position, glide the
         // remaining distance so a half-panel screen never sticks. Desktop
         // only — below 1025px the panels flow naturally.
-        if (window.innerWidth >= 1025) {
+        if (window.innerWidth >= 1025 && readerMoved) {
           // Reading inside a panel taller than the viewport is a legitimate
           // rest anywhere — never drag the reader back to its top.
           if (section.getBoundingClientRect().height > (window.innerHeight - offset) + 40) return;
@@ -234,7 +234,7 @@
   window.addEventListener('popstate', function () {
     var hash = window.location.hash;
     if (!hash) {
-      window.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, behavior: 'instant' });
       return;
     }
     var target = document.getElementById(hash.slice(1));
